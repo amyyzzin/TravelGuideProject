@@ -1,17 +1,15 @@
 package com.tistory.amyyzzin.trvl.service;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.tistory.amyyzzin.trvl.domain.RegulationVO;
-import com.tistory.amyyzzin.trvl.dto.Regulation;
+import com.tistory.amyyzzin.trvl.domain.Regulation;
+import com.tistory.amyyzzin.trvl.dto.RegulationDto;
 import com.tistory.amyyzzin.trvl.dto.RegulationResponseDto;
 import com.tistory.amyyzzin.trvl.repository.RegulationRepository;
 import com.tistory.amyyzzin.trvl.util.ApiUtil;
@@ -33,20 +31,21 @@ public class RegulationService {
 		insert(apiUtil.callRegulationApi());
 	}
 
-	public Page<RegulationVO> getRegulations(Pageable pageable) {
+	public Page<Regulation> getRegulations(Pageable pageable) {
 		return regulationRepository.findAllByOrderByCountryNm(pageable);
 	}
 	
 	public void insert(RegulationResponseDto regulationResponseDto) {
-		for (Regulation regulation : regulationResponseDto.getData()) {
+		for (RegulationDto regulationDto : regulationResponseDto.getData()) {
 			try {
-				RegulationVO regulationVO = regulationRepository.findById(Long.valueOf(regulation.getId())).orElse(null);
+				Regulation regulation = regulationRepository.findById(Long.valueOf(
+					regulationDto.getId())).orElse(null);
 
-				if (regulationVO == null) {
-					regulationRepository.save(RegulationVO.of(regulation));
+				if (regulation == null) {
+					regulationRepository.save(Regulation.of(regulationDto));
 				} else {
-					updateRegulationVO(regulation, regulationVO);
-					regulationRepository.save(regulationVO);
+					updateRegulationVO(regulationDto, regulation);
+					regulationRepository.save(regulation);
 				}
 			} catch (Exception e) {
 				log.error("[RegulationService.insert] ERROR {}", e.getMessage());
@@ -55,18 +54,18 @@ public class RegulationService {
 
 	}
 
-	private void updateRegulationVO(Regulation regulation, RegulationVO regulationVO) {
-		regulationVO.setCountryEngNm(regulation.getCountryEngNm());
-		regulationVO.setCountryNm(regulation.getCountryNm());
-		regulationVO.setCountryIsoAlp2(regulation.getCountryIsoAlp2());
-		regulationVO.setHaveYn(regulation.getHaveYn());
-		regulationVO.setGnrlPsptVisaYn(regulation.getGnrlPsptVisaYn());
-		regulationVO.setGnrlPsptVisaCn(regulation.getGnrlPsptVisaCn());
-		regulationVO.setOfclpsptVisaYn(regulation.getOfclpsptVisaYn());
-		regulationVO.setOfclpsptVisaCn(regulation.getOfclpsptVisaCn());
-		regulationVO.setDplmtPsptVisaYn(regulation.getDplmtPsptVisaYn());
-		regulationVO.setDplmtPsptVisaCn(regulation.getDplmtPsptVisaCn());
-		regulationVO.setNvisaEntryEvdcCn(regulation.getNvisaEntryEvdcCn());
-		regulationVO.setRemark(regulation.getRemark());
+	private void updateRegulationVO(RegulationDto regulationDto, Regulation regulation) {
+		regulation.setCountryEngNm(regulationDto.getCountryEngNm());
+		regulation.setCountryNm(regulationDto.getCountryNm());
+		regulation.setCountryIsoAlp2(regulationDto.getCountryIsoAlp2());
+		regulation.setHaveYn(regulationDto.getHaveYn());
+		regulation.setGnrlPsptVisaYn(regulationDto.getGnrlPsptVisaYn());
+		regulation.setGnrlPsptVisaCn(regulationDto.getGnrlPsptVisaCn());
+		regulation.setOfclpsptVisaYn(regulationDto.getOfclpsptVisaYn());
+		regulation.setOfclpsptVisaCn(regulationDto.getOfclpsptVisaCn());
+		regulation.setDplmtPsptVisaYn(regulationDto.getDplmtPsptVisaYn());
+		regulation.setDplmtPsptVisaCn(regulationDto.getDplmtPsptVisaCn());
+		regulation.setNvisaEntryEvdcCn(regulationDto.getNvisaEntryEvdcCn());
+		regulation.setRemark(regulationDto.getRemark());
 	}
 }

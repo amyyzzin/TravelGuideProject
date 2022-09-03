@@ -61,7 +61,9 @@
                 <h4 class="modal-title" id="myModalLabel">Modal 제목</h4>
             </div>
             <div class="modal-body">
-                <span id="modal-code"></span>
+                <span id="country-nm"></span>
+                <br>
+                <span id="country-eng-nm"></span>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
@@ -185,8 +187,17 @@
 
         function showModal(code) {
             // ajax 호출해서 code 기반 페이지 정보 가져와서 modal에 설정해주고
-            $('#modal-code').html(code);
-            $('#myModal').modal('show');
+            $.ajax({
+                url: "/modal?code=" + code,
+                type: 'GET',
+                dataType: 'json', // added data type
+                success: function(res) {
+                    $('#country-nm').html(res.countryNm);
+                    $('#country-eng-nm').html(res.countryEngNm);
+
+                    $('#myModal').modal('show');
+                }
+            });
         }
 
         function createCountry(coords, country) {

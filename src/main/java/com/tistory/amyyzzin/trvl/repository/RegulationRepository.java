@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tistory.amyyzzin.trvl.domain.RegulationVO;
+import com.tistory.amyyzzin.trvl.domain.Regulation;
 
 @Repository
 @Transactional(readOnly = true)
-public interface RegulationRepository extends JpaRepository<RegulationVO, Long> {
+public interface RegulationRepository extends JpaRepository<Regulation, Long> {
 
-	Page<RegulationVO> findAllByOrderByCountryNm(Pageable pageable);
+	Page<Regulation> findAllByOrderByCountryNm(Pageable pageable);
 }

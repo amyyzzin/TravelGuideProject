@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class Regulation {
+public class RegulationDto {
 
 	private String id;
 

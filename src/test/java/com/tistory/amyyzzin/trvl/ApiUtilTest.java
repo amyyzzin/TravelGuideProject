@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.tistory.amyyzzin.trvl.dto.RegulationResponseDto;
+import com.tistory.amyyzzin.trvl.dto.StandardCodeDto;
+import com.tistory.amyyzzin.trvl.dto.StandardCodeResponseDto;
 import com.tistory.amyyzzin.trvl.util.ApiUtil;
 
 @SpringBootTest
@@ -24,5 +26,14 @@ public class ApiUtilTest {
 
 		System.out.println(regulationResponseDto);
 		assertThat(regulationResponseDto != null);
+	}
+
+	@Test
+	public void testStandardCodeApi() throws Exception {
+		StandardCodeResponseDto standardCodeDto = apiUtil.callStandardCodeApi();
+
+		System.out.println(standardCodeDto);
+		assertThat(standardCodeDto != null);
+
 	}
 }

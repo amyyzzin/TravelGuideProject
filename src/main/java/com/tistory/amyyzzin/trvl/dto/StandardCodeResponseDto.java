@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class RegulationResponseDto {
+public class StandardCodeResponseDto {
 
 	private int currentCount;
 
@@ -19,5 +19,5 @@ public class RegulationResponseDto {
 
 	private String totalCount;
 
-	private List<RegulationDto> data;
+	private List<StandardCodeDto> data;
 }

@@ -1,11 +1,9 @@
 package com.tistory.amyyzzin.trvl.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.tistory.amyyzzin.trvl.dto.Regulation;
+import com.tistory.amyyzzin.trvl.dto.RegulationDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegulationVO {
+public class Regulation {
 
 	@Id
 	private Long id;
@@ -58,22 +56,22 @@ public class RegulationVO {
 	// 비고
 	private String remark;
 
-	public static RegulationVO of(Regulation regulation) {
+	public static Regulation of(RegulationDto regulationDto) {
 
-		return RegulationVO.builder()
-			.id(Long.valueOf(regulation.getId()))
-			.countryEngNm(regulation.getCountryEngNm())
-			.countryNm(regulation.getCountryNm())
-			.countryIsoAlp2(regulation.getCountryIsoAlp2())
-			.haveYn(regulation.getHaveYn())
-			.gnrlPsptVisaYn(regulation.getGnrlPsptVisaYn())
-			.gnrlPsptVisaCn(regulation.getGnrlPsptVisaCn())
-			.ofclpsptVisaYn(regulation.getOfclpsptVisaYn())
-			.ofclpsptVisaCn(regulation.getOfclpsptVisaCn())
-			.dplmtPsptVisaYn(regulation.getDplmtPsptVisaYn())
-			.dplmtPsptVisaCn(regulation.getDplmtPsptVisaCn())
-			.nvisaEntryEvdcCn(regulation.getNvisaEntryEvdcCn())
-			.remark(regulation.getRemark())
+		return Regulation.builder()
+			.id(Long.valueOf(regulationDto.getId()))
+			.countryEngNm(regulationDto.getCountryEngNm())
+			.countryNm(regulationDto.getCountryNm())
+			.countryIsoAlp2(regulationDto.getCountryIsoAlp2())
+			.haveYn(regulationDto.getHaveYn())
+			.gnrlPsptVisaYn(regulationDto.getGnrlPsptVisaYn())
+			.gnrlPsptVisaCn(regulationDto.getGnrlPsptVisaCn())
+			.ofclpsptVisaYn(regulationDto.getOfclpsptVisaYn())
+			.ofclpsptVisaCn(regulationDto.getOfclpsptVisaCn())
+			.dplmtPsptVisaYn(regulationDto.getDplmtPsptVisaYn())
+			.dplmtPsptVisaCn(regulationDto.getDplmtPsptVisaCn())
+			.nvisaEntryEvdcCn(regulationDto.getNvisaEntryEvdcCn())
+			.remark(regulationDto.getRemark())
 			.build();
 	}
 }
