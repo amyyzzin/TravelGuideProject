@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.tistory.amyyzzin.trvl.dto.CountryFlagResponseDto;
 import com.tistory.amyyzzin.trvl.dto.RegulationResponseDto;
 import com.tistory.amyyzzin.trvl.dto.StandardCodeDto;
 import com.tistory.amyyzzin.trvl.dto.StandardCodeResponseDto;
@@ -34,6 +35,14 @@ public class ApiUtilTest {
 
 		System.out.println(standardCodeDto);
 		assertThat(standardCodeDto != null);
+
+	}
+	@Test
+	public void testCountryFlagApi() throws Exception {
+		CountryFlagResponseDto countryFlagResponseDto = apiUtil.callCountryFlagApi();
+
+		System.out.println(countryFlagResponseDto);
+		assertThat(countryFlagResponseDto != null);
 
 	}
 }
