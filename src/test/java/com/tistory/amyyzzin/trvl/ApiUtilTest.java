@@ -4,17 +4,17 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.io.IOException;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.tistory.amyyzzin.trvl.dto.CountryFlagResponseDto;
 import com.tistory.amyyzzin.trvl.dto.RegulationResponseDto;
-import com.tistory.amyyzzin.trvl.dto.StandardCodeDto;
 import com.tistory.amyyzzin.trvl.dto.StandardCodeResponseDto;
 import com.tistory.amyyzzin.trvl.util.ApiUtil;
 
+@ActiveProfiles("security")
 @SpringBootTest
 public class ApiUtilTest {
 

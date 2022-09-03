@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.tistory.amyyzzin.trvl.dto.CountryFlagDto;
 import com.tistory.amyyzzin.trvl.dto.CountryFlagResponseDto;
 import com.tistory.amyyzzin.trvl.dto.RegulationResponseDto;
 import com.tistory.amyyzzin.trvl.dto.StandardCodeResponseDto;
@@ -121,6 +120,7 @@ public class ApiUtil {
 		IOException {
 		StringBuilder urlBuilder = new StringBuilder(
 			"http://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2"); /*URL*/
+
 		urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
 			+ "=" + countryFlagKey); /*Service Key*/
 		urlBuilder.append("&" + URLEncoder.encode("returnType", "UTF-8") + "="

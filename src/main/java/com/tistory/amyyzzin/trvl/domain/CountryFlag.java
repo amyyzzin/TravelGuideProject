@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import com.tistory.amyyzzin.trvl.dto.CountryFlagDto;
-import com.tistory.amyyzzin.trvl.dto.StandardCodeDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,4 +46,5 @@ public class CountryFlag {
 			.originFileNm(countryFlagDto.getOriginFileNm())
 			.build();
 	}
+
 }

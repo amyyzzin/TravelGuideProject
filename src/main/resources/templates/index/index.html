@@ -61,9 +61,10 @@
                 <h4 class="modal-title" id="myModalLabel">Modal 제목</h4>
             </div>
             <div class="modal-body">
-                <span id="country-nm"></span>
+                <img id="country-flag" style="width: 30%; height: 30%">
+                <span id="country-nm"></span>(<span id="country-eng-nm"></span>)
                 <br>
-                <span id="country-eng-nm"></span>
+                <span>간단한 설명</span>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
@@ -194,6 +195,7 @@
                 success: function(res) {
                     $('#country-nm').html(res.countryNm);
                     $('#country-eng-nm').html(res.countryEngNm);
+                    $('#country-flag').attr('src', res.downloadUrl)
 
                     $('#myModal').modal('show');
                 }

@@ -7,13 +7,9 @@ import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import com.tistory.amyyzzin.trvl.domain.CountryFlag;
-import com.tistory.amyyzzin.trvl.domain.StandardCode;
 import com.tistory.amyyzzin.trvl.dto.CountryFlagDto;
 import com.tistory.amyyzzin.trvl.dto.CountryFlagResponseDto;
-import com.tistory.amyyzzin.trvl.dto.StandardCodeDto;
-import com.tistory.amyyzzin.trvl.dto.StandardCodeResponseDto;
 import com.tistory.amyyzzin.trvl.repository.CountryFlagRepository;
-import com.tistory.amyyzzin.trvl.repository.StandardCodeRepository;
 import com.tistory.amyyzzin.trvl.util.ApiUtil;
 
 import lombok.RequiredArgsConstructor;

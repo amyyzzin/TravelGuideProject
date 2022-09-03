@@ -11,4 +11,5 @@ public class GoogleModalDto {
 
 	private String countryEngNm;
 
+	private String downloadUrl;
 }
