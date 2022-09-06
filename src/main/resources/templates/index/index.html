@@ -65,6 +65,32 @@
                 <span id="country-nm"></span>(<span id="country-eng-nm"></span>)
                 <br>
                 <span>간단한 설명</span>
+                <br>
+                기후 : <span id="countryInfo-climateCn"></span>
+                <br>
+                언어 내용 : <span id="countryInfo-langCn"></span>
+                <br>
+                언어 명 : <span id="countryInfo-langNm"></span>
+                <br>
+                주요 도시 내용 : <span id="countryInfo-mainCityCn"></span>
+                <br>
+                주요 민족 내용 : <span id="countryInfo-mainEthnicCn"></span>
+                <br>
+                주요 언론 내용 : <span id="countryInfo-mscmctnCn"></span>
+                <br>
+                종교 내용 : <span id="countryInfo-religionCn"></span>
+                <br>
+                국가 위치 : <span id="countryInfo-countryIc"></span>
+                <br>
+                국가 수도명 : <span id="countryInfo-countryCptNm"></span>
+                <br>
+                국가 면적 : <span id="countryInfo-countryArea"></span>
+                <br>
+                국가 면적 출처 : <span id="countryInfo-countryAreaSrc"></span>
+                <br>
+                국가 면적 설명 : <span id="countryInfo-countryAreaComment"></span>
+                <br>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
@@ -195,7 +221,21 @@
                 success: function(res) {
                     $('#country-nm').html(res.countryNm);
                     $('#country-eng-nm').html(res.countryEngNm);
-                    $('#country-flag').attr('src', res.downloadUrl)
+
+                    $('#country-flag').attr('src', res.downloadUrl);
+
+                    $('#countryInfo-climateCn').html(res.climateCn);
+                    $('#countryInfo-langCn').html(res.langCn);
+                    $('#countryInfo-langNm').html(res.langNm);
+                    $('#countryInfo-mainCityCn').html(res.mainCityCn);
+                    $('#countryInfo-mainEthnicCn').html(res.mainEthnicCn);
+                    $('#countryInfo-mscmctnCn').html(res.mscmctnCn);
+                    $('#countryInfo-religionCn').html(res.religionCn);
+                    $('#countryInfo-countryIc').html(res.countryIc);
+                    $('#countryInfo-countryCptNm').html(res.countryCptNm);
+                    $('#countryInfo-countryArea').html(res.countryArea);
+                    $('#countryInfo-countryAreaSrc').html(res.countryAreaSrc);
+                    $('#countryInfo-countryAreaComment').html(res.countryAreaComment);
 
                     $('#myModal').modal('show');
                 }
