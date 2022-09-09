@@ -19,17 +19,6 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
 
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: popoco1854@gmail.com
-    password: gjrukipyfccfhker
-    properties:
-      mail:
-        smtp:
-          starttls:
-            enable: true
-
 logging:
   level:
     root: info
@@ -40,3 +29,7 @@ mybatis:
     map-underscore-to-camel-case: true
     log.impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+open:
+  api:
+    url: "http://apis.data.go.kr"
+    accident-list: "/1262000/AccidentService/getAccidentList"

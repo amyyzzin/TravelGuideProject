@@ -4,6 +4,7 @@ import com.tistory.amyyzzin.trvl.dto.CountryBasicInfoDto;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,6 +34,7 @@ public class CountryBasicInfo {
     private String continent;
 
     // 기본정보
+    @Lob
     private String basic;
 
 

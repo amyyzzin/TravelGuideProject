@@ -2,9 +2,11 @@ package com.tistory.amyyzzin.trvl.dto;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.Map;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class CountryBasicInfoDto {
 
     @SerializedName("countryName")
@@ -19,7 +21,6 @@ public class CountryBasicInfoDto {
     @SerializedName("basic")
     private String basic;
 
-    private Map<String, Object> data;
     private String id;
 
 }

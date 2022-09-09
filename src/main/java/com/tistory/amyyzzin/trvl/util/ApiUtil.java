@@ -3,11 +3,15 @@ package com.tistory.amyyzzin.trvl.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.tistory.amyyzzin.trvl.domain.AccidentList;
+import com.tistory.amyyzzin.trvl.dto.AccidentListDto;
+import com.tistory.amyyzzin.trvl.dto.AccidentListResponseDto;
 import com.tistory.amyyzzin.trvl.dto.ContactPointResponseDto;
+import com.tistory.amyyzzin.trvl.dto.CountryBasicInfoDto;
+import com.tistory.amyyzzin.trvl.dto.CountryBasicInfoResponseDto;
 import com.tistory.amyyzzin.trvl.dto.CountryFlagResponseDto;
 import com.tistory.amyyzzin.trvl.dto.CountryInfoResponseDto;
 import com.tistory.amyyzzin.trvl.dto.CovidSafetyResponseDto;
-import com.tistory.amyyzzin.trvl.dto.EmbassyHomepageDto;
 import com.tistory.amyyzzin.trvl.dto.EmbassyHomepageResponseDto;
 import com.tistory.amyyzzin.trvl.dto.EmbassyInfoResponseDto;
 import com.tistory.amyyzzin.trvl.dto.NoticeListResponseDto;
@@ -17,36 +21,49 @@ import com.tistory.amyyzzin.trvl.dto.SafetyListResponseDto;
 import com.tistory.amyyzzin.trvl.dto.StandardCodeResponseDto;
 import com.tistory.amyyzzin.trvl.dto.TravelAlarmResponseDto;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class ApiUtil {
 
-    @Value("${open.api.regulation.key}")
-    String regulationKey;
+    private final RestTemplate restTemplate;
 
-    @Value("${open.api.standard.code.key}")
-    String standardCodeKey;
+    @Value("${open.api.key}")
+    String openApiKey;
 
-    @Value("${open.api.country.flag.key}")
-    String countryFlagKey;
+    @Value("${open.api.url}")
+    String openApiUrl;
 
-    @Value("${open.api.country.Info.key}")
-    String countryInfoKey;
-
+    @Value("${open.api.accident-list}")
+    String accidentList;
 
     //국가·지역별 입국허가요건
     public RegulationResponseDto callRegulationApi() throws IOException {
         StringBuilder urlBuilder = new StringBuilder(
             "http://apis.data.go.kr/1262000/EntranceVisaService2/getEntranceVisaList2"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "="
-            + regulationKey); /*Service Key*/
+            + openApiKey); /*Service Key*/
         urlBuilder.append(
             "&" + URLEncoder.encode("returnType", "UTF-8") + "="
                 + URLEncoder.encode("JSON", "UTF-8")); /*XML 또는 JSON*/
@@ -92,7 +109,7 @@ public class ApiUtil {
         StringBuilder urlBuilder = new StringBuilder(
             "http://apis.data.go.kr/1262000/CountryCodeService2/getCountryCodeList2"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "="
-            + standardCodeKey); /*Service Key*/
+            + openApiKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("returnType", "UTF-8") + "="
             + URLEncoder.encode("JSON", "UTF-8")); /*XML 또는 JSON*/
         urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "="
@@ -136,7 +153,7 @@ public class ApiUtil {
             "http://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2"); /*URL*/
 
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
-            + "=" + countryFlagKey); /*Service Key*/
+            + "=" + openApiKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("returnType", "UTF-8") + "="
             + URLEncoder.encode("JSON", "UTF-8")); /*XML 또는 JSON*/
         urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "="
@@ -181,7 +198,7 @@ public class ApiUtil {
             "http://apis.data.go.kr/1262000/CountryGnrlInfoService2/getCountryGnrlInfoList2"); /*URL*/
 
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
-            + "=" + countryInfoKey); /*Service Key*/
+            + "=" + openApiKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("returnType", "UTF-8") + "="
             + URLEncoder.encode("JSON", "UTF-8")); /*XML 또는 JSON*/
         urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "="
@@ -218,48 +235,51 @@ public class ApiUtil {
         return countryInfoResponseDto;
     }
 
-//    public CountryBasicInfoResponseDto callCountryBasicInfoApi() throws
-//        IOException {
-//        StringBuilder urlBuilder = new StringBuilder(
-//            "http://apis.data.go.kr/1262000/CountryBasicService"); /*URL*/
-//
-//        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
-//            + "=" + countryInfoKey); /*Service Key*/
-//        urlBuilder.append("&" + URLEncoder.encode("returnType", "UTF-8") + "="
-//            + URLEncoder.encode("JSON", "UTF-8")); /*XML 또는 JSON*/
-//        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "="
-//            + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
-//        urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "="
-//            + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
-//
-//        OkHttpClient client = new OkHttpClient();
-//        Request.Builder builder = new Request.Builder()
-//            .url(urlBuilder.toString())
-//            .get();
-//        builder.addHeader("Content-type", "application/json");
-//
-//        Request request = builder.build();
-//        Response response = client.newCall(request).execute();
-//        CountryBasicInfoResponseDto countryBasicInfoResponseDto = null;
-//
-//        // API호출이 성공적으로 이루어 졌다면
-//        if (response.isSuccessful()) {
-//            ResponseBody body = response.body();
-//
-//            //문자열 형태로 결과를 저장
-//            String responseString = body.string();
-//            System.out.println(responseString);
-//
-//            //결과를 Json 형태로 변환
-//            JsonObject jsonObject = JsonParser.parseString(responseString)
-//                .getAsJsonObject();
-//
-//            //Gson 라이브러리를 통해 Json 형태로 변환한 API 결과를 PagingWifiInfo 에 저장
-//            Gson gson = new Gson();
-//            countryBasicInfoResponseDto = gson.fromJson(jsonObject, CountryBasicInfoResponseDto.class);
-//        }
-//        return countryBasicInfoResponseDto;
-//    }
+    public CountryBasicInfoResponseDto callCountryBasicInfoApi() throws
+        IOException {
+        URI requestUrl = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr")
+            .path("/1262000/CountryBasicService/getCountryBasicList")
+            .queryParams(ApiUtil.createQueryParams())
+            .build(true)
+            .toUri();
+        ResponseEntity<Map> responseEntity = restTemplate.exchange(
+            new RequestEntity(HttpMethod.GET, requestUrl), Map.class
+        );
+
+        if (!responseEntity.getStatusCode()
+            .is2xxSuccessful() || responseEntity.getBody() == null) {
+            log.error("Failed to get country basic infos. statusCode:" + responseEntity.getStatusCode());
+
+            return new CountryBasicInfoResponseDto();
+        }
+
+        Map resultMap = responseEntity.getBody();
+        Map<String, Object> responseMap = (Map<String, Object>) resultMap.get("response");
+        Map<String, Object> headerMap = (Map<String, Object>) responseMap.get("header");
+        Map<String, Object> bodyMap = (Map<String, Object>) responseMap.get("body");
+        Map<String, Object> itemsMap = (Map<String, Object>) bodyMap.get("items");
+        List<Map<String, Object>> itemList = (List<Map<String, Object>>) itemsMap.get("item");
+        List<CountryBasicInfoDto> countryBasicInfoDtos = new ArrayList<>();
+
+        for (Map<String, Object> item : itemList) {
+            CountryBasicInfoDto countryBasicInfoDto = CountryBasicInfoDto.builder()
+                .id((String) item.get("id"))
+                .basic((String) item.get("basic"))
+                .countryNm((String) item.get("countryName"))
+                .countryEngNm((String) item.get("countryEnName"))
+                .continent((String) item.get("continent"))
+                .build();
+
+            countryBasicInfoDtos.add(countryBasicInfoDto);
+        }
+
+        return CountryBasicInfoResponseDto.builder()
+            .resultCode((String) headerMap.get("resultCode"))
+            .resultMsg((String) headerMap.get("resultMsg"))
+            .totalCount((String) bodyMap.get("totalCount"))
+            .data(countryBasicInfoDtos)
+            .build();
+    }
 
     //외교부 공지사항
     public NoticeListResponseDto callNoticeListApi() throws
@@ -268,7 +288,7 @@ public class ApiUtil {
             "http://apis.data.go.kr/1262000/NoticeService2/getNoticeList2"); /*URL*/
 
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
-            + "=" + countryFlagKey); /*Service Key*/
+            + "=" + openApiKey); /*Service Key*/
         urlBuilder.append(
             "&" + URLEncoder.encode("returnType", "UTF-8") + "=" + URLEncoder.encode("JSON",
                 "UTF-8")); /*XML 또는 JSON*/
@@ -315,7 +335,7 @@ public class ApiUtil {
         StringBuilder urlBuilder = new StringBuilder(
             "http://apis.data.go.kr/1262000/CountrySafetyService3/getCountrySafetyList3"); /*URL*/
         urlBuilder.append(
-            "?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + countryInfoKey); /*Service Key*/
+            "?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + openApiKey); /*Service Key*/
         urlBuilder.append(
             "&" + URLEncoder.encode("returnType", "UTF-8") + "=" + URLEncoder.encode("JSON",
                 "UTF-8")); /*XML 또는 JSON*/
@@ -361,7 +381,7 @@ public class ApiUtil {
     public CovidSafetyResponseDto callCovidSafetyApi() throws
         IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1262000/CountryCovid19SafetyServiceNew/getCountrySafetyNewsListNew"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + countryInfoKey); /*Service Key*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + openApiKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("returnType","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8")); /*XML 또는 JSON*/
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
@@ -401,7 +421,7 @@ public class ApiUtil {
     public OverseasArrivalResponseDto callOverseasArrivalApi() throws
         IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1262000/CountryOverseasArrivalsService/getCountryOverseasArrivalsList"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + countryInfoKey); /*Service Key*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + openApiKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("returnType","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8")); /*XML 또는 JSON*/
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
@@ -441,7 +461,7 @@ public class ApiUtil {
     public EmbassyInfoResponseDto callEmbassyInfoApi() throws
         IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1262000/EmbassyService2/getEmbassyList2"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + countryInfoKey); /*Service Key*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + openApiKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
         urlBuilder.append("&" + URLEncoder.encode("returnType","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8")); /*XML 또는 JSON*/
@@ -481,7 +501,7 @@ public class ApiUtil {
     public EmbassyHomepageResponseDto callEmbassyHomepageApi() throws
         IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1262000/EmbassyHomepageService2/getEmbassyHomepageList2"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + countryInfoKey); /*Service Key*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + openApiKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("returnType","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8")); /*XML 또는 JSON*/
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
@@ -520,7 +540,7 @@ public class ApiUtil {
     public ContactPointResponseDto callContactPointApi() throws
         IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1262000/LocalContactService2/getLocalContactList2"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + countryInfoKey); /*Service Key*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + openApiKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("returnType","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8")); /*XML 또는 JSON*/
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
 //        urlBuilder.append("&" + URLEncoder.encode("cond[country_nm::EQ]","UTF-8") + "=" + URLEncoder.encode("가나", "UTF-8")); /*한글 국가명*/
@@ -560,7 +580,7 @@ public class ApiUtil {
     public TravelAlarmResponseDto callTravelAlarmApi() throws
         IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + countryInfoKey); /*Service Key*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + openApiKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("returnType","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8")); /*XML 또는 JSON*/
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
 //        urlBuilder.append("&" + URLEncoder.encode("cond[country_nm::EQ]","UTF-8") + "=" + URLEncoder.encode("가나", "UTF-8")); /*한글 국가명*/
@@ -596,4 +616,65 @@ public class ApiUtil {
 
         return travelAlarmResponseDto;
     }
+
+    public AccidentListResponseDto callAccidentListApi() throws
+        IOException {
+        URI requestUrl = UriComponentsBuilder.fromHttpUrl(openApiUrl)
+            .path(accidentList)
+            .queryParams(ApiUtil.createQueryParams())
+            .build(true)
+            .toUri();
+        ResponseEntity<Map> responseEntity = restTemplate.exchange(
+            new RequestEntity(HttpMethod.GET, requestUrl), Map.class
+        );
+
+        if (!responseEntity.getStatusCode()
+            .is2xxSuccessful() || responseEntity.getBody() == null) {
+            log.error("Failed to get accident list. statusCode:" + responseEntity.getStatusCode());
+
+            return new AccidentListResponseDto();
+        }
+
+        Map resultMap = responseEntity.getBody();
+        Map<String, Object> responseMap = (Map<String, Object>) resultMap.get("response");
+        Map<String, Object> headerMap = (Map<String, Object>) responseMap.get("header");
+        Map<String, Object> bodyMap = (Map<String, Object>) responseMap.get("body");
+        Map<String, Object> itemsMap = (Map<String, Object>) bodyMap.get("items");
+        List<Map<String, Object>> itemList = (List<Map<String, Object>>) itemsMap.get("item");
+        List<AccidentListDto> accidentListDtos = new ArrayList<>();
+
+        for (Map<String, Object> item : itemList) {
+            AccidentListDto accidentListDto = AccidentListDto.builder()
+                .id((String) item.get("id"))
+                .continent((String) item.get("continent"))
+                .ename((String) item.get("ename"))
+                .name((String) item.get("name"))
+                .news((String) item.get("news"))
+                .build();
+
+            accidentListDtos.add(accidentListDto);
+        }
+
+        return AccidentListResponseDto.builder()
+            .resultCode((String) headerMap.get("resultCode"))
+            .resultMsg((String) headerMap.get("resultMsg"))
+            .totalCount((String) bodyMap.get("totalCount"))
+            .data(accidentListDtos)
+            .build();
+    }
+
+    static MultiValueMap<String, String> createQueryParams() {
+        return createQueryParams(1, 1000);
+    }
+
+    static MultiValueMap<String, String> createQueryParams(int page, int size) {
+        MultiValueMap<String, String> queryParameterMap = new LinkedMultiValueMap<>();
+        queryParameterMap.set("_type", "json");
+        queryParameterMap.set("pageNo", String.valueOf(page));
+        queryParameterMap.set("numOfRows", String.valueOf(size));
+        return queryParameterMap;
+    }
+
+
+
 }

@@ -30,7 +30,7 @@ public class CountryInfoService {
     }
 
     public CountryInfo findByIsoAlp2(String isoAlp2) {
-        return countryInfoRepository.findByIsoAlp2(isoAlp2).orElse(null);
+        return countryInfoRepository.findFirstByIsoAlp2(isoAlp2).orElse(null);
     }
 
     public void insert(CountryInfoResponseDto countryInfoResponseDto) {
