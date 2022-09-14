@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class CountryFlagDto {
 
-
 	@SerializedName("country_nm")
 	private String countryNm;
 

@@ -5,6 +5,7 @@ import javax.persistence.Id;
 
 import com.tistory.amyyzzin.trvl.dto.RegulationDto;
 
+import javax.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,24 +37,28 @@ public class Regulation {
 	private String gnrlPsptVisaYn;
 
 	// 일반여권 입국허가요건 내용
+	@Lob
 	private String gnrlPsptVisaCn;
 
 	// 관용여권 입국허가요건 여부
 	private String ofclpsptVisaYn;
 
-	// 관용여권 입국허가요건 여부
+	// 관용여권 입국허가요건 내용
+	@Lob
 	private String ofclpsptVisaCn;
 
 	// 외교관여권 입국허가요건 여부
 	private String dplmtPsptVisaYn;
 
 	// 외교관여권 입국허가요건 내용
+	@Lob
 	private String dplmtPsptVisaCn;
 
 	// 무비자 입국근거내용
 	private String nvisaEntryEvdcCn;
 
 	// 비고
+	@Lob
 	private String remark;
 
 	public static Regulation of(RegulationDto regulationDto) {

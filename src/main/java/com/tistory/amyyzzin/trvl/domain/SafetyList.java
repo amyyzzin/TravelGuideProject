@@ -44,9 +44,11 @@ public class SafetyList {
 	private String ctgyNm;
 
 	// 파일다운로드url
+	@Lob
 	private String fileDownloadUrl;
 
 	// 파일경로
+	@Lob
 	private String filePath;
 
 	// 제목

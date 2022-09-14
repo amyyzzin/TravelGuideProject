@@ -22,29 +22,31 @@ public class OverseasArrival {
 	@GeneratedValue
 	private Long id;
 
-	// 대륙코드
+	// 영문 국가명
 	private String countryEngNm;
 
-	// 영문 대륙명
+	// ISO 2자리 코드
 	private String countryIsoAlp2;
 
-	// 한글 대륙명
+	// 한글 국가명
 	private String countryNm;
 
+	// HTML 원본 내용
 	@Lob
 	private String htmlOriginCn;
 
-	// 영문 국가명
+	// 조치현황 ID
 	private String noticeId;
 
-	// ISO 2자리코드
+	// 제목
+	@Lob
 	private String title;
 
-	// 한글 국가명
+	// 글 내용
 	@Lob
 	private String txtOriginCn;
 
-	// 공지사항구분
+	// 작성일
 	private String wrtDt;
 
 	public static OverseasArrival of(OverseasArrivalDto overseasArrivalDto) {

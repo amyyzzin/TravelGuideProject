@@ -28,6 +28,7 @@ public class NoticeList {
 
 	private String fileDownloadUrl;
 
+	@Lob
 	private String title;
 
 	@Lob

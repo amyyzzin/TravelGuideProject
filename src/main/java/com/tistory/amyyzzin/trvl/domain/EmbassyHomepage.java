@@ -5,6 +5,7 @@ import com.tistory.amyyzzin.trvl.dto.EmbassyInfoDto;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,28 +22,29 @@ public class EmbassyHomepage {
     @GeneratedValue
     private Long id;
 
-    // 국가영문명
+    // 재외공관코드
     private String embassyCd;
 
-    // 국가명
+    // 재외공관한글명
     private String embassyKorNm;
 
-    // download_url
+    //
     private String embassyOriginalNm;
 
-    // ISO 2자리코드
+    // 홈페이지 url
+    @Lob
     private String homepageUrl;
 
-    // originFileNm
+    //
     private String langCd;
 
-    // 국가영문명
+    //
     private String langCdNm;
 
-    // 국가명
+    //
     private String siteTyCd;
 
-    // download_url
+    //
     private String siteTyCdNm;
 
     public static EmbassyHomepage of(EmbassyHomepageDto embassyHomepageDto) {

@@ -6,6 +6,7 @@ import javax.persistence.Id;
 
 import com.tistory.amyyzzin.trvl.dto.CountryFlagDto;
 
+import javax.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class CountryFlag {
 	private String countryNm;
 
 	// download_url
+	@Lob
 	private String downloadUrl;
 
 	// ISO 2자리코드

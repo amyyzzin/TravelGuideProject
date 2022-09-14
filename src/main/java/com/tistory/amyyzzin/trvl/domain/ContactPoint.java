@@ -22,26 +22,26 @@ public class ContactPoint {
     @GeneratedValue
     private Long id;
 
-    // 국가영문명
+    // 현지연락처정보
     @Lob
     private String contactRemark;
 
-    // 국가명
+    // 대륙코드
     private String continentCd;
 
-    // download_url
+    // 영문 대륙명
     private String continentEngNm;
 
-    // ISO 2자리코드
+    // 한글 대륙명
     private String continentNm;
 
-    // 국가영문명
+    // 영문 국가명
     private String countryEngNm;
 
-    // 국가명
+    // ISO 2자리코드
     private String countryIsoAlp2;
 
-    // download_url
+    // 한글 대륙명
     private String countryNm;
 
 

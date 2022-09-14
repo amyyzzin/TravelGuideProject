@@ -5,6 +5,7 @@ import com.tistory.amyyzzin.trvl.dto.EmbassyInfoDto;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,49 +22,50 @@ public class EmbassyInfo {
     @GeneratedValue
     private Long id;
 
-    // 국가영문명
+    // 영사관 번호
     private String centerTelNo;
 
     // 국가명
     private String countryNm;
 
-    // download_url
+    // 영문 국가명
     private String countryEngNm;
 
     // ISO 2자리코드
     private String countryIsoAlp2;
 
-    // originFileNm
+    // 재외공관한글명
     private String embassyKorNm;
 
-    // 국가영문명
+    // 재외공관위도
     private String embassyLat;
 
-    // 국가명
+    // 재외공관경도
     private String embassyLng;
 
-    // download_url
+    // 재외공관 관리유형코드명
     private String embassyManageTyCd;
 
     // ISO 2자리코드
     private String embassyManageTyCdNm;
 
-    // originFileNm
+    // 재외공관유형코드
     private String embassyTyCd;
 
-    // 국가영문명
+    // 재외공관유형코드명
     private String embassyTyCdNm;
 
-    // 국가명
+    // 재외공관주소
+    @Lob
     private String emblgbdAddr;
 
-    // download_url
+    // 무료전화번호
     private String freeTelNo;
 
-    // ISO 2자리코드
+    // 대표전화번호
     private String telNo;
 
-    // originFileNm
+    // 긴급전화번호
     private String urgencyTelNo;
 
     public static EmbassyInfo of(EmbassyInfoDto embassyInfoDto) {

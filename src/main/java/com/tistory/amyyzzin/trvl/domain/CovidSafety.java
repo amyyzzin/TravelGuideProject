@@ -41,21 +41,25 @@ public class CovidSafety {
 	private String countryNm;
 
 	// 파일다운로드 url
+	@Lob
 	private String fileDownloadUrl;
 
 	// 파일경로
+	@Lob
 	private String filePath;
 
-	// 제목
+	// HTML원본 내용
 	@Lob
 	private String htmlOriginCn;
 
-	// 텍스트원본내용
+	// 안전공지 ID
 	private String sftyNoticeId;
 
-	// 작성일
+	// 제목
+	@Lob
 	private String title;
 
+	//원본내용
 	@Lob
 	private String txtOriginCn;
 

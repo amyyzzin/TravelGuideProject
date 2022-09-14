@@ -49,7 +49,7 @@ public class CountryInfo {
     @Lob
     private String mainEthnicCn;
 
-    //주요 언론 내용 XX
+    //주요 언론 내용
     @Lob
     private String mscmctnCn;
 
