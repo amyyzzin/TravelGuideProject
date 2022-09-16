@@ -340,7 +340,7 @@ public class ApiUtil {
             "&" + URLEncoder.encode("returnType", "UTF-8") + "=" + URLEncoder.encode("JSON",
                 "UTF-8")); /*XML 또는 JSON*/
         urlBuilder.append(
-            "&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("500",
+            "&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("100",
                 "UTF-8")); /*한 페이지 결과 수*/
 //        urlBuilder.append("&" + URLEncoder.encode("cond[country_nm::EQ]","UTF-8") + "=" + URLEncoder.encode("카자흐스탄", "UTF-8")); /*한글 국가명*/
 //        urlBuilder.append("&" + URLEncoder.encode("cond[country_iso_alp2::EQ]","UTF-8") + "=" + URLEncoder.encode("KZ", "UTF-8")); /*ISO 2자리코드*/

@@ -47,6 +47,7 @@ public class ApiUtilTest {
         RegulationResponseDto regulationResponseDto = apiUtil.callRegulationApi();
 
         System.out.println(regulationResponseDto);
+
         assertThat(regulationResponseDto.getData() != null
             && !regulationResponseDto.getData().isEmpty());
     }
@@ -56,8 +57,9 @@ public class ApiUtilTest {
         StandardCodeResponseDto standardCodeDto = apiUtil.callStandardCodeApi();
 
         System.out.println(standardCodeDto);
-        assertThat(standardCodeDto != null);
 
+        assertThat(standardCodeDto != null
+            && !standardCodeDto.getData().isEmpty());
     }
 
     @Test
@@ -65,16 +67,19 @@ public class ApiUtilTest {
         CountryFlagResponseDto countryFlagResponseDto = apiUtil.callCountryFlagApi();
 
         System.out.println(countryFlagResponseDto);
-        assertThat(countryFlagResponseDto != null);
 
+        assertThat(countryFlagResponseDto != null
+            && !countryFlagResponseDto.getData().isEmpty());
     }
+
     @Test
     public void testCountryInfoApi() throws Exception {
         CountryInfoResponseDto countryInfoResponseDto = apiUtil.callCountryInfoApi();
 
         System.out.println(countryInfoResponseDto);
-        assertThat(countryInfoResponseDto.getData() != null);
 
+        assertThat(countryInfoResponseDto.getData() != null
+            && !countryInfoResponseDto.getData().isEmpty());
     }
 
     @Test
@@ -114,8 +119,8 @@ public class ApiUtilTest {
 
         System.out.println(noticeListResponseDto);
 
-        assertThat(noticeListResponseDto != null);
-
+        assertThat(noticeListResponseDto != null
+            && !noticeListResponseDto.getData().isEmpty());
     }
 
     @Test
@@ -124,7 +129,8 @@ public class ApiUtilTest {
 
         System.out.println(safetyListResponseDto);
 
-        assertThat(safetyListResponseDto != null);
+        assertThat(safetyListResponseDto != null
+            && !safetyListResponseDto.getData().isEmpty());
     }
 
     @Test
@@ -133,15 +139,18 @@ public class ApiUtilTest {
 
         System.out.println(covidSafetyResponseDto);
 
-        assertThat(covidSafetyResponseDto != null);
+        assertThat(covidSafetyResponseDto != null
+            && !covidSafetyResponseDto.getData().isEmpty());
     }
+
     @Test
     public void testOverseasArrivalApi() throws Exception {
         OverseasArrivalResponseDto overseasArrivalResponseDto = apiUtil.callOverseasArrivalApi();
 
         System.out.println(overseasArrivalResponseDto);
 
-        assertThat(overseasArrivalResponseDto != null);
+        assertThat(overseasArrivalResponseDto != null
+            && !overseasArrivalResponseDto.getData().isEmpty());
     }
 
     @Test
@@ -150,7 +159,8 @@ public class ApiUtilTest {
 
         System.out.println(embassyInfoResponseDto);
 
-        assertThat(embassyInfoResponseDto != null);
+        assertThat(embassyInfoResponseDto != null
+            && !embassyInfoResponseDto.getData().isEmpty());
     }
 
     @Test
@@ -159,7 +169,8 @@ public class ApiUtilTest {
 
         System.out.println(embassyHomepageResponseDto);
 
-        assertThat(embassyHomepageResponseDto != null);
+        assertThat(embassyHomepageResponseDto != null
+            && !embassyHomepageResponseDto.getData().isEmpty());
     }
 
     @Test
@@ -168,7 +179,8 @@ public class ApiUtilTest {
 
         System.out.println(contactPointResponseDto);
 
-        assertThat(contactPointResponseDto != null);
+        assertThat(contactPointResponseDto != null
+            && !contactPointResponseDto.getData().isEmpty());
     }
 
     @Test
@@ -177,8 +189,10 @@ public class ApiUtilTest {
 
         System.out.println(travelAlarmResponseDto);
 
-        assertThat(travelAlarmResponseDto != null);
+        assertThat(travelAlarmResponseDto != null
+            && !travelAlarmResponseDto.getData().isEmpty());
     }
+
     @Test
     public void testAccidentListApi() throws Exception {
         URI requestUrl = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr")
