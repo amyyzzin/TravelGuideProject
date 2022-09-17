@@ -21,12 +21,24 @@ public class AccidentListService {
     private final AccidentListRepository accidentListRepository;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, InterruptedException {
         if (accidentListRepository.count() > 0) {
             return;
         }
 
-        insert(xmlApiUtil.callAccidentListApi());
+        /**
+         * 세번 시도
+         */
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert(xmlApiUtil.callAccidentListApi());
+                break;
+            } catch (Exception e) {
+                log.error("[AccidentListService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public void insert(AccidentListResponseDto responseDto) {

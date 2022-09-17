@@ -25,13 +25,22 @@ public class TravelAlarmService {
     String travelAlarmUrl;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, InterruptedException {
         if (travelAlarmRepository.count() > 0) {
             return;
         }
 
-        insert((TravelAlarmResponseDto) genericApiUtil.callJsonApi(travelAlarmUrl,
-            TravelAlarmResponseDto.class));
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((TravelAlarmResponseDto) genericApiUtil.callJsonApi(travelAlarmUrl,
+                    TravelAlarmResponseDto.class, "500"));
+                break;
+            } catch (Exception e) {
+                log.error("[TravelAlarmService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public void insert(TravelAlarmResponseDto travelAlarmResponseDto) {

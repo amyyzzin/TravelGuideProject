@@ -25,13 +25,22 @@ public class CountryInfoService {
     String countryInfoUrl;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, InterruptedException {
         if (countryInfoRepository.count() > 0) {
             return;
         }
 
-        insert((CountryInfoResponseDto) apiUtil.callJsonApi(countryInfoUrl,
-            CountryInfoResponseDto.class));
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((CountryInfoResponseDto) apiUtil.callJsonApi(countryInfoUrl,
+                    CountryInfoResponseDto.class, "500"));
+                break;
+            } catch (Exception e) {
+                log.error("[CountryInfoService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public CountryInfo findByIsoAlp2(String isoAlp2) {

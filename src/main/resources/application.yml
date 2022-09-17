@@ -41,7 +41,7 @@ open:
     countryFlag: "http://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2"
     countryInfo: "http://apis.data.go.kr/1262000/CountryGnrlInfoService2/getCountryGnrlInfoList2"
     notice: "http://apis.data.go.kr/1262000/NoticeService2/getNoticeList2"
-    safetyList: "http://apis.data.go.kr/1262000/CountryGnrlInfoService2"
+    safetyList: "http://apis.data.go.kr/1262000/CountrySafetyService3/getCountrySafetyList3"
     covidSafety: "http://apis.data.go.kr/1262000/CountryCovid19SafetyServiceNew/getCountrySafetyNewsListNew"
     overSeasArrival: "http://apis.data.go.kr/1262000/CountryOverseasArrivalsService/getCountryOverseasArrivalsList"
     embassyInfo: "http://apis.data.go.kr/1262000/EmbassyService2/getEmbassyList2"

@@ -21,12 +21,21 @@ public class CountryBasicInfoService {
     private final CountryBasicInfoRepository countryBasicInfoRepository;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, InterruptedException {
         if (countryBasicInfoRepository.count() > 0) {
             return;
         }
 
-        insert(xmlApiUtil.callCountryBasicInfoApi());
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert(xmlApiUtil.callCountryBasicInfoApi());
+                break;
+            }catch (Exception e) {
+                log.error("[CountryBasicInfoService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public void insert(CountryBasicInfoResponseDto responseDto) {

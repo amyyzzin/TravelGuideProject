@@ -18,19 +18,21 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Configuration
 public class RestTemplateConfig {
 
+    private final static int TIME_OUT = 300 * 1000;
+
     @Value("${open.api.key}")
     private String serviceKeyValue;
 
     /**
-     * 타임아웃 발생할 수 있음에 따라 최대 1분으로 연장
+     * 타임아웃 발생할 수 있음에 따라 최대 5분으로 연장
      *
      * @return
      */
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplateBuilder()
-            .setConnectTimeout(Duration.ofMillis(60000))
-            .setReadTimeout(Duration.ofMillis(60000))
+            .setConnectTimeout(Duration.ofMillis(TIME_OUT))
+            .setReadTimeout(Duration.ofMillis(TIME_OUT))
             .additionalInterceptors(
                 this.serviceKeyInjectionInterceptor()
             )

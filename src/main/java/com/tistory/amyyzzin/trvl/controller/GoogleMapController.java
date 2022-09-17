@@ -2,7 +2,6 @@ package com.tistory.amyyzzin.trvl.controller;
 
 import com.tistory.amyyzzin.trvl.service.CountryFlagService;
 import com.tistory.amyyzzin.trvl.service.SafetyListService;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

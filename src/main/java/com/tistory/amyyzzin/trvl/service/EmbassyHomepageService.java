@@ -25,13 +25,21 @@ public class EmbassyHomepageService {
     String embassyHomepageUrl;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, InterruptedException {
         if (embassyHomepageRepository.count() > 0) {
             return;
         }
-
-        insert((EmbassyHomepageResponseDto) genericApiUtil.callJsonApi(embassyHomepageUrl,
-            EmbassyHomepageResponseDto.class));
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((EmbassyHomepageResponseDto) genericApiUtil.callJsonApi(embassyHomepageUrl,
+                    EmbassyHomepageResponseDto.class, "500"));
+                break;
+            } catch (Exception e) {
+                log.error("[EmbassyHomepageService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public void insert(EmbassyHomepageResponseDto embassyHomepageResponseDto) {

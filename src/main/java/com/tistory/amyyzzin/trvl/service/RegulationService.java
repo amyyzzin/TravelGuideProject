@@ -27,9 +27,19 @@ public class RegulationService {
     String regulationUrl;
 
     @PostConstruct
-    public void init() throws IOException {
-        insert((RegulationResponseDto) genericApiUtil.callJsonApi(regulationUrl,
-            RegulationResponseDto.class));
+    public void init() throws IOException, InterruptedException {
+
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((RegulationResponseDto) genericApiUtil.callJsonApi(regulationUrl,
+                    RegulationResponseDto.class, "500"));
+                break;
+            } catch (Exception e) {
+                log.error("[RegulationService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public Page<Regulation> getRegulations(Pageable pageable) {

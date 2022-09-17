@@ -25,13 +25,21 @@ public class CountryFlagService {
     String countryFlagUrl;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, InterruptedException {
         if (countryFlagRepository.count() > 0) {
             return;
         }
-
-        insert((CountryFlagResponseDto) genericApiUtil.callJsonApi(countryFlagUrl,
-            CountryFlagResponseDto.class));
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((CountryFlagResponseDto) genericApiUtil.callJsonApi(countryFlagUrl,
+                    CountryFlagResponseDto.class, "500"));
+                break;
+            } catch (Exception e ) {
+                log.error("[CountryFlagService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public CountryFlag findByIsoAlp2(String isoAlp2) {

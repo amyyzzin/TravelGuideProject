@@ -25,13 +25,22 @@ public class CovidSafetyService {
     String covidSafetyUrl;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, InterruptedException {
         if (covidSafetyRepository.count() > 0) {
             return;
         }
 
-        insert((CovidSafetyResponseDto) genericApiUtil.callJsonApi(covidSafetyUrl,
-            CovidSafetyResponseDto.class));
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((CovidSafetyResponseDto) genericApiUtil.callJsonApi(covidSafetyUrl,
+                    CovidSafetyResponseDto.class, "500"));
+                break;
+            } catch (Exception e) {
+                log.error("[CovidSafetyService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public void insert(CovidSafetyResponseDto covidSafetyResponseDto) {

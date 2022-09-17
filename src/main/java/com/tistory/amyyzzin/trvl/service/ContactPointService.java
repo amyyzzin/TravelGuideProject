@@ -25,13 +25,22 @@ public class ContactPointService {
     String contactPointUrl;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, InterruptedException {
         if (contactPointRepository.count() > 0) {
             return;
         }
 
-        insert((ContactPointResponseDto) genericApiUtil.callJsonApi(contactPointUrl,
-            ContactPointResponseDto.class));
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((ContactPointResponseDto) genericApiUtil.callJsonApi(contactPointUrl,
+                    ContactPointResponseDto.class, "500"));
+                break;
+            } catch (Exception e) {
+                log.error("[ContactPointService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public void insert(ContactPointResponseDto contactPointResponseDto) {

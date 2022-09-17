@@ -25,13 +25,22 @@ public class OverseasArrivalService {
     String overSeasArrivalUrl;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, InterruptedException {
         if (overseasArrivalRepository.count() > 0) {
             return;
         }
 
-        insert((OverseasArrivalResponseDto) genericApiUtil.callJsonApi(overSeasArrivalUrl,
-            OverseasArrivalResponseDto.class));
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((OverseasArrivalResponseDto) genericApiUtil.callJsonApi(overSeasArrivalUrl,
+                    OverseasArrivalResponseDto.class, "500"));
+                break;
+            } catch (Exception e) {
+                log.error("[OverseasArrivalService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public void insert(OverseasArrivalResponseDto overseasArrivalResponseDto) {

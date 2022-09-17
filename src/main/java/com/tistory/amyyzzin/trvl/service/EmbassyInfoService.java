@@ -25,13 +25,22 @@ public class EmbassyInfoService {
     String embassyInfoUrl;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, InterruptedException {
         if (embassyInfoRepository.count() > 0) {
             return;
         }
 
-        insert((EmbassyInfoResponseDto) genericApiUtil.callJsonApi(embassyInfoUrl,
-            EmbassyInfoResponseDto.class));
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((EmbassyInfoResponseDto) genericApiUtil.callJsonApi(embassyInfoUrl,
+                    EmbassyInfoResponseDto.class, "500"));
+                break;
+            } catch (Exception e) {
+                log.error("[EmbassyInfoService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public void insert(EmbassyInfoResponseDto embassyInfoResponseDto) {

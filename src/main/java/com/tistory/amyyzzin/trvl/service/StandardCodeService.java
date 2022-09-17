@@ -25,13 +25,22 @@ public class StandardCodeService {
     String standardCodeUrl;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, InterruptedException {
         if (standardCodeRepository.count() > 0) {
             return;
         }
 
-        insert((StandardCodeResponseDto) genericApiUtil.callJsonApi(standardCodeUrl,
-            StandardCodeResponseDto.class));
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((StandardCodeResponseDto) genericApiUtil.callJsonApi(standardCodeUrl,
+                    StandardCodeResponseDto.class, "500"));
+                break;
+            } catch (Exception e) {
+                log.error("[StandardCodeService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public StandardCode findByIsoAlp2(String isoAlp2) {

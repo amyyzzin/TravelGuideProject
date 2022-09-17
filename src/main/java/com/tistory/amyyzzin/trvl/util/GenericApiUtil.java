@@ -17,6 +17,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * generic method 참고: https://stackoverflow.com/questions/450807/how-do-i-make-the-method-return-type-generic
+ *
+ * @param <T>
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -30,7 +35,7 @@ public class GenericApiUtil<T> {
     @Value("${open.api.url}")
     String openApiUrl;
 
-    public <T extends BaseResponseDto> T callJsonApi(String url, Class<T> type) throws IOException {
+    public <T extends BaseResponseDto> T callJsonApi(String url, Class<T> type, String numOfRows) throws IOException {
         StringBuilder urlBuilder = new StringBuilder(url); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "="
             + openApiKey); /*Service Key*/
@@ -39,19 +44,18 @@ public class GenericApiUtil<T> {
                 + URLEncoder.encode("JSON", "UTF-8")); /*XML 또는 JSON*/
         urlBuilder.append(
             "&" + URLEncoder.encode("numOfRows", "UTF-8") + "="
-                + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
+                + URLEncoder.encode(numOfRows, "UTF-8")); /*한 페이지 결과 수*/
         urlBuilder.append(
             "&" + URLEncoder.encode("pageNo", "UTF-8") + "="
                 + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
         /**
-         * connection timeout 에러가 자주 발생해 최대 1분으로 늘림
+         * connection timeout 에러가 자주 발생해 최대 5분으로 늘림
          */
-        builder.connectTimeout(60, TimeUnit.SECONDS);
-        builder.readTimeout(60, TimeUnit.SECONDS);
-        builder.writeTimeout(60, TimeUnit.SECONDS);
+        builder.connectTimeout(300, TimeUnit.SECONDS);
+        builder.readTimeout(300, TimeUnit.SECONDS);
+        builder.writeTimeout(300, TimeUnit.SECONDS);
         OkHttpClient client = builder.build();
 
         Request.Builder requestBuilder = new Request.Builder()

@@ -25,13 +25,22 @@ public class NoticeListService {
     String noticeUrl;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, InterruptedException {
         if (noticeListRepository.count() > 0) {
             return;
         }
 
-        insert((NoticeListResponseDto) genericApiUtil.callJsonApi(noticeUrl,
-            NoticeListResponseDto.class));
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((NoticeListResponseDto) genericApiUtil.callJsonApi(noticeUrl,
+                    NoticeListResponseDto.class, "100"));
+                break;
+            } catch (Exception e) {
+                log.error("[NoticeListService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
     }
 
     public void insert(NoticeListResponseDto noticeListResponseDto) {

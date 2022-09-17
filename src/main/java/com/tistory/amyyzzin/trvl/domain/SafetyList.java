@@ -62,6 +62,7 @@ public class SafetyList {
 	// 작성일
 	private String wrtDt;
 
+	private boolean isMainNotice;
 
 	public static SafetyList of(SafetyListDto safetyListDto) {
 		return SafetyList.builder()
@@ -74,7 +75,7 @@ public class SafetyList {
 			.ctgyNm(safetyListDto.getCtgyNm())
 			.fileDownloadUrl(safetyListDto.getFileDownloadUrl())
 			.filePath(safetyListDto.getFilePath())
-			.title(safetyListDto.getTitle())
+			.title(Jsoup.parse(safetyListDto.getTitle()).text().replace("\uFEFF",""))
 			.txtOriginCn(Jsoup.parse(safetyListDto.getTxtOriginCn()).text().replace("\uFEFF",""))
 			.wrtDt(safetyListDto.getWrtDt())
 			.build();
