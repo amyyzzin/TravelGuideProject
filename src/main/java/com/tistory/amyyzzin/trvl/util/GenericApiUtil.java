@@ -3,15 +3,9 @@ package com.tistory.amyyzzin.trvl.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.tistory.amyyzzin.trvl.dto.AccidentListDto;
-import com.tistory.amyyzzin.trvl.dto.AccidentListResponseDto;
 import com.tistory.amyyzzin.trvl.dto.BaseResponseDto;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,18 +14,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-/**
- * generic method 참고: https://stackoverflow.com/questions/450807/how-do-i-make-the-method-return-type-generic
- *
- * @param <T>
- */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -60,6 +45,7 @@ public class GenericApiUtil<T> {
                 + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
         /**
          * connection timeout 에러가 자주 발생해 최대 1분으로 늘림
          */

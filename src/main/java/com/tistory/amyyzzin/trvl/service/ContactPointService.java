@@ -1,17 +1,15 @@
 package com.tistory.amyyzzin.trvl.service;
 
 import com.tistory.amyyzzin.trvl.domain.ContactPoint;
-import com.tistory.amyyzzin.trvl.domain.EmbassyHomepage;
 import com.tistory.amyyzzin.trvl.dto.ContactPointDto;
 import com.tistory.amyyzzin.trvl.dto.ContactPointResponseDto;
-import com.tistory.amyyzzin.trvl.dto.EmbassyHomepageDto;
-import com.tistory.amyyzzin.trvl.dto.EmbassyHomepageResponseDto;
 import com.tistory.amyyzzin.trvl.repository.ContactPointRepository;
-import com.tistory.amyyzzin.trvl.util.ApiUtil;
+import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -19,33 +17,37 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ContactPointService {
 
-	private final ApiUtil apiUtil;
+    private final GenericApiUtil genericApiUtil;
 
-	private final ContactPointRepository contactPointRepository;
+    private final ContactPointRepository contactPointRepository;
 
-	@PostConstruct
-	public void init() throws IOException {
-		if (contactPointRepository.count() > 0) {
-			return;
-		}
+    @Value("${open.api.contactPoint}")
+    String contactPointUrl;
 
-		insert(apiUtil.callContactPointApi());
-	}
+    @PostConstruct
+    public void init() throws IOException {
+        if (contactPointRepository.count() > 0) {
+            return;
+        }
 
-	public void insert(ContactPointResponseDto contactPointResponseDto) {
-		if (contactPointResponseDto == null) {
-			return;
-		}
+        insert((ContactPointResponseDto) genericApiUtil.callJsonApi(contactPointUrl,
+            ContactPointResponseDto.class));
+    }
 
-		log.info("[contactPointResponseDto] {}", contactPointResponseDto);
+    public void insert(ContactPointResponseDto contactPointResponseDto) {
+        if (contactPointResponseDto == null) {
+            return;
+        }
 
-		for (ContactPointDto contactPointDto : contactPointResponseDto.getData()) {
-			try {
-				contactPointRepository.save(ContactPoint.of(contactPointDto));
-			} catch (Exception e) {
-				log.error("[ContactPoint.insert] ERROR {}", e.getMessage());
-			}
-		}
+        log.info("[contactPointResponseDto] {}", contactPointResponseDto);
 
-	}
+        for (ContactPointDto contactPointDto : contactPointResponseDto.getData()) {
+            try {
+                contactPointRepository.save(ContactPoint.of(contactPointDto));
+            } catch (Exception e) {
+                log.error("[ContactPoint.insert] ERROR {}", e.getMessage());
+            }
+        }
+
+    }
 }

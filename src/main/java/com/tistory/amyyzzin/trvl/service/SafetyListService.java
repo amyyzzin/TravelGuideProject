@@ -4,12 +4,13 @@ import com.tistory.amyyzzin.trvl.domain.SafetyList;
 import com.tistory.amyyzzin.trvl.dto.SafetyListDto;
 import com.tistory.amyyzzin.trvl.dto.SafetyListResponseDto;
 import com.tistory.amyyzzin.trvl.repository.SafetyListRepository;
-import com.tistory.amyyzzin.trvl.util.ApiUtil;
+import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -17,9 +18,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SafetyListService {
 
-    private final ApiUtil apiUtil;
+    private final GenericApiUtil genericApiUtil;
 
     private final SafetyListRepository safetyListRepository;
+
+    @Value("${open.api.safetyList}")
+    String safetyListUrl;
 
     @PostConstruct
     public void init() throws IOException {
@@ -27,7 +31,8 @@ public class SafetyListService {
             return;
         }
 
-        insert(apiUtil.callSafetyListApi());
+        insert((SafetyListResponseDto) genericApiUtil.callJsonApi(safetyListUrl,
+            SafetyListResponseDto.class));
     }
 
     public void insert(SafetyListResponseDto safetyListResponseDto) {

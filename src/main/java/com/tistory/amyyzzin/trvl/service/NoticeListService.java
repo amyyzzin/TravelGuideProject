@@ -1,17 +1,15 @@
 package com.tistory.amyyzzin.trvl.service;
 
-import com.tistory.amyyzzin.trvl.domain.CountryFlag;
 import com.tistory.amyyzzin.trvl.domain.NoticeList;
-import com.tistory.amyyzzin.trvl.dto.CountryFlagDto;
-import com.tistory.amyyzzin.trvl.dto.CountryFlagResponseDto;
 import com.tistory.amyyzzin.trvl.dto.NoticeListDto;
 import com.tistory.amyyzzin.trvl.dto.NoticeListResponseDto;
 import com.tistory.amyyzzin.trvl.repository.NoticeListRepository;
-import com.tistory.amyyzzin.trvl.util.ApiUtil;
+import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -19,33 +17,37 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class NoticeListService {
 
-	private final ApiUtil apiUtil;
+    private final GenericApiUtil genericApiUtil;
 
-	private final NoticeListRepository noticeListRepository;
+    private final NoticeListRepository noticeListRepository;
 
-	@PostConstruct
-	public void init() throws IOException {
-		if (noticeListRepository.count() > 0) {
-			return;
-		}
+    @Value("${open.api.notice}")
+    String noticeUrl;
 
-		insert(apiUtil.callNoticeListApi());
-	}
+    @PostConstruct
+    public void init() throws IOException {
+        if (noticeListRepository.count() > 0) {
+            return;
+        }
 
-	public void insert(NoticeListResponseDto noticeListResponseDto) {
-		if (noticeListResponseDto == null) {
-			return;
-		}
+        insert((NoticeListResponseDto) genericApiUtil.callJsonApi(noticeUrl,
+            NoticeListResponseDto.class));
+    }
 
-		log.info("[NoticeListDto] {}", noticeListResponseDto);
+    public void insert(NoticeListResponseDto noticeListResponseDto) {
+        if (noticeListResponseDto == null) {
+            return;
+        }
 
-		for (NoticeListDto noticeListDto : noticeListResponseDto.getData()) {
-			try {
-				noticeListRepository.save(NoticeList.of(noticeListDto));
-			} catch (Exception e) {
-				log.error("[NoticeList.insert] ERROR {}", e.getMessage());
-			}
-		}
+        log.info("[NoticeListDto] {}", noticeListResponseDto);
 
-	}
+        for (NoticeListDto noticeListDto : noticeListResponseDto.getData()) {
+            try {
+                noticeListRepository.save(NoticeList.of(noticeListDto));
+            } catch (Exception e) {
+                log.error("[NoticeList.insert] ERROR {}", e.getMessage());
+            }
+        }
+
+    }
 }

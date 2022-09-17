@@ -14,17 +14,17 @@ import org.springframework.web.client.RestTemplate;
 @ActiveProfiles("security")
 @SpringBootTest
 @WebAppConfiguration
-public class ApiUtilTest {
+public class XmlApiUtilTest {
 
     @Autowired
-    ApiUtil apiUtil;
+    XmlApiUtil xmlApiUtil;
 
     @Autowired
     RestTemplate restTemplate;
 
     @Test
     public void testCountryBasicInfoApi() throws Exception {
-        CountryBasicInfoResponseDto responseDto = apiUtil.callCountryBasicInfoApi();
+        CountryBasicInfoResponseDto responseDto = xmlApiUtil.callCountryBasicInfoApi();
 
         System.out.println(responseDto);
         assertThat(responseDto.getData() != null
@@ -33,7 +33,7 @@ public class ApiUtilTest {
 
     @Test
     public void testAccidentListApi() throws Exception {
-        AccidentListResponseDto responseDto = apiUtil.callAccidentListApi();
+        AccidentListResponseDto responseDto = xmlApiUtil.callAccidentListApi();
 
         System.out.println(responseDto);
         assertThat(responseDto.getData() != null
