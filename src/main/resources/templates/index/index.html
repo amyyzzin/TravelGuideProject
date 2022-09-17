@@ -1,221 +1,390 @@
 <!doctype html>
 <html lang="ko">
 <head>
-    <meta charset="utf-8">
-    <title>ForTraveler</title>
-    <style>
-        html, body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-        }
-        .modal {
-            position: absolute;
-            top: 0;
-            left: 0;
+  <meta charset="utf-8">
+  <title>TravelGuide</title>
+  <style>
 
-            width: 100%;
-            height: 100%;
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
 
-            display: none;
+    .modal-content modal-fullsize {
+      text-align: left;
+    }
 
-            background-color: rgba(0, 0, 0, 0.4);
-        }
+    .modal.fade {
+      position: fixed;
+      margin-left: 10%;
+      margin-right: 0;
+    }
 
-        .modal.show {
-            display: block;
-        }
+    .modal-title {
+      text-align: center;
+      width: 90%;
+      height: 65%;
+    }
 
-        .modal_body {
-            position: absolute;
-            top: 50%;
-            left: 50%;
+    .modal-dialog {
+      max-width: 90%;
+      max-height: 50%;
+    }
 
-            width: 400px;
-            height: 600px;
+    .modal-dialog-slideout {
+      min-height: 70%;
+      min-width: 70%;
+      margin: 0 0 0 auto;
+      background: #fff;
+      position: absolute;
+    }
 
-            padding: 40px;
+    .modal.fade .modal-dialog.modal-dialog-slideout {
+      -webkit-transform: translate(100%, 0) scale(1);
+      transform: translate(100%, 0) scale(1);
+    }
 
-            text-align: center;
+    .modal.fade.show .modal-dialog.modal-dialog-slideout {
+      -webkit-transform: translate(0, 0);
+      transform: translate(0, 0);
+      display: flex;
+      align-items: stretch;
+      -webkit-box-align: stretch;
+      height: 100%;
+    }
 
-            background-color: rgb(255, 255, 255);
-            border-radius: 10px;
-            box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+    .modal.fade.show .modal-dialog.modal-dialog-slideout .modal-body {
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
 
-            transform: translateX(-50%) translateY(-50%);
-        }
-    </style>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    .modal-dialog-slideout .modal-content {
+      border: 0;
+    }
+
+    .modal-dialog-slideout .modal-header,
+    .modal-dialog-slideout .modal-footer {
+      height: auto;
+      display: block;
+    }
+
+    .modal-dialog-slideout .modal-footer {
+      text-align: end;
+    }
+
+    .modal-dialog.modal-center {
+      display: inline-block;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    h1 {
+      font-size: 30px;
+      color: black;
+      font-weight: 300;
+      text-align: left;
+      margin-bottom: 15px;
+      padding-left: 5%;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    #board {
+      font-family: 'Open+Sans', sans-serif;
+      font-weight: 300;
+      text-align: left;
+      padding-left: 5%;
+      padding-right: 5%;
+    }
+
+    table {
+      width: 50%;
+      table-layout: fixed;
+    }
+
+    .tbl-header {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .tbl-content {
+      height: 40%;
+      overflow-x: auto;
+      margin-top: 1%;
+      border: 2px solid rgba(85, 85, 85, 0.3);
+    }
+
+    th {
+      text-align: center;
+      vertical-align: middle;
+      font-weight: 500;
+      font-size: 17px;
+      color: black;
+      border-bottom: 2px solid rgba(85, 85, 85, 0.3);
+
+    }
+
+    td {
+      text-align: center;
+      vertical-align: middle;
+      font-weight: 300;
+      font-size: 17px;
+      color: black;
+      border-bottom: 2px solid rgba(85, 85, 85, 0.3);
+    }
+
+    /* for custom scrollbar for webkit browser*/
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+  </style>
+  <!--  <link rel="stylesheet"-->
+  <!--        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 </head>
 
 <body>
-<h1>메인 페이지</h1>
-<div id="map-canvas" style="width: 90%;height: 65%; margin-left: auto; margin-right: auto"></div>
+<h1>🌍TravelGuide</h1>
+<div id="map-canvas" style="width: 90%; height: 65%; margin-left: auto; margin-right: auto"></div>
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal 제목</h4>
-            </div>
-            <div class="modal-body">
-                <span id="country-nm"></span>
-                <br>
-                <span id="country-eng-nm"></span>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-            </div>
-        </div>
+<div class="modal fade" id="ModalSlide" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-slideout " role="document">
+    <div class="modal-content modal-fullsize">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          <span id="country-nm"></span>(<span id="country-eng-nm"></span>)<br>
+          <img id="country-flag" style="width: 150px; height: 100px;"><br>
+        </h4>
+      </div>
+      <div class="modal-body">
+        국가 수도명 : <span id="countryInfo-countryCptNm"></span>
+        <br>
+        국가 위치 : <span id="countryInfo-countryIc"></span>
+        <br>
+        기후 : <span id="countryInfo-climateCn"></span>
+        <br>
+        언어 명 : <span id="countryInfo-langNm"></span>
+        <br>
+        언어 내용 : <span id="countryInfo-langCn"></span>
+        <br>
+        주요 도시 : <span id="countryInfo-mainCityCn"></span>
+        <br>
+        주요 민족 : <span id="countryInfo-mainEthnicCn"></span>
+        <br>
+        주요 언론 : <span id="countryInfo-mscmctnCn"></span>
+        <br>
+        종교 : <span id="countryInfo-religionCn"></span>
+        <br>
+        국가 면적 : <span id="countryInfo-countryArea"></span>
+        <br>
+        국가 면적 설명 : <span id="countryInfo-countryAreaComment"></span>
+        <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+      </div>
     </div>
+  </div>
+</div>
+
+<div id="board" style="width: 90%;">
+  <div class="box1" style="width: 45%;">
+    <br>
+    <h5> 💙안전공지 </h5>
+    <span id="safetyList-title"></span>
+    <div class="tbl-content">
+      <tr th:each="x : ${safetyList}">
+        <td th:if="${not #strings.isEmpty(x.ctgyNm)}"
+             th:remove="tag"  th:text="${'[' + x.ctgyNm + ']'}"></td>
+        <td th:unless="${#strings.isEmpty(x.ctgyNm)}"
+            th:text="${''}"></td>
+        <td th:remove="tag" th:utext="${x.title}"></td>
+        <td th:remove="tag" th:utext="${x.wrtDt}"></td>
+        <br>
+      </tr>
+    </div>
+  </div>
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key="></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"</script>-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
 <script>
+  $(document).ready(function () {
 
-    $( document ).ready(function() {
+    let countries = [];
 
-        let countries = [];
+    let mapOptions = {
+      zoom: 3,
+      minZoom: 2,
+      center: new google.maps.LatLng(37.541, 126.986),
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      backgroundColor: 'none',
+      restriction: {
+        latLngBounds: {
+          north: 85,
+          south: -85,
+          west: -180,
+          east: 180
+        }
+      }
+    };
 
-        let mapOptions = {
-            zoom: 3,
-            minZoom: 1,
-            center: new google.maps.LatLng(37.541,126.986),
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            backgroundColor: 'none',
-            restriction: {
-                latLngBounds: {
-                    north: 85,
-                    south: -85,
-                    west: -180,
-                    east: 180
+    let map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+    init();
+
+    function init() {
+      $.ajax({
+        url: '/json/data.json',
+        cache: true,
+        dataType: 'json',
+        async: true,
+        type: "Get",
+
+        success: function (data) {
+
+          if (data) {
+
+            $.each(data, function (id, country) {
+
+              var countryCoords;
+              var ca;
+              var co;
+
+              if ('multi' in country) {
+
+                var ccArray = [];
+
+                for (var t in country['xml']['Polygon']) {
+
+                  countryCoords = [];
+
+                  co = country['xml']['Polygon'][t]['outerBoundaryIs']['LinearRing']['coordinates'].split(
+                      ' ');
+
+                  for (var i in co) {
+
+                    ca = co[i].split(',');
+
+                    countryCoords.push(new google.maps.LatLng(ca[1], ca[0]));
+                  }
+
+                  ccArray.push(countryCoords);
                 }
-            }
-        };
 
-        let map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                createCountry(ccArray, country);
 
-        init();
+              } else {
 
-        function init() {
-            $.ajax({
-                url : '/json/data.json',
-                cache : true,
-                dataType : 'json',
-                async : true,
-                type: "Get",
+                countryCoords = [];
 
-                success : function(data) {
+                co = country['xml']['outerBoundaryIs']['LinearRing']['coordinates'].split(' ');
 
-                    if (data) {
+                for (var j in co) {
 
-                        $.each(data, function(id,country) {
+                  ca = co[j].split(',');
 
-                            var countryCoords;
-                            var ca;
-                            var co;
-
-                            if ('multi' in country) {
-
-                                var ccArray = [];
-
-                                for (var t in country['xml']['Polygon']) {
-
-                                    countryCoords = [];
-
-                                    co = country['xml']['Polygon'][t]['outerBoundaryIs']['LinearRing']['coordinates'].split(' ');
-
-                                    for (var i in co) {
-
-                                        ca = co[i].split(',');
-
-                                        countryCoords.push(new google.maps.LatLng(ca[1], ca[0]));
-                                    }
-
-                                    ccArray.push(countryCoords);
-                                }
-
-                                createCountry(ccArray,country);
-
-                            } else {
-
-                                countryCoords = [];
-
-                                co = country['xml']['outerBoundaryIs']['LinearRing']['coordinates'].split(' ');
-
-                                for (var j in co) {
-
-                                    ca = co[j].split(',');
-
-                                    countryCoords.push(new google.maps.LatLng(ca[1], ca[0]));
-                                }
-
-                                createCountry(countryCoords,country);
-                            }
-                        }.bind(this));
-
-                        showCountries();
-                    }
-                }.bind(this)
-            });
-        }
-
-        function showCountries() {
-            for (var i=0; i<countries.length; i++) {
-                countries[i].setMap(map);
-
-                google.maps.event.addListener(countries[i],"mouseover",function(){
-                    this.setOptions({fillColor: "#f5c879", 'fillOpacity': 0.5});
-                });
-
-                google.maps.event.addListener(countries[i],"mouseout",function(){
-                    this.setOptions({fillColor: "#f5c879", 'fillOpacity': 0});
-                });
-
-                google.maps.event.addListener(countries[i], 'click', function(event) {
-                    showModal(this.code);
-                    //alert(this.title+' ('+this.code+')');
-                    // 세부 페이지 가는 코드 작성
-                });
-            }
-        }
-
-        function showModal(code) {
-            // ajax 호출해서 code 기반 페이지 정보 가져와서 modal에 설정해주고
-            $.ajax({
-                url: "/modal?code=" + code,
-                type: 'GET',
-                dataType: 'json', // added data type
-                success: function(res) {
-                    $('#country-nm').html(res.countryNm);
-                    $('#country-eng-nm').html(res.countryEngNm);
-
-                    $('#myModal').modal('show');
+                  countryCoords.push(new google.maps.LatLng(ca[1], ca[0]));
                 }
-            });
+
+                createCountry(countryCoords, country);
+              }
+            }.bind(this));
+
+            showCountries();
+          }
+        }.bind(this)
+      });
+    }
+
+    function showCountries() {
+      for (var i = 0; i < countries.length; i++) {
+        countries[i].setMap(map);
+
+        google.maps.event.addListener(countries[i], "mouseover", function () {
+          this.setOptions({fillColor: "#f5c879", 'fillOpacity': 0.5});
+        });
+
+        google.maps.event.addListener(countries[i], "mouseout", function () {
+          this.setOptions({fillColor: "#f5c879", 'fillOpacity': 0});
+        });
+
+        google.maps.event.addListener(countries[i], 'click', function (event) {
+          showModal(this.code);
+          //alert(this.title+' ('+this.code+')');
+          // 세부 페이지 가는 코드 작성
+        });
+      }
+    }
+
+    function showModal(code) {
+      // ajax 호출해서 code 기반 페이지 정보 가져와서 modal에 설정해주고
+      $.ajax({
+        url: "/modal?code=" + code,
+        type: 'GET',
+        dataType: 'json', // added data type
+        success: function (res) {
+          $('#country-nm').html(res.countryNm);
+          $('#country-eng-nm').html(res.countryEngNm);
+
+          $('#country-flag').attr('src', res.downloadUrl);
+
+          $('#countryInfo-climateCn').html(res.climateCn);
+          $('#countryInfo-langCn').html(res.langCn);
+          $('#countryInfo-langNm').html(res.langNm);
+          $('#countryInfo-mainCityCn').html(res.mainCityCn);
+          $('#countryInfo-mainEthnicCn').html(res.mainEthnicCn);
+          $('#countryInfo-mscmctnCn').html(res.mscmctnCn);
+          $('#countryInfo-religionCn').html(res.religionCn);
+          $('#countryInfo-countryIc').html(res.countryIc);
+          $('#countryInfo-countryCptNm').html(res.countryCptNm);
+          $('#countryInfo-countryArea').html(res.countryArea);
+          $('#countryInfo-countryAreaSrc').html(res.countryAreaSrc);
+          $('#countryInfo-countryAreaComment').html(res.countryAreaComment);
+
+          $('#ModalSlide').modal('show');
         }
+      });
+    }
 
-        function createCountry(coords, country) {
-            var currentCountry = new google.maps.Polygon({
-                paths: coords,
-                //strokeColor: 'white',
-                title: country.country,
-                code: country.iso,
-                strokeOpacity: 0,
-                //strokeWeight: 1,
-                //fillColor: country['color'], // can be used as default color
-                fillOpacity: 0
-            });
+    function createCountry(coords, country) {
+      var currentCountry = new google.maps.Polygon({
+        paths: coords,
+        //strokeColor: 'white',
+        title: country.country,
+        code: country.iso,
+        strokeOpacity: 0,
+        //strokeWeight: 1,
+        //fillColor: country['color'], // can be used as default color
+        fillOpacity: 0
+      });
 
-            countries.push(currentCountry);
-        }
+      countries.push(currentCountry);
+    }
 
-    });
+  });
 
 </script>
 

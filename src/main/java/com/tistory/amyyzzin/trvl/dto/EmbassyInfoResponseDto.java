@@ -1,7 +1,7 @@
 package com.tistory.amyyzzin.trvl.dto;
 
+import com.tistory.amyyzzin.trvl.domain.EmbassyHomepage;
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegulationResponseDto extends BaseResponseDto{
+public class EmbassyInfoResponseDto extends BaseResponseDto{
 
-	private List<RegulationDto> data;
+	private List<EmbassyInfoDto> data;
 }

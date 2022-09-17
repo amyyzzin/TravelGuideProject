@@ -1,7 +1,5 @@
 package com.tistory.amyyzzin.trvl.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +9,18 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegulationResponseDto extends BaseResponseDto{
+public class BaseResponseDto {
 
-	private List<RegulationDto> data;
+    private int currentCount;
+
+    private String resultCode;
+
+    private String resultMsg;
+
+    private String numOfRows;
+
+    private String pageNo;
+
+    private String totalCount;
+
 }
