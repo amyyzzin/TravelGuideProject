@@ -2,6 +2,8 @@ package com.tistory.amyyzzin.trvl.controller;
 
 import com.tistory.amyyzzin.trvl.domain.CountryInfo;
 import com.tistory.amyyzzin.trvl.service.CountryInfoService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,8 +29,9 @@ public class GoogleApiController {
 
 	private final CountryInfoService countryInfoService;
 
+	@ApiOperation(value = "설명", notes = "이것은 노트")
 	@GetMapping("/modal")
-	public ResponseEntity<GoogleModalDto> getModalDetail(@RequestParam String code) {
+	public ResponseEntity<GoogleModalDto> getModalDetail(@RequestParam  @ApiParam(value = "국가 ISO-CODE", example = "KO") String code) {
 		StandardCode standardCode = standardCodeService.findByIsoAlp2(code);
 		CountryFlag countryFlag = countryFlagService.findByIsoAlp2(code);
 		CountryInfo countryInfo = countryInfoService.findByIsoAlp2(code);

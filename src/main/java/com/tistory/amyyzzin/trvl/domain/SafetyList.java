@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jsoup.Jsoup;
 
 @Data
 @Entity
@@ -74,7 +75,7 @@ public class SafetyList {
 			.fileDownloadUrl(safetyListDto.getFileDownloadUrl())
 			.filePath(safetyListDto.getFilePath())
 			.title(safetyListDto.getTitle())
-			.txtOriginCn(safetyListDto.getTxtOriginCn())
+			.txtOriginCn(Jsoup.parse(safetyListDto.getTxtOriginCn()).text().replace("\uFEFF",""))
 			.wrtDt(safetyListDto.getWrtDt())
 			.build();
 	}

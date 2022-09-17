@@ -26,8 +26,8 @@ public class RestTemplateConfig {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplateBuilder()
-            .setConnectTimeout(Duration.ofMillis(3000))
-            .setReadTimeout(Duration.ofMillis(5000))
+            .setConnectTimeout(Duration.ofMillis(60000))
+            .setReadTimeout(Duration.ofMillis(60000))
             .additionalInterceptors(
                 this.serviceKeyInjectionInterceptor()
             )

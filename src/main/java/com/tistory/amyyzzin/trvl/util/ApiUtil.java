@@ -3,7 +3,6 @@ package com.tistory.amyyzzin.trvl.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.tistory.amyyzzin.trvl.domain.AccidentList;
 import com.tistory.amyyzzin.trvl.dto.AccidentListDto;
 import com.tistory.amyyzzin.trvl.dto.AccidentListResponseDto;
 import com.tistory.amyyzzin.trvl.dto.ContactPointResponseDto;
@@ -26,6 +25,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
@@ -55,8 +55,11 @@ public class ApiUtil {
     @Value("${open.api.url}")
     String openApiUrl;
 
-    @Value("${open.api.accident-list}")
-    String accidentList;
+    @Value("${open.api.accidentList}")
+    String accidentListPath;
+
+    @Value("${open.api.countryBasicInfo}")
+    String countryBasicInfoPath;
 
     //국가·지역별 입국허가요건
     public RegulationResponseDto callRegulationApi() throws IOException {
@@ -74,13 +77,18 @@ public class ApiUtil {
             "&" + URLEncoder.encode("pageNo", "UTF-8") + "="
                 + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
 
-        OkHttpClient client = new OkHttpClient();
-        Request.Builder builder = new Request.Builder()
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(30, TimeUnit.SECONDS);
+        builder.readTimeout(30, TimeUnit.SECONDS);
+        builder.writeTimeout(30, TimeUnit.SECONDS);
+        OkHttpClient client = builder.build();
+
+        Request.Builder requestBuilder = new Request.Builder()
             .url(urlBuilder.toString())
             .get();
-        builder.addHeader("Content-type", "application/json");
+        requestBuilder.addHeader("Content-type", "application/json");
 
-        Request request = builder.build();
+        Request request = requestBuilder.build();
         Response response = client.newCall(request).execute();
         RegulationResponseDto regulationResponseDto = null;
 
@@ -238,7 +246,7 @@ public class ApiUtil {
     public CountryBasicInfoResponseDto callCountryBasicInfoApi() throws
         IOException {
         URI requestUrl = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr")
-            .path("/1262000/CountryBasicService/getCountryBasicList")
+            .path(countryBasicInfoPath)
             .queryParams(ApiUtil.createQueryParams())
             .build(true)
             .toUri();
@@ -246,8 +254,8 @@ public class ApiUtil {
             new RequestEntity(HttpMethod.GET, requestUrl), Map.class
         );
 
-        if (!responseEntity.getStatusCode()
-            .is2xxSuccessful() || responseEntity.getBody() == null) {
+        if (!responseEntity.getStatusCode().is2xxSuccessful()
+            || responseEntity.getBody() == null) {
             log.error("Failed to get country basic infos. statusCode:" + responseEntity.getStatusCode());
 
             return new CountryBasicInfoResponseDto();
@@ -263,7 +271,7 @@ public class ApiUtil {
 
         for (Map<String, Object> item : itemList) {
             CountryBasicInfoDto countryBasicInfoDto = CountryBasicInfoDto.builder()
-                .id((String) item.get("id"))
+                .id(String.valueOf(item.get("id")))
                 .basic((String) item.get("basic"))
                 .countryNm((String) item.get("countryName"))
                 .countryEngNm((String) item.get("countryEnName"))
@@ -276,7 +284,7 @@ public class ApiUtil {
         return CountryBasicInfoResponseDto.builder()
             .resultCode((String) headerMap.get("resultCode"))
             .resultMsg((String) headerMap.get("resultMsg"))
-            .totalCount((String) bodyMap.get("totalCount"))
+            .totalCount(String.valueOf(bodyMap.get("totalCount")))
             .data(countryBasicInfoDtos)
             .build();
     }
@@ -348,13 +356,17 @@ public class ApiUtil {
             "&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1",
                 "UTF-8")); /*페이지 번호*/
 
-        OkHttpClient client = new OkHttpClient();
-        Request.Builder builder = new Request.Builder()
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(30, TimeUnit.SECONDS);
+        builder.readTimeout(30, TimeUnit.SECONDS);
+        builder.writeTimeout(30, TimeUnit.SECONDS);
+        OkHttpClient client = builder.build();
+        Request.Builder requestBuilder = new Request.Builder()
             .url(urlBuilder.toString())
             .get();
-        builder.addHeader("Content-type", "application/json");
+        requestBuilder.addHeader("Content-type", "application/json");
 
-        Request request = builder.build();
+        Request request = requestBuilder.build();
         Response response = client.newCall(request).execute();
         SafetyListResponseDto safetyListResponseDto = null;
 
@@ -620,7 +632,7 @@ public class ApiUtil {
     public AccidentListResponseDto callAccidentListApi() throws
         IOException {
         URI requestUrl = UriComponentsBuilder.fromHttpUrl(openApiUrl)
-            .path(accidentList)
+            .path(accidentListPath)
             .queryParams(ApiUtil.createQueryParams())
             .build(true)
             .toUri();
@@ -645,7 +657,7 @@ public class ApiUtil {
 
         for (Map<String, Object> item : itemList) {
             AccidentListDto accidentListDto = AccidentListDto.builder()
-                .id((String) item.get("id"))
+                .id(String.valueOf(item.get("id")))
                 .continent((String) item.get("continent"))
                 .ename((String) item.get("ename"))
                 .name((String) item.get("name"))
@@ -658,7 +670,7 @@ public class ApiUtil {
         return AccidentListResponseDto.builder()
             .resultCode((String) headerMap.get("resultCode"))
             .resultMsg((String) headerMap.get("resultMsg"))
-            .totalCount((String) bodyMap.get("totalCount"))
+            .totalCount(String.valueOf(bodyMap.get("totalCount")))
             .data(accidentListDtos)
             .build();
     }

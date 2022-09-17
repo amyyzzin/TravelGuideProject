@@ -19,6 +19,10 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
 
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 logging:
   level:
     root: info
@@ -32,4 +36,17 @@ mybatis:
 open:
   api:
     url: "http://apis.data.go.kr"
-    accident-list: "/1262000/AccidentService/getAccidentList"
+    regulation: "http://apis.data.go.kr/1262000/EntranceVisaService2/getEntranceVisaList2"
+    standardCode: "http://apis.data.go.kr/1262000/CountryCodeService2/getCountryCodeList2"
+    countryFlag: "http://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2"
+    countryInfo: "http://apis.data.go.kr/1262000/CountryGnrlInfoService2/getCountryGnrlInfoList2"
+    notice: "http://apis.data.go.kr/1262000/NoticeService2/getNoticeList2"
+    safetyList: "http://apis.data.go.kr/1262000/CountrySafetyService3/getCountrySafetyList3"
+    covidSafety: "http://apis.data.go.kr/1262000/CountryCovid19SafetyServiceNew/getCountrySafetyNewsListNew"
+    overSeasArrival: "http://apis.data.go.kr/1262000/CountryOverseasArrivalsService/getCountryOverseasArrivalsList"
+    embassyInfo: "http://apis.data.go.kr/1262000/EmbassyService2/getEmbassyList2"
+    embassyHomepage: "http://apis.data.go.kr/1262000/EmbassyHomepageService2/getEmbassyHomepageList2"
+    contactPoint: "http://apis.data.go.kr/1262000/LocalContactService2/getLocalContactList2"
+    travelAlarm: "http://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2"
+    accidentList: "/1262000/AccidentService/getAccidentList"
+    countryBasicInfo: "/1262000/CountryBasicService/getCountryBasicList"

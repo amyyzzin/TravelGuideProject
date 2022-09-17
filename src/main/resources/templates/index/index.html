@@ -10,14 +10,17 @@
       height: 100%;
       margin: 0;
     }
+
     .modal-content modal-fullsize {
       text-align: left;
     }
+
     .modal.fade {
       position: fixed;
       margin-left: 10%;
       margin-right: 0;
     }
+
     .modal-title {
       text-align: center;
       width: 90%;
@@ -38,9 +41,10 @@
     }
 
     .modal.fade .modal-dialog.modal-dialog-slideout {
-      -webkit-transform: translate(100%, 0)scale(1);
-      transform: translate(100%, 0)scale(1);
+      -webkit-transform: translate(100%, 0) scale(1);
+      transform: translate(100%, 0) scale(1);
     }
+
     .modal.fade.show .modal-dialog.modal-dialog-slideout {
       -webkit-transform: translate(0, 0);
       transform: translate(0, 0);
@@ -49,10 +53,12 @@
       -webkit-box-align: stretch;
       height: 100%;
     }
+
     .modal.fade.show .modal-dialog.modal-dialog-slideout .modal-body {
       overflow-y: auto;
       overflow-x: hidden;
     }
+
     .modal-dialog-slideout .modal-content {
       border: 0;
     }
@@ -148,11 +154,12 @@
 </head>
 
 <body>
-<h1>TravelGuide</h1>
+<h1>🌍TravelGuide</h1>
 <div id="map-canvas" style="width: 90%; height: 65%; margin-left: auto; margin-right: auto"></div>
 
 <!-- Modal -->
-<div class="modal fade" id="ModalSlide" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+<div class="modal fade" id="ModalSlide" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel2" aria-hidden="true">
   <div class="modal-dialog modal-dialog-slideout " role="document">
     <div class="modal-content modal-fullsize">
       <div class="modal-header">
@@ -201,29 +208,15 @@
     <h5> 💙안전공지 </h5>
     <span id="safetyList-title"></span>
     <div class="tbl-content">
-      <tr th:each="x : ${list}">
-        <div>
-      <span>
-        <div>
-        <b th:text="${x.id}">미니국기</b>
-        <b th:text="${x.title}">안전공지제목</b><br>
-      </div>
-        <b th:text="${x.ctgyNm}" style="border-bottom: 1px solid rgba(85, 85, 85, 0.3);">해당 내용</b>
-      </span>
-        </div>
-
-
       <tr th:each="x : ${safetyList}">
-        <div>
-          <span>
-            <b th:text="${x.id}">미니국기</b>
-            <b th:text="${x.ctgyNm}">카테고리네임</b>
-            <b th:text="${x.title}">안전공지제목</b>
-            <b th:text="${x.wrt_dt}">2021.01.01</b>
-          </span>
-        </div>
+        <td th:if="${not #strings.isEmpty(x.ctgyNm)}"
+             th:remove="tag"  th:text="${'[' + x.ctgyNm + ']'}"></td>
+        <td th:unless="${#strings.isEmpty(x.ctgyNm)}"
+            th:text="${''}"></td>
+        <td th:remove="tag" th:utext="${x.title}"></td>
+        <td th:remove="tag" th:utext="${x.wrtDt}"></td>
+        <br>
       </tr>
-
     </div>
   </div>
 </div>

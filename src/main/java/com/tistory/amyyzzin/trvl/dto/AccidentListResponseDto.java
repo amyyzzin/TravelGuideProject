@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccidentListResponseDto extends BaseResponseDto{
+public class AccidentListResponseDto extends BaseResponseDto {
 
     private List<AccidentListDto> data = new ArrayList<>();
 
