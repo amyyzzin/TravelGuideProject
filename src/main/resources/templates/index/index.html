@@ -80,59 +80,54 @@
     }
 
     h1 {
-      font-size: 30px;
+      font-size: 25px;
       color: black;
       font-weight: 300;
       text-align: left;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       padding-left: 5%;
       font-family: 'Roboto', sans-serif;
     }
 
     #board {
-      font-family: 'Open+Sans', sans-serif;
-      font-weight: 400;
       padding-left: 5%;
       padding-right: 5%;
     }
 
-    #wrtDt {
-      position: absolute;
-    }
-
     table {
       width: 50%;
-      table-layout: fixed;
+      border: 0;
     }
 
     .tbl-header {
-      background-color: rgba(255, 255, 255, 0.3);
+      /*background-color: rgba(255, 255, 255, 0.3);*/
     }
 
     .tbl-content {
       height: 40%;
       overflow-x: auto;
-      margin-top: 1%;
-      border: 1px solid rgba(85, 85, 85, 0.3);
+      /*margin-top: 1%;*/
+      border: 0;
     }
 
     th {
       text-align: center;
-      vertical-align: middle;
-      font-weight: 500;
-      font-size: 17px;
-      color: black;
-      border-bottom: 2px solid rgba(85, 85, 85, 0.3);
-
+      /*vertical-align: middle;*/
+      /*font-weight: 500;*/
+      font-size: 15px;
+      /*color: black;*/
+      border: 0;
     }
 
     td {
       text-align: center;
-      vertical-align: middle;
-      font-weight: 300;
-      font-size: 17px;
-      color: black;
-      border-bottom: 2px solid rgba(85, 85, 85, 0.3);
+      overflow-y: auto;
+      overflow-x: hidden;
+      /*vertical-align: middle;*/
+      /*font-weight: 500;*/
+      font-size: 15px;
+      /*color: black;*/
+      border: 0;
     }
 
     /* for custom scrollbar for webkit browser*/
@@ -159,7 +154,7 @@
 <body>
 <br>
 <h1>🌍TravelGuide</h1>
-<div id="map-canvas" style="width: 90%; height: 65%; margin-left: auto; margin-right: auto"></div>
+<div id="map-canvas" style="width: 90%; height: 60%; margin-left: auto; margin-right: auto"></div>
 
 <!-- Modal -->
 <div class="modal fade" id="ModalSlide" tabindex="-1" role="dialog"
@@ -207,39 +202,64 @@
 </div>
 
 <div id="board">
-  <div class="box1" style="width: 50%; float: left; padding-right: 3%">
+  <div class="table" style="width: 50%; float: left; padding-right: 3%">
     <br>
-    <h5> 💙안전공지 </h5>
-    <div class="tbl-content" >
-      <tr th:each="list : ${safetyListMain}">
-        <td th:remove="tag" th:utext="${ list.title}"></td>
-        <br>
-      </tr>
+    <h5 style="font-weight: bold"> 💙안전공지
+      <button onclick="location.href='/detail.html'" type="button" class="close" aria-label="Close">
+        <span aria-hidden="true">&#43;</span>
+      </button>
+    </h5>
 
-      <hr style="border : 0px; border-top: 2px dashed silver; margin: 5px;">
+    <hr style="border-top: 2px solid silver; margin: 2px;">
 
-        <tr th:each="x : ${safetyList}">
-          <td th:if="${not #strings.isEmpty(x.ctgyNm)}"
-              th:remove="tag" th:text="${' [' + x.ctgyNm + ']'}"></td>
-          <td th:unless="${#strings.isEmpty(x.ctgyNm)}"
-              th:text="${''}"></td>
-          <td th:remove="tag" th:utext="${x.title}"></td>
-          <td th:remove="tag" th:utext="${x.wrtDt}" style="text-align: right"></td>
-          <br>
+    <div class="tbl-content">
+
+      <table style="width: 100%;">
+        <tbody>
+        <tr th:each="list : ${safetyListMain}"style="line-height: 100%">
+          <td th:utext="${list.title}" style="text-align: left;
+          font-weight: bold; font-size: 14px"></td>
         </tr>
+        </tbody>
+      </table>
+
+<!--      <hr style="border-top: 3px dashed silver; margin: 2px;">-->
+
+      <table style="width: 100%;">
+        <tbody>
+        <tr th:each="x : ${safetyList}" style="line-height: 100%">
+          <td th:if="${not #strings.isEmpty(x.ctgyNm)}"
+              th:text="${' [' + x.ctgyNm + '] ' + x.title}"
+              style="text-align: left"></td>
+          <td th:if="${#strings.isEmpty(x.ctgyNm)}" th:text="${x.title}"
+              style="text-align: left"></td>
+          <td th:text="${x.wrtDt}" style="width: 15%; text-align: right"></td>
+        </tr>
+        </tbody>
+      </table>
 
     </div>
   </div>
 
-  <div class="box2" style="width: 50%; float: right; padding-left: 3%">
+  <div class="table" style="width: 50%; float: right; padding-left: 3%">
     <br>
-    <h5> 💚외교부공지 </h5>
-    <span id="noticeList-title"></span>
+    <h5 style="font-weight: bold"> 💚외교부공지
+        <button onclick="location.href='/detail.html'" type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&#43;</span>
+        </button>
+    </h5>
+    <hr style="border-top: 2px solid silver; margin: 2px;">
+
     <div class="tbl-content">
-      <tr th:each="notice : ${noticeListMain}">
-        <td th:remove="tag" th:utext="${notice.title}"></td>
-        <br>
-      </tr>
+
+      <table style="width: 100%; line-height: 100%">
+        <tbody>
+        <tr th:each="notice : ${noticeListMain}">
+          <td th:text="${notice.title}" style="text-align: left"></td>
+          <td th:text="${notice.writtenDt}" style="width: 15%; text-align: right"></td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
