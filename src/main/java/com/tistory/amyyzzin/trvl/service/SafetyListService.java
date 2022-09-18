@@ -69,46 +69,11 @@ public class SafetyListService {
     }
 
     public List<SafetyList> getSafetyList() {
-        return safetyListRepository.findTop5ByOrderByWrtDtDesc();
+        return safetyListRepository.findTop3ByIsMainNoticeIsFalseOrderByWrtDtDesc();
     }
 
-
-    public static void main(String[] args) throws IOException {
-        StringBuilder urlBuilder = new StringBuilder(
-            "http://apis.data.go.kr/1262000/CountrySafetyService3/getCountrySafetyList3"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=Nd%2BLFj1ko2GZ%2BMrPTWWa%2FNi3TWAnGAOEGthshlAmxbpIA3Fw50RJ2tUm7G9QRu17yNsyCesQeHdLpUOHOYvbGw%3D%3D"); /*Service Key*/
-        urlBuilder.append(
-            "&" + URLEncoder.encode("returnType", "UTF-8") + "=" + URLEncoder.encode("JSON",
-                "UTF-8")); /*XML 또는 JSON*/
-        urlBuilder.append(
-            "&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("100",
-                "UTF-8")); /*한 페이지 결과 수*/
-//        urlBuilder.append(
-//            "&" + URLEncoder.encode("cond[country_nm::EQ]", "UTF-8") + "=" + URLEncoder.encode("호주",
-//                "UTF-8")); /*한글 국가명*/
-//        urlBuilder.append("&" + URLEncoder.encode("cond[country_iso_alp2::EQ]", "UTF-8") + "="
-//            + URLEncoder.encode("AU", "UTF-8")); /*ISO 2자리코드*/
-        urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1",
-            "UTF-8")); /*페이지 번호*/
-        URL url = new URL(urlBuilder.toString());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-type", "application/json");
-        System.out.println("Response code: " + conn.getResponseCode());
-        BufferedReader rd;
-        if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        } else {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-        }
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = rd.readLine()) != null) {
-            sb.append(line);
-        }
-        rd.close();
-        conn.disconnect();
-        System.out.println(sb.toString());
+    public List<SafetyList> getMainSafetyList() {
+        return safetyListRepository.findAllByIsMainNoticeIsTrue();
     }
 
 }

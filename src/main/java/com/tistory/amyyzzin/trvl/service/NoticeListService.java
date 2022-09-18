@@ -1,11 +1,13 @@
 package com.tistory.amyyzzin.trvl.service;
 
 import com.tistory.amyyzzin.trvl.domain.NoticeList;
+import com.tistory.amyyzzin.trvl.domain.SafetyList;
 import com.tistory.amyyzzin.trvl.dto.NoticeListDto;
 import com.tistory.amyyzzin.trvl.dto.NoticeListResponseDto;
 import com.tistory.amyyzzin.trvl.repository.NoticeListRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +35,7 @@ public class NoticeListService {
         for (int i = 0; i < 3; i++) {
             try {
                 insert((NoticeListResponseDto) genericApiUtil.callJsonApi(noticeUrl,
-                    NoticeListResponseDto.class, "100"));
+                    NoticeListResponseDto.class, "50"));
                 break;
             } catch (Exception e) {
                 log.error("[NoticeListService init] ERROR {}", e.getMessage());
@@ -57,6 +59,9 @@ public class NoticeListService {
                 log.error("[NoticeList.insert] ERROR {}", e.getMessage());
             }
         }
+    }
 
+    public List<NoticeList> getNoticeList() {
+        return noticeListRepository.findTop5ByOrderByWrittenDtDesc();
     }
 }

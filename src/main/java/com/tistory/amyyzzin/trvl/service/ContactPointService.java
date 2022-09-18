@@ -37,6 +37,7 @@ public class ContactPointService {
                 break;
             } catch (Exception e) {
                 log.error("[ContactPointService init] ERROR {}", e.getMessage());
+
                 Thread.sleep(2000);
             }
         }

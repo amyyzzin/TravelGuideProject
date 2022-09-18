@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jsoup.Jsoup;
 
 @Data
 @Entity
@@ -77,10 +78,10 @@ public class CovidSafety {
 			.countryNm(covidSafetyDto.getCountryNm())
 			.fileDownloadUrl(covidSafetyDto.getFileDownloadUrl())
 			.filePath(covidSafetyDto.getFilePath())
-			.htmlOriginCn(covidSafetyDto.getHtmlOriginCn())
+			.htmlOriginCn(Jsoup.parse(covidSafetyDto.getHtmlOriginCn()).text().replace("\uFEFF", ""))
 			.sftyNoticeId(covidSafetyDto.getSftyNoticeId())
 			.title(covidSafetyDto.getTitle())
-			.txtOriginCn(covidSafetyDto.getTxtOriginCn())
+			.txtOriginCn(Jsoup.parse(covidSafetyDto.getTxtOriginCn()).text().replace("\uFEFF", ""))
 			.wrtDt(covidSafetyDto.getWrtDt())
 			.build();
 	}

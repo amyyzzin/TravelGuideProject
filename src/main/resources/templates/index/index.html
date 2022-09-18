@@ -91,10 +91,13 @@
 
     #board {
       font-family: 'Open+Sans', sans-serif;
-      font-weight: 300;
-      text-align: left;
+      font-weight: 400;
       padding-left: 5%;
       padding-right: 5%;
+    }
+
+    #wrtDt {
+      position: absolute;
     }
 
     table {
@@ -110,7 +113,7 @@
       height: 40%;
       overflow-x: auto;
       margin-top: 1%;
-      border: 2px solid rgba(85, 85, 85, 0.3);
+      border: 1px solid rgba(85, 85, 85, 0.3);
     }
 
     th {
@@ -154,6 +157,7 @@
 </head>
 
 <body>
+<br>
 <h1>🌍TravelGuide</h1>
 <div id="map-canvas" style="width: 90%; height: 65%; margin-left: auto; margin-right: auto"></div>
 
@@ -202,24 +206,42 @@
   </div>
 </div>
 
-<div id="board" style="width: 90%;">
-  <div class="box1" style="width: 45%;">
+<div id="board">
+  <div class="box1" style="width: 50%; float: left; padding-right: 3%">
     <br>
     <h5> 💙안전공지 </h5>
-    <span id="safetyList-title"></span>
+    <div class="tbl-content" >
+      <tr th:each="list : ${safetyListMain}">
+        <td th:remove="tag" th:utext="${ list.title}"></td>
+        <br>
+      </tr>
+
+      <hr style="border : 0px; border-top: 2px dashed silver; margin: 5px;">
+
+        <tr th:each="x : ${safetyList}">
+          <td th:if="${not #strings.isEmpty(x.ctgyNm)}"
+              th:remove="tag" th:text="${' [' + x.ctgyNm + ']'}"></td>
+          <td th:unless="${#strings.isEmpty(x.ctgyNm)}"
+              th:text="${''}"></td>
+          <td th:remove="tag" th:utext="${x.title}"></td>
+          <td th:remove="tag" th:utext="${x.wrtDt}" style="text-align: right"></td>
+          <br>
+        </tr>
+
+    </div>
+  </div>
+
+  <div class="box2" style="width: 50%; float: right; padding-left: 3%">
+    <br>
+    <h5> 💚외교부공지 </h5>
+    <span id="noticeList-title"></span>
     <div class="tbl-content">
-      <tr th:each="x : ${safetyList}">
-        <td th:if="${not #strings.isEmpty(x.ctgyNm)}"
-             th:remove="tag"  th:text="${'[' + x.ctgyNm + ']'}"></td>
-        <td th:unless="${#strings.isEmpty(x.ctgyNm)}"
-            th:text="${''}"></td>
-        <td th:remove="tag" th:utext="${x.title}"></td>
-        <td th:remove="tag" th:utext="${x.wrtDt}"></td>
+      <tr th:each="notice : ${noticeListMain}">
+        <td th:remove="tag" th:utext="${notice.title}"></td>
         <br>
       </tr>
     </div>
   </div>
-</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

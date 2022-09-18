@@ -73,6 +73,7 @@ public class XmlApiUtil {
                 .countryNm((String) item.get("countryName"))
                 .countryEngNm((String) item.get("countryEnName"))
                 .continent((String) item.get("continent"))
+                .imgUrl((String) item.get("imgUrl"))
                 .build();
 
             countryBasicInfoDtos.add(countryBasicInfoDto);

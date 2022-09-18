@@ -2,6 +2,7 @@ package com.tistory.amyyzzin.trvl.repository;
 
 import com.tistory.amyyzzin.trvl.domain.CountryFlag;
 import com.tistory.amyyzzin.trvl.domain.NoticeList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,5 +12,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface NoticeListRepository extends JpaRepository<NoticeList, Long> {
 
-
+    List<NoticeList> findTop5ByOrderByWrittenDtDesc();
 }

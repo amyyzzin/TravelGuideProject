@@ -85,5 +85,4 @@ public class GenericApiUtil<T> {
 
         return (T) responseDto;
     }
-
 }

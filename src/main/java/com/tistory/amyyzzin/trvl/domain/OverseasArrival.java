@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jsoup.Jsoup;
 
 @Data
 @Entity
@@ -54,7 +55,7 @@ public class OverseasArrival {
 			.countryEngNm(overseasArrivalDto.getCountryEngNm())
 			.countryIsoAlp2(overseasArrivalDto.getCountryIsoAlp2())
 			.countryNm(overseasArrivalDto.getCountryNm())
-			.htmlOriginCn(overseasArrivalDto.getHtmlOriginCn())
+			.htmlOriginCn(Jsoup.parse(overseasArrivalDto.getHtmlOriginCn()).text().replace("\uFEFF", ""))
 			.noticeId(overseasArrivalDto.getNoticeId())
 			.title(overseasArrivalDto.getTitle())
 			.txtOriginCn(overseasArrivalDto.getTxtOriginCn())
