@@ -1,5 +1,6 @@
 package com.tistory.amyyzzin.trvl.controller;
 
+import com.tistory.amyyzzin.trvl.config.PageConfig;
 import com.tistory.amyyzzin.trvl.service.CountryFlagService;
 import com.tistory.amyyzzin.trvl.service.NoticeListService;
 import com.tistory.amyyzzin.trvl.service.SafetyListService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class GoogleMapController extends BaseController{
+public class NoticeListController {
 
     private final CountryFlagService countryFlagService;
     private final SafetyListService safetyListService;
@@ -20,13 +21,12 @@ public class GoogleMapController extends BaseController{
 
 
 
-    @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("safetyListMain", safetyListService.getMainSafetyList());
-        model.addAttribute("safetyList", safetyListService.getSafetyList());
+    @GetMapping("index/noticeListDetail")
+    public String index(Model model, PageConfig pageConfig) {
 
-        model.addAttribute("noticeListMain", noticeListService.getNoticeList());
+        model.addAttribute("allNoticeList", noticeListService.getAllNoticeList());
 
-        return "index/index";
+
+        return "index/noticeListDetail";
     }
 }

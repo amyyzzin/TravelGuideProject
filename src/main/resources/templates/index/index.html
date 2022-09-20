@@ -8,7 +8,6 @@
     html, body {
       width: 100%;
       height: 100%;
-      margin: 0;
     }
 
     .modal-content modal-fullsize {
@@ -18,7 +17,6 @@
     .modal.fade {
       position: fixed;
       margin-left: 10%;
-      margin-right: 0;
     }
 
     .modal-title {
@@ -96,7 +94,6 @@
 
     table {
       width: 50%;
-      border: 0;
     }
 
     .tbl-header {
@@ -106,8 +103,7 @@
     .tbl-content {
       height: 40%;
       overflow-x: auto;
-      /*margin-top: 1%;*/
-      border: 0;
+      border: none;
     }
 
     th {
@@ -115,19 +111,14 @@
       /*vertical-align: middle;*/
       /*font-weight: 500;*/
       font-size: 15px;
-      /*color: black;*/
-      border: 0;
     }
 
     td {
       text-align: center;
       overflow-y: auto;
       overflow-x: hidden;
-      /*vertical-align: middle;*/
-      /*font-weight: 500;*/
       font-size: 15px;
-      /*color: black;*/
-      border: 0;
+      border: none;
     }
 
     /* for custom scrollbar for webkit browser*/
@@ -204,13 +195,13 @@
 <div id="board">
   <div class="table" style="width: 50%; float: left; padding-right: 3%">
     <br>
-    <h5 style="font-weight: bold"> 💙안전공지
-      <button onclick="location.href='/detail.html'" type="button" class="close" aria-label="Close">
+    <h5 style="font-weight: bold"> 💙 안전공지
+      <button onclick="location.href='/index/safetyListDetail'" type="button" class="close" aria-label="Close">
         <span aria-hidden="true">&#43;</span>
       </button>
     </h5>
 
-    <hr style="border-top: 2px solid silver; margin: 2px;">
+    <hr style="border-top: 4px solid silver; margin:0%;">
 
     <div class="tbl-content">
 
@@ -243,12 +234,12 @@
 
   <div class="table" style="width: 50%; float: right; padding-left: 3%">
     <br>
-    <h5 style="font-weight: bold"> 💚외교부공지
-        <button onclick="location.href='/detail.html'" type="button" class="close" aria-label="Close">
+    <h5 style="font-weight: bold"> 💚 외교부공지
+      <button onclick="location.href='/index/noticeListDetail'" type="button" class="close" aria-label="Close">
           <span aria-hidden="true">&#43;</span>
         </button>
     </h5>
-    <hr style="border-top: 2px solid silver; margin: 2px;">
+    <hr style="border-top: 4px solid silver; margin:0%;">
 
     <div class="tbl-content">
 

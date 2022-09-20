@@ -64,4 +64,8 @@ public class NoticeListService {
     public List<NoticeList> getNoticeList() {
         return noticeListRepository.findTop5ByOrderByWrittenDtDesc();
     }
+
+    public List<NoticeList> getAllNoticeList() {
+        return noticeListRepository.findALlByOrderByWrittenDtDesc();
+    }
 }

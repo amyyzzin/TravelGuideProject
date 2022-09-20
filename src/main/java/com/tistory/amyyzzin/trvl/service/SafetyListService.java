@@ -16,6 +16,9 @@ import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -68,12 +71,21 @@ public class SafetyListService {
         }
     }
 
+    public List<SafetyList> getMainSafetyList() {
+        return safetyListRepository.findAllByIsMainNoticeIsTrueOrderByWrtDtDesc();
+    }
+
     public List<SafetyList> getSafetyList() {
         return safetyListRepository.findTop3ByIsMainNoticeIsFalseOrderByWrtDtDesc();
     }
 
-    public List<SafetyList> getMainSafetyList() {
-        return safetyListRepository.findAllByIsMainNoticeIsTrue();
+    public List<SafetyList> getListAll() {
+        return safetyListRepository.findAll();
     }
 
+    public Page<SafetyList> getSafetyPageAll(PageRequest pageRequest) {
+        Pageable paging = PageRequest.of(0, 10);
+        return safetyListRepository.findAllByIsMainNoticeIsFalseOrderByWrtDtDesc(pageRequest);
+    }
 }
+

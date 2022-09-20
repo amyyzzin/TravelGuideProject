@@ -13,4 +13,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface NoticeListRepository extends JpaRepository<NoticeList, Long> {
 
     List<NoticeList> findTop5ByOrderByWrittenDtDesc();
+    List<NoticeList> findALlByOrderByWrittenDtDesc();
 }
