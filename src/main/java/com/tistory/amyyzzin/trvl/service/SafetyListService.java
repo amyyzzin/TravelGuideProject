@@ -84,7 +84,7 @@ public class SafetyListService {
     }
 
     public Page<SafetyList> getSafetyPageAll(PageRequest pageRequest) {
-        Pageable paging = PageRequest.of(0, 10);
+//        Pageable paging = PageRequest.of(0, 10);
         return safetyListRepository.findAllByIsMainNoticeIsFalseOrderByWrtDtDesc(pageRequest);
     }
 }

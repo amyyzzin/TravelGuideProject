@@ -12,6 +12,9 @@ import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -65,7 +68,12 @@ public class NoticeListService {
         return noticeListRepository.findTop5ByOrderByWrittenDtDesc();
     }
 
-    public List<NoticeList> getAllNoticeList() {
-        return noticeListRepository.findALlByOrderByWrittenDtDesc();
+    public List<NoticeList> getListAll() {
+        return noticeListRepository.findAll();
+    }
+
+    public Page<NoticeList> getAllNoticeList(PageRequest pageRequest) {
+        Pageable paging = PageRequest.of(0, 10);
+        return noticeListRepository.findALlByOrderByWrittenDtDesc(pageRequest);
     }
 }
