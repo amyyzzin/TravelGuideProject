@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>SafetyListDetail</title>
+  <title>SafetyDetailList</title>
   <style>
 
     html, body {
@@ -33,12 +33,12 @@
       font-size: 17px;
       font-weight: bold;
     }
-    tbody{
+
+    tbody {
       font-size: 15px;
       border: solid 1px #000;
       overflow-x: hidden;
     }
-
 
 
   </style>
@@ -47,15 +47,15 @@
 <br>
 <h1>💙 안전 공지</h1>
 
-<div class="table" style="line-height: 200%" >
+<div class="table" style="line-height: 200%">
   <table>
     <thead>
-    <th style="width: 5%;"> 번호 </th>
-    <th style="width: 10%;"> 국가/지역 </th>
-    <th style="width: 5%;"> 구분 </th>
-    <th style="width: auto;"> 제목 </th>
-    <th style="width: 10%;"> 첨부파일 </th>
-    <th style="width: 10%;"> 등록일 </th>
+    <th style="width: 5%;"> 번호</th>
+    <th style="width: 10%;"> 국가/지역</th>
+    <th style="width: 5%;"> 구분</th>
+    <th style="width: auto;"> 제목</th>
+    <th style="width: 10%;"> 첨부파일</th>
+    <th style="width: 10%;"> 등록일</th>
     </thead>
 
     <tbody>
@@ -68,10 +68,12 @@
       <td th:if="${#strings.isEmpty(list.continentNm)}" th:text="${list.countryNm}"></td>
 
       <td th:if="${not #strings.isEmpty(list.ctgyNm)}"
-          th:text="${list.ctgyNm}" ></td>
+          th:text="${list.ctgyNm}"></td>
       <td th:if="${#strings.isEmpty(list.ctgyNm)}" th:text="${''}"></td>
 
-      <td th:text="${list.title}" style="width: auto; text-align: left;"></td>
+      <td th:id="${list.id}" th:onclick="moveToDetailPage(this.getAttribute('id'))"
+          th:text="${list.title}" style="text-align: left;">
+      </td>
 
       <td th:if="${not #strings.isEmpty(list.fileDownloadUrl)}"
           th:text="${'💾'}"></td>
@@ -87,26 +89,36 @@
       <td th:if="${not #strings.isEmpty(x.continentNm)}"
           th:text="${x.continentNm + '/' + x.countryNm}"></td>
       <td th:if="${#strings.isEmpty(x.continentNm)}" th:text="${x.countryNm}"></td>
-<!--      <td th:text="${x.continentNm + '/' + x.countryNm}"></td>-->
+      <!--      <td th:text="${x.continentNm + '/' + x.countryNm}"></td>-->
 
       <td th:if="${not #strings.isEmpty(x.ctgyNm)}"
-          th:text="${x.ctgyNm}" ></td>
+          th:text="${x.ctgyNm}"></td>
       <td th:if="${#strings.isEmpty(x.ctgyNm)}" th:text="${''}"></td>
 
-      <td th:text="${x.title}" style="width: auto; text-align: left;"></td>
+      <td th:id="${x.id}" th:onclick="moveToDetailPage(this.getAttribute('id'))"
+          th:text="${x.title}" style="text-align: left;">
+      </td>
 
       <td th:if="${not #strings.isEmpty(x.fileDownloadUrl)}"
           th:text="${'💾'}"></td>
       <td th:if="${#strings.isEmpty(x.fileDownloadUrl)}" th:text="${''}"></td>
-<!--      <td th:text="${x.fileDownloadUrl}" style="width: 15%;"></td>-->
+      <!--      <td th:text="${x.fileDownloadUrl}" style="width: 15%;"></td>-->
 
       <td th:text="${x.wrtDt}"></td>
     </tr>
     </tbody>
   </table>
-  <div class="pager" th:if="${getSafetyListAll.size > 0}" th:utext="${pager}" style="text-align: center">
+  <div class="pager" th:if="${getSafetyListAll.size > 0}" th:utext="${pager}"
+       style="text-align: center">
   </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+  function moveToDetailPage(id) {
+    window.location.href="/index/safetyDetail/" + id;
+  }
+</script>
 
 </body>
 </html>

@@ -2,9 +2,7 @@ package com.tistory.amyyzzin.trvl.controller;
 
 import com.tistory.amyyzzin.trvl.config.PageConfig;
 import com.tistory.amyyzzin.trvl.domain.NoticeList;
-import com.tistory.amyyzzin.trvl.service.CountryFlagService;
 import com.tistory.amyyzzin.trvl.service.NoticeListService;
-import com.tistory.amyyzzin.trvl.service.SafetyListService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,7 +18,7 @@ public class NoticeListController extends BaseController {
     private final NoticeListService noticeListService;
 
 
-    @GetMapping("index/noticeListDetail")
+    @GetMapping("index/noticeDetailList")
     public String index(Model model, PageConfig parameter) {
 
         parameter.init();
@@ -41,6 +39,6 @@ public class NoticeListController extends BaseController {
         model.addAttribute("pager", pagerHtml);
         model.addAttribute("pageIndex", parameter.getPageIndex() - 1);
 
-        return "index/noticeListDetail";
+        return "index/noticeDetailList";
     }
 }

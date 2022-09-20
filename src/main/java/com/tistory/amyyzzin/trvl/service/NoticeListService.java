@@ -8,9 +8,11 @@ import com.tistory.amyyzzin.trvl.repository.NoticeListRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -76,4 +78,22 @@ public class NoticeListService {
         Pageable paging = PageRequest.of(0, 10);
         return noticeListRepository.findALlByOrderByWrittenDtDesc(pageRequest);
     }
+
+//    public Optional<NoticeList> getDetailByListId(String listId) {
+//        return noticeListRepository.findByListId(listId);
+//    }
+
+    public NoticeListDto detail(String listId) {
+
+        Optional<NoticeList> optionalMember = noticeListRepository.findByListId(listId);
+
+        if (!optionalMember.isPresent()) {
+            return null;
+        }
+
+        NoticeList noticeList = optionalMember.get();
+
+        return NoticeListDto.of(noticeList);
+    }
+
 }

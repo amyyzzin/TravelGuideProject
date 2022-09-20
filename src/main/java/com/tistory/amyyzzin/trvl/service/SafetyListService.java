@@ -1,6 +1,8 @@
 package com.tistory.amyyzzin.trvl.service;
 
+import com.tistory.amyyzzin.trvl.domain.NoticeList;
 import com.tistory.amyyzzin.trvl.domain.SafetyList;
+import com.tistory.amyyzzin.trvl.dto.NoticeListDto;
 import com.tistory.amyyzzin.trvl.dto.SafetyListDto;
 import com.tistory.amyyzzin.trvl.dto.SafetyListResponseDto;
 import com.tistory.amyyzzin.trvl.repository.SafetyListRepository;
@@ -12,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -84,8 +87,21 @@ public class SafetyListService {
     }
 
     public Page<SafetyList> getSafetyPageAll(PageRequest pageRequest) {
-//        Pageable paging = PageRequest.of(0, 10);
         return safetyListRepository.findAllByIsMainNoticeIsFalseOrderByWrtDtDesc(pageRequest);
+    }
+
+
+    public SafetyListDto detail(Long id) {
+
+        Optional<SafetyList> optionalMember = safetyListRepository.findById(id);
+
+        if (!optionalMember.isPresent()) {
+            return null;
+        }
+
+        SafetyList safetyList = optionalMember.get();
+
+        return SafetyListDto.of(safetyList);
     }
 }
 

@@ -20,9 +20,9 @@
     }
 
     h1 {
-      font-size: 25px;
+      /*font-size: 25px;*/
       color: black;
-      font-weight: 300;
+      /*font-weight: 300;*/
       text-align: left;
       margin-bottom: 10px;
       padding-left: 5%;
@@ -33,12 +33,12 @@
       font-size: 17px;
       font-weight: bold;
     }
-    tbody{
+
+    tbody {
       font-size: 15px;
       border: solid 1px #000;
       overflow-x: hidden;
     }
-
 
 
   </style>
@@ -47,35 +47,43 @@
 <br>
 <h1>💚 외교부 공지</h1>
 
-<div class="table" style="line-height: 200%" >
+<div class="table" style="line-height: 200%">
   <table>
     <thead>
-    <th style="width: 5%;"> 번호 </th>
-    <th style="width: auto;"> 제목 </th>
-    <th style="width: 10%;"> 첨부파일 </th>
-    <th style="width: 10%;"> 등록일 </th>
+    <th style="width: 5%;"> 번호</th>
+    <th style="width: auto;"> 제목</th>
+    <th style="width: 10%;"> 첨부파일</th>
+    <th style="width: 10%;"> 등록일</th>
     </thead>
 
     <tbody>
 
     <tr th:each="list : ${allNoticeList}">
       <td th:text="${list.id}"></td>
+      <td th:id="${list.listId}" th:onclick="moveToDetailPage(this.getAttribute('id'))"
+          th:text="${list.title}" style="text-align: left;">
+      </td>
 
-      <td th:text="${list.title}" style="width: auto; text-align: left;"></td>
 
       <td th:if="${not #strings.isEmpty(list.fileDownloadUrl)}"
           th:text="${'💾'}"></td>
       <td th:if="${#strings.isEmpty(list.fileDownloadUrl)}" th:text="${''}"></td>
-      <!--      <td th:text="${x.fileDownloadUrl}" style="width: 15%;"></td>-->
 
       <td th:text="${list.writtenDt}"></td>
     </tr>
 
     </tbody>
   </table>
-  <div class="pager" th:if="${allNoticeList.size > 0}" th:utext="${pager}" style="text-align: center">
+  <div class="pager" th:if="${allNoticeList.size > 0}" th:utext="${pager}"
+       style="text-align: center">
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+  function moveToDetailPage(id) {
+    window.location.href="/index/noticeDetail/" + id;
+  }
+</script>
 </body>
 </html>

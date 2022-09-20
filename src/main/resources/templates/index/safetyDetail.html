@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NoticeDetail</title>
+  <style>
+
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    table {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      border-collapse: collapse;
+      border: solid 1px #000;
+      text-align: center;
+    }
+
+    h1 {
+      /*font-size: 25px;*/
+      color: black;
+      /*font-weight: 300;*/
+      text-align: left;
+      margin-bottom: 10px;
+      padding-left: 5%;
+      /*font-family: 'Roboto', sans-serif;*/
+    }
+
+    tbody {
+      font-size: 15px;
+      border: solid 1px #000;
+      overflow-x: hidden;
+    }
+
+  </style>
+</head>
+<body>
+<br>
+<h1>💙 안전 공지</h1>
+
+<div class="table" style="line-height: 200%">
+  <table>
+    <tbody>
+    <tr>
+      <th>제목</th>
+      <td>
+        <p th:text="${safety.title}"></p>
+      </td>
+    </tr>
+    <tr>
+      <th>등록일</th>
+      <td>
+        <p th:text="${safety.wrtDt}"></p>
+      </td>
+    </tr>
+    <tr>
+      <th>첨부파일</th>
+      <td>
+        <p th:text="${safety.fileDownloadUrl}"></p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <p th:text="${safety.txtOriginCn}"></p>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
