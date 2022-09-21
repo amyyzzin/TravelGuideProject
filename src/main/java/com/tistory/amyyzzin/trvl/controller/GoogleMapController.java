@@ -27,6 +27,7 @@ public class GoogleMapController extends BaseController{
 
         model.addAttribute("noticeListMain", noticeListService.getNoticeList());
 
+
         return "index/index";
     }
 }
