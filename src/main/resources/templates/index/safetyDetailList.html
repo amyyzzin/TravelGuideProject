@@ -73,12 +73,12 @@
           th:text="${list.continentNm + ' / ' + list.countryNm}"></td>
       <td th:if="${#strings.isEmpty(list.continentNm)}" th:text="${list.countryNm}"></td>
 
-      <td th:if="${not #strings.isEmpty(list.ctgyNm)}"
+      <td th:if="${not #strings.isEmpty(list.ctgyNm)}" style="font-weight: bold; color: cornflowerblue"
           th:text="${list.ctgyNm}"></td>
       <td th:if="${#strings.isEmpty(list.ctgyNm)}" th:text="${''}"></td>
 
       <td th:id="${list.id}" th:onclick="moveToDetailPage(this.getAttribute('id'))"
-          th:text="${'[공지] ' + list.title}" style="text-align: left;">
+          th:text="${'[ 공지 ] ' + list.title}" style="text-align: left;">
       </td>
 
       <td th:if="${not #strings.isEmpty(list.fileDownloadUrl)}"

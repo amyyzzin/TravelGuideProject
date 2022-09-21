@@ -79,10 +79,6 @@ public class NoticeListService {
         return noticeListRepository.findALlByOrderByWrittenDtDesc(pageRequest);
     }
 
-//    public Optional<NoticeList> getDetailByListId(String listId) {
-//        return noticeListRepository.findByListId(listId);
-//    }
-
     public NoticeListDto detail(String listId) {
 
         Optional<NoticeList> optionalMember = noticeListRepository.findByListId(listId);

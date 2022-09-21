@@ -60,8 +60,10 @@ public class SafetyListDto {
             .ctgyNm(safetyList.getCtgyNm())
             .fileDownloadUrl(safetyList.getFileDownloadUrl())
             .filePath(safetyList.getFilePath())
-            .title(Jsoup.parse(safetyList.getTitle()).text().replace("\uFEFF", ""))
-            .txtOriginCn(Jsoup.parse(safetyList.getTxtOriginCn()).text().replace("\uFEFF", ""))
+            .title(safetyList.getTitle())
+            .txtOriginCn(safetyList.getTxtOriginCn())
+//            .title(Jsoup.parse(safetyList.getTitle()).text().replace("\uFEFF", ""))
+//            .txtOriginCn(Jsoup.parse(safetyList.getTxtOriginCn()).text().replace("\uFEFF", ""))
             .wrtDt(safetyList.getWrtDt())
             .build();
     }

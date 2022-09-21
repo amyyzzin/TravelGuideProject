@@ -41,7 +41,10 @@ public class NoticeList {
             .fileDownloadUrl(noticeListDto.getFileDownloadUrl())
             .title(noticeListDto.getTitle())
 //            .txtOriginCn(noticeListDto.getTxtOriginCn())
-            .txtOriginCn(Jsoup.parse(noticeListDto.getTxtOriginCn()).text().replace("\uFEFF", ""))
+            .txtOriginCn(Jsoup.parse(noticeListDto.getTxtOriginCn()).text()
+                .replace("다.", "다. <br>")
+                .replace("○", "<br> ○")
+                .replace("□", "<br> □"))
             .writtenDt(noticeListDto.getWrittenDt())
             .build();
     }

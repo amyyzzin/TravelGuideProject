@@ -75,7 +75,12 @@ public class SafetyList {
             .fileDownloadUrl(safetyListDto.getFileDownloadUrl())
             .filePath(safetyListDto.getFilePath())
             .title(Jsoup.parse(safetyListDto.getTitle()).text().replace("\uFEFF", ""))
-            .txtOriginCn(Jsoup.parse(safetyListDto.getTxtOriginCn()).text().replace("\uFEFF", ""))
+            .txtOriginCn(safetyListDto.getTxtOriginCn())
+//            .txtOriginCn(Jsoup.parse(safetyListDto.getTxtOriginCn()).text()
+//                .replace("\uFEFF", "")
+//                .replace("다.", "다. <br>")
+//                .replace("○", "<br> ○")
+//                .replace("□", "<br> □"))
             .wrtDt(safetyListDto.getWrtDt())
             .build();
     }

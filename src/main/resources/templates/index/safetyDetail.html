@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>NoticeDetail</title>
+  <title>SafetyDetail</title>
   <style>
 
     html, body {
@@ -50,51 +50,52 @@
 </div>
 
 <div style="width: 75%; float: right; margin-right: 5%">
-<h1>💙 안전 공지</h1>
-<div class="table" style="line-height: 200%">
-  <table>
-    <tbody>
-    <tr>
-      <th>국가</th>
-      <td th:if="${not #strings.isEmpty(safety.countryIsoAlp2)}"
-          th:text="${safety.countryNm}"></td>
-      <td th:if="${#strings.isEmpty(safety.countryIsoAlp2)}"
-          th:text="${'전체국가'}"></td>
-    </tr>
-    <tr>
-      <th>제목</th>
-      <td th:if="${not #strings.isEmpty(safety.ctgyNm)}"
-          th:text="${' [' + safety.ctgyNm + '] ' + safety.title}"></td>
-      <td th:if="${#strings.isEmpty(safety.ctgyNm)}"
-          th:text="${safety.title}"></td>
-    </tr>
-    <tr>
-      <th>등록일</th>
-      <td>
-        <p th:text="${safety.wrtDt}"></p>
-      </td>
-    </tr>
-    <tr>
-      <th>첨부파일</th>
-      <td th:if="${not #strings.isEmpty(safety.fileDownloadUrl)}">
-        <button type="button" class="close" aria-label="Close"
-                th:id="${safety.fileDownloadUrl}"
-                th:onclick="moveToDownloadPage(this.getAttribute('id'))"
-                th:text="${'💾'}">
-          <span aria-hidden="true"></span>
-        </button>
-      </td>
-      <td th:if="${#strings.isEmpty(safety.fileDownloadUrl)}" th:text="${'✖'}"></td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <p th:text="${safety.txtOriginCn}"></p>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <h1>💙 안전 공지</h1>
+  <div class="table" style="line-height: 200%">
+    <table>
+      <tbody>
+      <tr>
+        <th>국가</th>
+        <td th:if="${not #strings.isEmpty(safety.countryIsoAlp2)}"
+            th:text="${safety.countryNm}"></td>
+        <td th:if="${#strings.isEmpty(safety.countryIsoAlp2)}"
+            th:text="${'전체국가'}"></td>
+      </tr>
+      <tr>
+        <th>제목</th>
+        <td th:if="${not #strings.isEmpty(safety.ctgyNm)}"
+            th:text="${' [ ' + safety.ctgyNm + ' ] ' + safety.title}"></td>
+        <td th:if="${#strings.isEmpty(safety.ctgyNm)}"
+            th:text="${safety.title}"></td>
+      </tr>
+      <tr>
+        <th>등록일</th>
+        <td>
+          <p th:text="${safety.wrtDt}"></p>
+        </td>
+      </tr>
+      <tr>
+        <th>첨부파일</th>
+        <td th:if="${not #strings.isEmpty(safety.fileDownloadUrl)}">
+          <button type="button" class="close" aria-label="Close"
+                  th:id="${safety.fileDownloadUrl}"
+                  th:onclick="moveToDownloadPage(this.getAttribute('id'))"
+                  th:text="${'💾'}">
+            <span aria-hidden="true"></span>
+          </button>
+        </td>
+        <td th:if="${#strings.isEmpty(safety.fileDownloadUrl)}" th:text="${'✖'}"></td>
+      </tr>
+      <tr>
+        <td colspan="2" style="padding: 0 10% 0 10%;">
+          <p th:utext="${safety.txtOriginCn}"></p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-</div>
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
   function moveToDownloadPage(id) {

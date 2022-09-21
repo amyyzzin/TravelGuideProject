@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>NoticeDetail</title>
@@ -78,12 +78,11 @@
           </button>
         </td>
         <td th:if="${#strings.isEmpty(notice.fileDownloadUrl)}" th:text="${'✖'}"></td>
-
-
       </tr>
       <tr>
         <td colspan="2">
-          <p th:text="${notice.txtOriginCn}"></p>
+          <p style="padding: 0 10% 3% 10%; word-break: keep-all; text-align: left"
+             th:utext="${notice.txtOriginCn}"></p>
         </td>
       </tr>
       </tbody>
