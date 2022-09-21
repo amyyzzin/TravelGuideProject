@@ -35,6 +35,10 @@
       overflow-x: hidden;
     }
 
+    th, td {
+      border: 1px solid black;
+    }
+
   </style>
 </head>
 <body>
@@ -59,8 +63,13 @@
     <tr>
       <th>첨부파일</th>
       <td>
-        <p th:text="${notice.fileDownloadUrl}"></p>
+        <button type="button" class="close" aria-label="Close"
+                th:id="${notice.fileDownloadUrl}"
+                th:onclick="moveToDownloadPage(this.getAttribute('id'))">
+          <span aria-hidden="true">💾</span>
+        </button>
       </td>
+
     </tr>
     <tr>
       <td colspan="2">
@@ -70,6 +79,11 @@
     </tbody>
   </table>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+  function moveToDownloadPage(id) {
+    window.location.href = id;
+  }
+</script>
 </body>
 </html>

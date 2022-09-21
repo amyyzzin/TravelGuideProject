@@ -19,6 +19,10 @@
       text-align: center;
     }
 
+    th, td {
+      border: 1px solid black;
+    }
+
     h1 {
       /*font-size: 25px;*/
       color: black;
@@ -45,10 +49,18 @@
   <table>
     <tbody>
     <tr>
+      <th>국가</th>
+      <td th:if="${not #strings.isEmpty(safety.countryIsoAlp2)}"
+          th:text="${safety.countryNm}"></td>
+      <td th:if="${#strings.isEmpty(safety.countryIsoAlp2)}"
+          th:text="${'전체국가'}"></td>
+    </tr>
+    <tr>
       <th>제목</th>
-      <td>
-        <p th:text="${safety.title}"></p>
-      </td>
+      <td th:if="${not #strings.isEmpty(safety.ctgyNm)}"
+          th:text="${' [' + safety.ctgyNm + '] ' + safety.title}"></td>
+      <td th:if="${#strings.isEmpty(safety.ctgyNm)}"
+          th:text="${safety.title}"></td>
     </tr>
     <tr>
       <th>등록일</th>
@@ -58,9 +70,14 @@
     </tr>
     <tr>
       <th>첨부파일</th>
-      <td>
-        <p th:text="${safety.fileDownloadUrl}"></p>
+      <td th:if="${not #strings.isEmpty(safety.fileDownloadUrl)}">
+        <button type="button" class="close" aria-label="Close"
+                th:id="${safety.fileDownloadUrl}"
+                th:onclick="moveToDownloadPage(this.getAttribute('id'))">
+          <span aria-hidden="true">💾</span>
+        </button>
       </td>
+      <td th:if="${#strings.isEmpty(safety.fileDownloadUrl)}" th:text="${''}"></td>
     </tr>
     <tr>
       <td colspan="2">
@@ -70,6 +87,11 @@
     </tbody>
   </table>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+  function moveToDownloadPage(id) {
+    window.location.href = id;
+  }
+</script>
 </body>
 </html>
