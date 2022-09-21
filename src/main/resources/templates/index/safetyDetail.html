@@ -86,9 +86,9 @@
         </td>
         <td th:if="${#strings.isEmpty(safety.fileDownloadUrl)}" th:text="${'✖'}"></td>
       </tr>
-      <tr>
-        <td colspan="2" style="padding: 0 10% 0 10%;">
-          <p th:utext="${safety.txtOriginCn}"></p>
+      <td colspan="2">
+        <p style="padding: 0 10% 3% 10%; word-break: keep-all; text-align: left"
+          th:utext="${safety.txtOriginCn}"></p>
         </td>
       </tr>
       </tbody>
