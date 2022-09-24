@@ -3,11 +3,84 @@
 <head>
   <meta charset="utf-8">
   <title>TravelGuide</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+  <link rel="stylesheet" type="text/css" href="./style.css" />
+  <script type="module" src="./index.js"></script>
+
   <style>
 
     html, body {
       width: 100%;
       height: 100%;
+    }
+
+    #infowindow-content .title {
+      font-weight: bold;
+    }
+
+    #infowindow-content {
+      display: none;
+    }
+
+    #map #infowindow-content {
+      display: inline;
+    }
+
+    .pac-card {
+      background-color: #fff;
+      border: 0;
+      border-radius: 2px;
+      box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+      margin: 10px;
+      padding: 0 0.5em;
+      font: 400 18px Roboto, Arial, sans-serif;
+      overflow: hidden;
+      font-family: Roboto;
+      padding: 0;
+    }
+
+    #pac-container {
+      padding-bottom: 12px;
+      margin-right: 12px;
+    }
+
+    .pac-controls {
+      display: inline-block;
+      padding: 5px 11px;
+    }
+
+    .pac-controls label {
+      font-family: Roboto;
+      font-size: 13px;
+      font-weight: 300;
+    }
+
+    #pac-input {
+      float: right;
+      margin-right: 11%;
+      background-color: #fff;
+      font-size: 15px;
+      font-weight: 300;
+      text-overflow: ellipsis;
+      width: 400px;
+      height: 40px;
+    }
+
+    #pac-input:focus {
+      border-color: #4d90fe;
+    }
+
+    #title {
+      color: #fff;
+      background-color: #4d90fe;
+      font-size: 25px;
+      font-weight: 500;
+      padding: 6px 12px;
+    }
+
+    #target {
+      width: 345px;
     }
 
     .modal-content modal-fullsize {
@@ -68,7 +141,7 @@
     }
 
     .modal-dialog-slideout .modal-footer {
-      text-align: end;
+      text-align: center;
     }
 
     .modal-dialog.modal-center {
@@ -143,7 +216,11 @@
 
 <body>
 <br>
-<h1>🌍TravelGuide</h1>
+<div id="map">
+<h1 th onclick="location.href='/'" style="float: left;" >🌍TravelGuide </h1>
+<input id="pac-input" class="controls" type="text" placeholder="어디로 떠나볼까요?" style="float: right;"/>
+</div>
+
 <div id="map-canvas" style="width: 80%; height: 55%; margin-left: auto; margin-right: auto"></div>
 
 <!-- Modal -->
@@ -152,44 +229,43 @@
   <div class="modal-dialog modal-dialog-slideout " role="document">
     <div class="modal-content modal-fullsize">
       <div class="modal-header">
-
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-
         <h4 class="modal-title" id="myModalLabel">
           <span id="country-nm"></span>(<span id="country-eng-nm"></span>)<br>
           <img id="country-flag" style="width: 150px; height: 100px;"><br>
         </h4>
+
       </div>
 
       <div class="modal-body">
-        국가 수도명 : <span id="countryInfo-countryCptNm"></span>
-        <br>
-        국가 위치 : <span id="countryInfo-countryIc"></span>
-        <br>
-        기후 : <span id="countryInfo-climateCn"></span>
-        <br>
-        언어 명 : <span id="countryInfo-langNm"></span>
-        <br>
-        언어 내용 : <span id="countryInfo-langCn"></span>
-        <br>
-        주요 도시 : <span id="countryInfo-mainCityCn"></span>
-        <br>
-        주요 민족 : <span id="countryInfo-mainEthnicCn"></span>
-        <br>
-        주요 언론 : <span id="countryInfo-mscmctnCn"></span>
-        <br>
-        종교 : <span id="countryInfo-religionCn"></span>
-        <br>
-        국가 면적 : <span id="countryInfo-countryArea"></span>
-        <br>
-        국가 면적 설명 : <span id="countryInfo-countryAreaComment"></span>
-        <br>
+        <span id="basic"></span>
+<!--        <br>-->
+<!--        국가 위치 : <span id="countryInfo-countryIc"></span>-->
+<!--        <br>-->
+<!--        기후 : <span id="countryInfo-climateCn"></span>-->
+<!--        <br>-->
+<!--        언어 명 : <span id="countryInfo-langNm"></span>-->
+<!--        <br>-->
+<!--        언어 내용 : <span id="countryInfo-langCn"></span>-->
+<!--        <br>-->
+<!--        주요 도시 : <span id="countryInfo-mainCityCn"></span>-->
+<!--        <br>-->
+<!--        주요 민족 : <span id="countryInfo-mainEthnicCn"></span>-->
+<!--        <br>-->
+<!--        주요 언론 : <span id="countryInfo-mscmctnCn"></span>-->
+<!--        <br>-->
+<!--        종교 : <span id="countryInfo-religionCn"></span>-->
+<!--        <br>-->
+<!--        국가 면적 : <span id="countryInfo-countryArea"></span>-->
+<!--        <br>-->
+<!--        국가 면적 설명 : <span id="countryInfo-countryAreaComment"></span>-->
+<!--        <br>-->
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+      <div class="modal-footer" style="margin-right: 10%">
+        <button type="button" class="btn btn-default" >상세페이지로 이동</button>
       </div>
 
     </div>
@@ -281,6 +357,10 @@
 <!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"</script>-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initAutocomplete&libraries=places&v=weekly"
+    defer
+></script>
 
 <script>
   $(document).ready(function () {
@@ -369,6 +449,37 @@
           }
         }.bind(this)
       });
+
+      var searchBox = new google.maps.places.SearchBox(document.getElementById('pac-input'));
+      // map.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById('pac-input'));
+
+      google.maps.event.addListener(searchBox, 'places_changed', function() {
+        searchBox.set('map', null);
+
+        var places = searchBox.getPlaces();
+        var bounds = new google.maps.LatLngBounds();
+        var i, place;
+
+        for (i = 0; place = places[i]; i++) {
+          (function(place) {
+            var marker = new google.maps.Marker({
+              position: place.geometry.location
+            });
+
+            marker.bindTo('map', searchBox, 'map');
+            google.maps.event.addListener(marker, 'map_changed', function() {
+              if (!this.getMap()) {
+                this.unbindAll();
+              }
+            });
+            bounds.extend(place.geometry.location);
+          }(place));
+        }
+
+        map.fitBounds(bounds);
+        searchBox.set('map', map);
+        map.setZoom(Math.min(map.getZoom(), 4));
+      });
     }
 
     function showCountries() {
@@ -403,18 +514,20 @@
 
           $('#country-flag').attr('src', res.downloadUrl);
 
-          $('#countryInfo-climateCn').html(res.climateCn);
-          $('#countryInfo-langCn').html(res.langCn);
-          $('#countryInfo-langNm').html(res.langNm);
-          $('#countryInfo-mainCityCn').html(res.mainCityCn);
-          $('#countryInfo-mainEthnicCn').html(res.mainEthnicCn);
-          $('#countryInfo-mscmctnCn').html(res.mscmctnCn);
-          $('#countryInfo-religionCn').html(res.religionCn);
-          $('#countryInfo-countryIc').html(res.countryIc);
-          $('#countryInfo-countryCptNm').html(res.countryCptNm);
-          $('#countryInfo-countryArea').html(res.countryArea);
-          $('#countryInfo-countryAreaSrc').html(res.countryAreaSrc);
-          $('#countryInfo-countryAreaComment').html(res.countryAreaComment);
+          $('#basic').html(res.basic);
+
+          // $('#countryInfo-climateCn').html(res.climateCn);
+          // $('#countryInfo-langCn').html(res.langCn);
+          // $('#countryInfo-langNm').html(res.langNm);
+          // $('#countryInfo-mainCityCn').html(res.mainCityCn);
+          // $('#countryInfo-mainEthnicCn').html(res.mainEthnicCn);
+          // $('#countryInfo-mscmctnCn').html(res.mscmctnCn);
+          // $('#countryInfo-religionCn').html(res.religionCn);
+          // $('#countryInfo-countryIc').html(res.countryIc);
+          // $('#countryInfo-countryCptNm').html(res.countryCptNm);
+          // $('#countryInfo-countryArea').html(res.countryArea);
+          // $('#countryInfo-countryAreaSrc').html(res.countryAreaSrc);
+          // $('#countryInfo-countryAreaComment').html(res.countryAreaComment);
 
           $('#ModalSlide').modal('show');
         }

@@ -1,6 +1,9 @@
 package com.tistory.amyyzzin.trvl.controller;
 
+import com.tistory.amyyzzin.trvl.constant.IsoConstant;
+import com.tistory.amyyzzin.trvl.domain.CountryBasicInfo;
 import com.tistory.amyyzzin.trvl.domain.CountryInfo;
+import com.tistory.amyyzzin.trvl.service.CountryBasicInfoService;
 import com.tistory.amyyzzin.trvl.service.CountryInfoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -29,33 +32,43 @@ public class GoogleApiController {
 
 	private final CountryInfoService countryInfoService;
 
+	private final CountryBasicInfoService countryBasicInfoService;
+
 	@ApiOperation(value = "설명", notes = "이것은 노트")
 	@GetMapping("/modal")
 	public ResponseEntity<GoogleModalDto> getModalDetail(@RequestParam  @ApiParam(value = "국가 ISO-CODE", example = "KO") String code) {
 		StandardCode standardCode = standardCodeService.findByIsoAlp2(code);
-		CountryFlag countryFlag = countryFlagService.findByIsoAlp2(code);
-		CountryInfo countryInfo = countryInfoService.findByIsoAlp2(code);
 
 		if (standardCode == null) {
 			throw new IllegalArgumentException("잘 못된 ISO 코드입니다.");
 		}
 
+		CountryFlag countryFlag = countryFlagService.findByIsoAlp2(code);
+		CountryInfo countryInfo = countryInfoService.findByIsoAlp2(code);
+		CountryBasicInfo countryBasicInfo
+			= countryBasicInfoService.findByIso3Code(IsoConstant.convertCountryEngNm2Iso3(standardCode.getCountryEngNm()));
+
+		if (countryBasicInfo == null) {
+			countryBasicInfo = countryBasicInfoService.findByIso3Code(standardCode.getIsoAlp3());
+		}
+
 		return ResponseEntity.ok(GoogleModalDto.builder()
 				.countryNm(standardCode != null ? standardCode.getCountryNm() : "정보 없음")
 				.countryEngNm(standardCode != null ? standardCode.getCountryEngNm() : "정보 없음")
-				.downloadUrl(standardCode != null ? countryFlag.getDownloadUrl() : "")
-				.climateCn(countryInfo != null ? countryInfo.getClimateCn() : "정보 없음")
-				.langCn(countryInfo != null ? countryInfo.getLangCn() : "정보 없음")
-				.langNm(countryInfo != null ? countryInfo.getLangNm() : "정보 없음")
-				.mainCityCn(countryInfo != null ? countryInfo.getMainCityCn() : "정보 없음")
-				.mainEthnicCn(countryInfo != null ? countryInfo.getMainEthnicCn() : "정보 없음")
-				.mscmctnCn(countryInfo != null ? countryInfo.getMscmctnCn() : "정보 없음")
-				.religionCn(countryInfo != null ? countryInfo.getReligionCn() : "정보 없음")
-				.countryIc(countryInfo != null ? countryInfo.getCountryIc() : "정보 없음")
-				.countryCptNm(countryInfo != null ? countryInfo.getCountryCptNm() : "정보 없음")
-				.countryArea(countryInfo != null ? countryInfo.getCountryArea() : "정보 없음")
-				.countryAreaSrc(countryInfo != null ? countryInfo.getCountryAreaSrc() : "정보 없음")
-				.countryAreaComment(countryInfo != null ? countryInfo.getCountryAreaComment() : "정보 없음")
+				.downloadUrl(standardCode != null && countryFlag != null ? countryFlag.getDownloadUrl() : "")
+//				.climateCn(countryInfo != null ? countryInfo.getClimateCn() : "정보 없음")
+//				.langCn(countryInfo != null ? countryInfo.getLangCn() : "정보 없음")
+//				.langNm(countryInfo != null ? countryInfo.getLangNm() : "정보 없음")
+//				.mainCityCn(countryInfo != null ? countryInfo.getMainCityCn() : "정보 없음")
+//				.mainEthnicCn(countryInfo != null ? countryInfo.getMainEthnicCn() : "정보 없음")
+//				.mscmctnCn(countryInfo != null ? countryInfo.getMscmctnCn() : "정보 없음")
+//				.religionCn(countryInfo != null ? countryInfo.getReligionCn() : "정보 없음")
+//				.countryIc(countryInfo != null ? countryInfo.getCountryIc() : "정보 없음")
+//				.countryCptNm(countryInfo != null ? countryInfo.getCountryCptNm() : "정보 없음")
+//				.countryArea(countryInfo != null ? countryInfo.getCountryArea() : "정보 없음")
+//				.countryAreaSrc(countryInfo != null ? countryInfo.getCountryAreaSrc() : "정보 없음")
+//				.countryAreaComment(countryInfo != null ? countryInfo.getCountryAreaComment() : "정보 없음")
+				.basic(countryBasicInfo != null ? countryBasicInfo.getBasic() : "정보 없음")
 				.build());
 	}
 }

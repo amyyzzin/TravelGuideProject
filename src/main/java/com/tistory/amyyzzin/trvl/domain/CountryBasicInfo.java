@@ -38,6 +38,8 @@ public class CountryBasicInfo {
     @Lob
     private String basic;
 
+    private String iso3Code;
+
 
     public static CountryBasicInfo of(CountryBasicInfoDto countryBasicInfoDto) {
         return CountryBasicInfo.builder()
@@ -45,7 +47,9 @@ public class CountryBasicInfo {
             .countryNm(countryBasicInfoDto.getCountryNm())
             .countryEngNm(countryBasicInfoDto.getCountryEngNm())
             .continent(countryBasicInfoDto.getContinent())
-            .basic(Jsoup.parse(countryBasicInfoDto.getBasic()).text().replace("\uFEFF", ""))
+            .basic(countryBasicInfoDto.getBasic())
+//            .basic(Jsoup.parse(countryBasicInfoDto.getBasic()).text().replace("\uFEFF", ""))
+            .iso3Code(countryBasicInfoDto.getIso3Code())
             .build();
     }
 

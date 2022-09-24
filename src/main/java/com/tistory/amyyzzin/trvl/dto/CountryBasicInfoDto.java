@@ -26,4 +26,6 @@ public class CountryBasicInfoDto {
 
     private String id;
 
+    private String iso3Code;
+
 }

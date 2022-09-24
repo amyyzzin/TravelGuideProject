@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class GoogleModalDto {
+public class CountryDetailDto {
 
 	private String countryNm;
 

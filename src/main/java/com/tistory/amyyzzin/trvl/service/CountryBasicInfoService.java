@@ -1,5 +1,6 @@
 package com.tistory.amyyzzin.trvl.service;
 
+import com.tistory.amyyzzin.trvl.constant.IsoConstant;
 import com.tistory.amyyzzin.trvl.domain.CountryBasicInfo;
 import com.tistory.amyyzzin.trvl.dto.CountryBasicInfoDto;
 import com.tistory.amyyzzin.trvl.dto.CountryBasicInfoResponseDto;
@@ -38,6 +39,10 @@ public class CountryBasicInfoService {
         Thread.sleep(2000);
     }
 
+    public CountryBasicInfo findByIso3Code(String iso3Code) {
+        return countryBasicInfoRepository.findByIso3Code(iso3Code).orElse(null);
+    }
+
     public void insert(CountryBasicInfoResponseDto responseDto) {
 
         if (responseDto == null) {
@@ -48,11 +53,12 @@ public class CountryBasicInfoService {
 
         for (CountryBasicInfoDto countryBasicInfoDto : responseDto.getData()) {
             try {
+                countryBasicInfoDto.setIso3Code(IsoConstant.convertCountryEngNm2Iso3(countryBasicInfoDto.getCountryEngNm()));
                 countryBasicInfoRepository.save(CountryBasicInfo.of(countryBasicInfoDto));
             } catch (Exception e) {
                 log.error("[CountryBasicInfo.insert] ERROR {}", e.getMessage());
             }
         }
-
     }
+
 }
