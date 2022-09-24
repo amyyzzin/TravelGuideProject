@@ -1,11 +1,16 @@
 package com.tistory.amyyzzin.trvl.dto;
 
 import com.google.gson.annotations.SerializedName;
+import com.tistory.amyyzzin.trvl.domain.NoticeList;
+import com.tistory.amyyzzin.trvl.domain.SafetyList;
 import java.util.Map;
 import javax.persistence.Lob;
+import lombok.Builder;
 import lombok.Data;
+import org.jsoup.Jsoup;
 
 @Data
+@Builder
 public class SafetyListDto {
 
     @SerializedName("continent_cd")
@@ -43,5 +48,24 @@ public class SafetyListDto {
 
     @SerializedName("wrt_dt")
     private String wrtDt;
+
+    public static SafetyListDto of(SafetyList safetyList) {
+        return SafetyListDto.builder()
+            .continentCd(safetyList.getContinentCd())
+            .continentEngNm(safetyList.getContinentEngNm())
+            .continentNm(safetyList.getContinentNm())
+            .countryEngNm(safetyList.getCountryEngNm())
+            .countryIsoAlp2(safetyList.getCountryIsoAlp2())
+            .countryNm(safetyList.getCountryNm())
+            .ctgyNm(safetyList.getCtgyNm())
+            .fileDownloadUrl(safetyList.getFileDownloadUrl())
+            .filePath(safetyList.getFilePath())
+            .title(safetyList.getTitle())
+            .txtOriginCn(safetyList.getTxtOriginCn())
+//            .title(Jsoup.parse(safetyList.getTitle()).text().replace("\uFEFF", ""))
+//            .txtOriginCn(Jsoup.parse(safetyList.getTxtOriginCn()).text().replace("\uFEFF", ""))
+            .wrtDt(safetyList.getWrtDt())
+            .build();
+    }
 
 }

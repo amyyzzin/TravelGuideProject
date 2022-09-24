@@ -21,6 +21,11 @@ public class CountryBasicInfoDto {
     @SerializedName("basic")
     private String basic;
 
+    @SerializedName("imgUrl")
+    private String imgUrl;
+
     private String id;
+
+    private String iso3Code;
 
 }

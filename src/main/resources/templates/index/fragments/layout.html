@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>TravelGuide</title>
+  <style>
+    hr {
+      border: 1px solid #BBBBBB;
+    }
+  </style>
+</head>
+<body>
+<div th:fragment="fragment-body-menu">
+  <h2 th onclick="location.href='/'" style=" margin-left: 5%; align-content: center">
+    🌍TravelGuide
+  </h2>
+  <hr style="border: 3px solid #BBBBBB;">
+  <tr>
+    <br>
+    <div th onclick="location.href='/'"
+        th:text="${'🏳‍🌈 국가 / 지역 별 정보'}" style="text-align: left;">
+      국가 / 지역 별 정보
+    </div>
+    <br>
+  </tr>
+  <hr style="border: 1px solid #BBBBBB;">
+  <tr>
+    <br>
+    <div th onclick="location.href='/index/safetyDetailList'"
+        th:text="${'💙 안전공지'}" style="text-align: left;">
+      안전공지
+    </div>
+    <br>
+  </tr>
+  <hr style="border: 1px solid #BBBBBB;">
+  <tr>
+    <br>
+    <div th onclick="location.href='/index/noticeDetailList'"
+        th:text="${'💚 외교부 공지'}" style="text-align: left;">
+      외교부 공지
+    </div>
+    <br>
+  </tr>
+  <hr style="border: 1px solid #BBBBBB;">
+</div>
+
+</body>
+
+</html>

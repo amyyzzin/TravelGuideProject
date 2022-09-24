@@ -2,10 +2,8 @@ package com.tistory.amyyzzin.trvl.config;
 
 import java.net.URI;
 import java.time.Duration;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,14 +18,21 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Configuration
 public class RestTemplateConfig {
 
+    private final static int TIME_OUT = 300 * 1000;
+
     @Value("${open.api.key}")
     private String serviceKeyValue;
 
+    /**
+     * 타임아웃 발생할 수 있음에 따라 최대 5분으로 연장
+     *
+     * @return
+     */
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplateBuilder()
-            .setConnectTimeout(Duration.ofMillis(60000))
-            .setReadTimeout(Duration.ofMillis(60000))
+            .setConnectTimeout(Duration.ofMillis(TIME_OUT))
+            .setReadTimeout(Duration.ofMillis(TIME_OUT))
             .additionalInterceptors(
                 this.serviceKeyInjectionInterceptor()
             )
@@ -53,6 +58,7 @@ public class RestTemplateConfig {
      * HttpRequest 클래스의 uri 값을 변경하기 위한 wrapper class
      */
     private static class RequestWrapper implements HttpRequest {
+
         private final HttpRequest original;
 
         private final URI newUriWithParam;

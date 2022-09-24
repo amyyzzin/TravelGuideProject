@@ -1,17 +1,15 @@
 package com.tistory.amyyzzin.trvl.service;
 
 import com.tistory.amyyzzin.trvl.domain.EmbassyHomepage;
-import com.tistory.amyyzzin.trvl.domain.EmbassyInfo;
 import com.tistory.amyyzzin.trvl.dto.EmbassyHomepageDto;
 import com.tistory.amyyzzin.trvl.dto.EmbassyHomepageResponseDto;
-import com.tistory.amyyzzin.trvl.dto.EmbassyInfoDto;
-import com.tistory.amyyzzin.trvl.dto.EmbassyInfoResponseDto;
 import com.tistory.amyyzzin.trvl.repository.EmbassyHomepageRepository;
-import com.tistory.amyyzzin.trvl.util.ApiUtil;
+import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -19,33 +17,45 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmbassyHomepageService {
 
-	private final ApiUtil apiUtil;
+    private final GenericApiUtil genericApiUtil;
 
-	private final EmbassyHomepageRepository embassyHomepageRepository;
+    private final EmbassyHomepageRepository embassyHomepageRepository;
 
-	@PostConstruct
-	public void init() throws IOException {
-		if (embassyHomepageRepository.count() > 0) {
-			return;
-		}
+    @Value("${open.api.embassyHomepage}")
+    String embassyHomepageUrl;
 
-		insert(apiUtil.callEmbassyHomepageApi());
-	}
+    @PostConstruct
+    public void init() throws IOException, InterruptedException {
+        if (embassyHomepageRepository.count() > 0) {
+            return;
+        }
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((EmbassyHomepageResponseDto) genericApiUtil.callJsonApi(embassyHomepageUrl,
+                    EmbassyHomepageResponseDto.class, "500"));
+                break;
+            } catch (Exception e) {
+                log.error("[EmbassyHomepageService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
+    }
 
-	public void insert(EmbassyHomepageResponseDto embassyHomepageResponseDto) {
-		if (embassyHomepageResponseDto == null) {
-			return;
-		}
+    public void insert(EmbassyHomepageResponseDto embassyHomepageResponseDto) {
+        if (embassyHomepageResponseDto == null) {
+            return;
+        }
 
-		log.info("[embassyHomepageDto] {}", embassyHomepageResponseDto);
+        log.info("[embassyHomepageDto] {}", embassyHomepageResponseDto);
 
-		for (EmbassyHomepageDto embassyHomepageDto : embassyHomepageResponseDto.getData()) {
-			try {
-				embassyHomepageRepository.save(EmbassyHomepage.of(embassyHomepageDto));
-			} catch (Exception e) {
-				log.error("[EmbassyHomepage.insert] ERROR {}", e.getMessage());
-			}
-		}
+        for (EmbassyHomepageDto embassyHomepageDto : embassyHomepageResponseDto.getData()) {
+            try {
+                embassyHomepageRepository.save(EmbassyHomepage.of(embassyHomepageDto));
+            } catch (Exception e) {
+                log.error("[EmbassyHomepage.insert] ERROR {}", e.getMessage());
+            }
+        }
 
-	}
+    }
 }

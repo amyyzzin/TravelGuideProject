@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jsoup.Jsoup;
 
 @Data
 @Entity
@@ -37,13 +38,18 @@ public class CountryBasicInfo {
     @Lob
     private String basic;
 
+    private String iso3Code;
+
 
     public static CountryBasicInfo of(CountryBasicInfoDto countryBasicInfoDto) {
         return CountryBasicInfo.builder()
+            .imgUrl(countryBasicInfoDto.getImgUrl())
             .countryNm(countryBasicInfoDto.getCountryNm())
             .countryEngNm(countryBasicInfoDto.getCountryEngNm())
             .continent(countryBasicInfoDto.getContinent())
             .basic(countryBasicInfoDto.getBasic())
+//            .basic(Jsoup.parse(countryBasicInfoDto.getBasic()).text().replace("\uFEFF", ""))
+            .iso3Code(countryBasicInfoDto.getIso3Code())
             .build();
     }
 

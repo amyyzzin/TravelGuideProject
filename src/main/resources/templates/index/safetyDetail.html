@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>SafetyDetail</title>
+  <style>
+
+    html, body {
+      width: 98%;
+      height: 98%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: solid 1px #000;
+      text-align: center;
+    }
+
+    h1 {
+      color: black;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+
+    tbody {
+      font-size: 15px;
+      border: solid 1px #000;
+      overflow-x: hidden;
+    }
+
+    th, td {
+      border: 1px solid black;
+    }
+
+    #fragments {
+      margin-top: 2%;
+      margin-left: 2%;
+      text-align: left;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+
+<div id="fragments" style=" float: left; width: 15%;">
+  <div th:replace="/index/fragments/layout.html :: fragment-body-menu"></div>
+</div>
+
+<div style="width: 75%; float: right; margin-right: 5%">
+  <h1>💙 안전 공지</h1>
+  <div class="table" style="line-height: 200%">
+    <table>
+      <tbody>
+      <tr>
+        <th>국가</th>
+        <td th:if="${not #strings.isEmpty(safety.countryIsoAlp2)}"
+            th:text="${safety.countryNm}"></td>
+        <td th:if="${#strings.isEmpty(safety.countryIsoAlp2)}"
+            th:text="${'전체국가'}"></td>
+      </tr>
+      <tr>
+        <th>제목</th>
+        <td th:if="${not #strings.isEmpty(safety.ctgyNm)}"
+            th:text="${' [ ' + safety.ctgyNm + ' ] ' + safety.title}"></td>
+        <td th:if="${#strings.isEmpty(safety.ctgyNm)}"
+            th:text="${safety.title}"></td>
+      </tr>
+      <tr>
+        <th>등록일</th>
+        <td>
+          <p th:text="${safety.wrtDt}"></p>
+        </td>
+      </tr>
+      <tr>
+        <th>첨부파일</th>
+        <td th:if="${not #strings.isEmpty(safety.fileDownloadUrl)}">
+          <button type="button" class="close" aria-label="Close"
+                  th:id="${safety.fileDownloadUrl}"
+                  th:onclick="moveToDownloadPage(this.getAttribute('id'))"
+                  th:text="${'💾'}">
+            <span aria-hidden="true"></span>
+          </button>
+        </td>
+        <td th:if="${#strings.isEmpty(safety.fileDownloadUrl)}" th:text="${'✖'}"></td>
+      </tr>
+      <td colspan="2">
+        <p style="padding: 0 10% 3% 10%; word-break: keep-all; text-align: left"
+          th:utext="${safety.txtOriginCn}"></p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+  function moveToDownloadPage(id) {
+    window.location.href = id;
+  }
+</script>
+</body>
+</html>

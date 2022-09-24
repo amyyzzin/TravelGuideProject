@@ -3,12 +3,84 @@
 <head>
   <meta charset="utf-8">
   <title>TravelGuide</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+  <link rel="stylesheet" type="text/css" href="./style.css" />
+  <script type="module" src="./index.js"></script>
+
   <style>
 
     html, body {
       width: 100%;
       height: 100%;
-      margin: 0;
+    }
+
+    #infowindow-content .title {
+      font-weight: bold;
+    }
+
+    #infowindow-content {
+      display: none;
+    }
+
+    #map #infowindow-content {
+      display: inline;
+    }
+
+    .pac-card {
+      background-color: #fff;
+      border: 0;
+      border-radius: 2px;
+      box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+      margin: 10px;
+      padding: 0 0.5em;
+      font: 400 18px Roboto, Arial, sans-serif;
+      overflow: hidden;
+      font-family: Roboto;
+      padding: 0;
+    }
+
+    #pac-container {
+      padding-bottom: 12px;
+      margin-right: 12px;
+    }
+
+    .pac-controls {
+      display: inline-block;
+      padding: 5px 11px;
+    }
+
+    .pac-controls label {
+      font-family: Roboto;
+      font-size: 13px;
+      font-weight: 300;
+    }
+
+    #pac-input {
+      float: right;
+      margin-right: 11%;
+      background-color: #fff;
+      font-size: 15px;
+      font-weight: 300;
+      text-overflow: ellipsis;
+      width: 400px;
+      height: 40px;
+    }
+
+    #pac-input:focus {
+      border-color: #4d90fe;
+    }
+
+    #title {
+      color: #fff;
+      background-color: #4d90fe;
+      font-size: 25px;
+      font-weight: 500;
+      padding: 6px 12px;
+    }
+
+    #target {
+      width: 345px;
     }
 
     .modal-content modal-fullsize {
@@ -18,7 +90,6 @@
     .modal.fade {
       position: fixed;
       margin-left: 10%;
-      margin-right: 0;
     }
 
     .modal-title {
@@ -70,7 +141,7 @@
     }
 
     .modal-dialog-slideout .modal-footer {
-      text-align: end;
+      text-align: center;
     }
 
     .modal-dialog.modal-center {
@@ -80,56 +151,46 @@
     }
 
     h1 {
-      font-size: 30px;
+      font-size: 25px;
       color: black;
       font-weight: 300;
       text-align: left;
-      margin-bottom: 15px;
-      padding-left: 5%;
+      margin-bottom: 10px;
+      padding-left: 10%;
       font-family: 'Roboto', sans-serif;
     }
 
     #board {
-      font-family: 'Open+Sans', sans-serif;
-      font-weight: 300;
-      text-align: left;
-      padding-left: 5%;
-      padding-right: 5%;
+      padding-left: 10%;
+      padding-right: 10%;
     }
 
     table {
       width: 50%;
-      table-layout: fixed;
     }
 
     .tbl-header {
-      background-color: rgba(255, 255, 255, 0.3);
+      /*background-color: rgba(255, 255, 255, 0.3);*/
     }
 
     .tbl-content {
       height: 40%;
-      overflow-x: auto;
-      margin-top: 1%;
-      border: 2px solid rgba(85, 85, 85, 0.3);
+      overflow-x: hidden;
+      border: none;
     }
 
     th {
       text-align: center;
-      vertical-align: middle;
-      font-weight: 500;
-      font-size: 17px;
-      color: black;
-      border-bottom: 2px solid rgba(85, 85, 85, 0.3);
-
+      /*vertical-align: middle;*/
+      /*font-weight: 500;*/
+      font-size: 15px;
     }
 
     td {
       text-align: center;
-      vertical-align: middle;
-      font-weight: 300;
-      font-size: 17px;
-      color: black;
-      border-bottom: 2px solid rgba(85, 85, 85, 0.3);
+      overflow-y: auto;
+      overflow-x: hidden;
+      font-size: 15px;
     }
 
     /* for custom scrollbar for webkit browser*/
@@ -154,8 +215,13 @@
 </head>
 
 <body>
-<h1>🌍TravelGuide</h1>
-<div id="map-canvas" style="width: 90%; height: 65%; margin-left: auto; margin-right: auto"></div>
+<br>
+<div id="map">
+<h1 th onclick="location.href='/'" style="float: left;" >🌍TravelGuide </h1>
+<input id="pac-input" class="controls" type="text" placeholder="어디로 떠나볼까요?" style="float: right;"/>
+</div>
+
+<div id="map-canvas" style="width: 80%; height: 55%; margin-left: auto; margin-right: auto"></div>
 
 <!-- Modal -->
 <div class="modal fade" id="ModalSlide" tabindex="-1" role="dialog"
@@ -170,56 +236,118 @@
           <span id="country-nm"></span>(<span id="country-eng-nm"></span>)<br>
           <img id="country-flag" style="width: 150px; height: 100px;"><br>
         </h4>
+
       </div>
+
       <div class="modal-body">
-        국가 수도명 : <span id="countryInfo-countryCptNm"></span>
-        <br>
-        국가 위치 : <span id="countryInfo-countryIc"></span>
-        <br>
-        기후 : <span id="countryInfo-climateCn"></span>
-        <br>
-        언어 명 : <span id="countryInfo-langNm"></span>
-        <br>
-        언어 내용 : <span id="countryInfo-langCn"></span>
-        <br>
-        주요 도시 : <span id="countryInfo-mainCityCn"></span>
-        <br>
-        주요 민족 : <span id="countryInfo-mainEthnicCn"></span>
-        <br>
-        주요 언론 : <span id="countryInfo-mscmctnCn"></span>
-        <br>
-        종교 : <span id="countryInfo-religionCn"></span>
-        <br>
-        국가 면적 : <span id="countryInfo-countryArea"></span>
-        <br>
-        국가 면적 설명 : <span id="countryInfo-countryAreaComment"></span>
-        <br>
+        <span id="basic"></span>
+<!--        <br>-->
+<!--        국가 위치 : <span id="countryInfo-countryIc"></span>-->
+<!--        <br>-->
+<!--        기후 : <span id="countryInfo-climateCn"></span>-->
+<!--        <br>-->
+<!--        언어 명 : <span id="countryInfo-langNm"></span>-->
+<!--        <br>-->
+<!--        언어 내용 : <span id="countryInfo-langCn"></span>-->
+<!--        <br>-->
+<!--        주요 도시 : <span id="countryInfo-mainCityCn"></span>-->
+<!--        <br>-->
+<!--        주요 민족 : <span id="countryInfo-mainEthnicCn"></span>-->
+<!--        <br>-->
+<!--        주요 언론 : <span id="countryInfo-mscmctnCn"></span>-->
+<!--        <br>-->
+<!--        종교 : <span id="countryInfo-religionCn"></span>-->
+<!--        <br>-->
+<!--        국가 면적 : <span id="countryInfo-countryArea"></span>-->
+<!--        <br>-->
+<!--        국가 면적 설명 : <span id="countryInfo-countryAreaComment"></span>-->
+<!--        <br>-->
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+
+      <div class="modal-footer" style="margin-right: 10%">
+        <button type="button" class="btn btn-default" >상세페이지로 이동</button>
       </div>
+
     </div>
   </div>
 </div>
 
-<div id="board" style="width: 90%;">
-  <div class="box1" style="width: 45%;">
+<div id="board">
+  <div class="table" style="width: 50%; float: left; padding-right: 3%">
     <br>
-    <h5> 💙안전공지 </h5>
-    <span id="safetyList-title"></span>
+    <h5 style="font-weight: bold"> 💙 안전공지
+      <button onclick="location.href='/index/safetyDetailList'" type="button" class="close"
+              aria-label="Close">
+        <span aria-hidden="true">&#43;</span>
+      </button>
+    </h5>
+
+    <hr style="border-top: 4px solid silver; margin:0%;">
+
     <div class="tbl-content">
-      <tr th:each="x : ${safetyList}">
-        <td th:if="${not #strings.isEmpty(x.ctgyNm)}"
-             th:remove="tag"  th:text="${'[' + x.ctgyNm + ']'}"></td>
-        <td th:unless="${#strings.isEmpty(x.ctgyNm)}"
-            th:text="${''}"></td>
-        <td th:remove="tag" th:utext="${x.title}"></td>
-        <td th:remove="tag" th:utext="${x.wrtDt}"></td>
-        <br>
-      </tr>
+
+      <table style="width: 100%;">
+        <tbody>
+
+        <tr th:each="list : ${safetyListMain}" style="line-height: 100%">
+
+          <td th:id="${list.id}" th:onclick="moveToSafetyDetailPage(this.getAttribute('id'))"
+              th:text="${list.title}" style="text-align: left; font-weight: bold;">
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+
+      <!--      <hr style="border-top: 3px dashed silver; margin: 2px;">-->
+
+      <table style="width: 100%;">
+        <tbody>
+        <tr th:each="x : ${safetyList}" style="line-height: 100%">
+
+          <td th:id="${x.id}" th:onclick="moveToSafetyDetailPage(this.getAttribute('id'))"
+              th:if="${not #strings.isEmpty(x.ctgyNm)}"
+              th:text="${' [' + x.ctgyNm + '] ' + x.title}"
+              style="text-align: left"></td>
+
+          <td th:id="${x.id}" th:onclick="moveToSafetyDetailPage(this.getAttribute('id'))"
+              th:if="${#strings.isEmpty(x.ctgyNm)}" th:text="${x.title}"
+              style="text-align: left"></td>
+
+          <td th:text="${x.wrtDt}" style="width: 20%; text-align: right"></td>
+        </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
-</div>
+
+  <div class="table" style="width: 50%; float: right; padding-left: 3%">
+    <br>
+    <h5 style="font-weight: bold"> 💚 외교부공지
+      <button onclick="location.href='/index/noticeDetailList'" type="button" class="close"
+              aria-label="Close">
+        <span aria-hidden="true">&#43;</span>
+      </button>
+    </h5>
+    <hr style="border-top: 4px solid silver; margin:0%;">
+
+    <div class="tbl-content">
+
+      <table style="width: 100%; line-height: 100%">
+        <tbody>
+        <tr th:each="notice : ${noticeListMain}">
+
+          <td th:id="${notice.listId}" th:onclick="moveToNoticeDetailPage(this.getAttribute('id'))"
+              th:text="${notice.title}" style="text-align: left;">
+          </td>
+
+          <td th:text="${notice.writtenDt}" style="width: 20%; text-align: right"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -229,6 +357,10 @@
 <!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"</script>-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initAutocomplete&libraries=places&v=weekly"
+    defer
+></script>
 
 <script>
   $(document).ready(function () {
@@ -317,6 +449,37 @@
           }
         }.bind(this)
       });
+
+      var searchBox = new google.maps.places.SearchBox(document.getElementById('pac-input'));
+      // map.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById('pac-input'));
+
+      google.maps.event.addListener(searchBox, 'places_changed', function() {
+        searchBox.set('map', null);
+
+        var places = searchBox.getPlaces();
+        var bounds = new google.maps.LatLngBounds();
+        var i, place;
+
+        for (i = 0; place = places[i]; i++) {
+          (function(place) {
+            var marker = new google.maps.Marker({
+              position: place.geometry.location
+            });
+
+            marker.bindTo('map', searchBox, 'map');
+            google.maps.event.addListener(marker, 'map_changed', function() {
+              if (!this.getMap()) {
+                this.unbindAll();
+              }
+            });
+            bounds.extend(place.geometry.location);
+          }(place));
+        }
+
+        map.fitBounds(bounds);
+        searchBox.set('map', map);
+        map.setZoom(Math.min(map.getZoom(), 4));
+      });
     }
 
     function showCountries() {
@@ -351,18 +514,20 @@
 
           $('#country-flag').attr('src', res.downloadUrl);
 
-          $('#countryInfo-climateCn').html(res.climateCn);
-          $('#countryInfo-langCn').html(res.langCn);
-          $('#countryInfo-langNm').html(res.langNm);
-          $('#countryInfo-mainCityCn').html(res.mainCityCn);
-          $('#countryInfo-mainEthnicCn').html(res.mainEthnicCn);
-          $('#countryInfo-mscmctnCn').html(res.mscmctnCn);
-          $('#countryInfo-religionCn').html(res.religionCn);
-          $('#countryInfo-countryIc').html(res.countryIc);
-          $('#countryInfo-countryCptNm').html(res.countryCptNm);
-          $('#countryInfo-countryArea').html(res.countryArea);
-          $('#countryInfo-countryAreaSrc').html(res.countryAreaSrc);
-          $('#countryInfo-countryAreaComment').html(res.countryAreaComment);
+          $('#basic').html(res.basic);
+
+          // $('#countryInfo-climateCn').html(res.climateCn);
+          // $('#countryInfo-langCn').html(res.langCn);
+          // $('#countryInfo-langNm').html(res.langNm);
+          // $('#countryInfo-mainCityCn').html(res.mainCityCn);
+          // $('#countryInfo-mainEthnicCn').html(res.mainEthnicCn);
+          // $('#countryInfo-mscmctnCn').html(res.mscmctnCn);
+          // $('#countryInfo-religionCn').html(res.religionCn);
+          // $('#countryInfo-countryIc').html(res.countryIc);
+          // $('#countryInfo-countryCptNm').html(res.countryCptNm);
+          // $('#countryInfo-countryArea').html(res.countryArea);
+          // $('#countryInfo-countryAreaSrc').html(res.countryAreaSrc);
+          // $('#countryInfo-countryAreaComment').html(res.countryAreaComment);
 
           $('#ModalSlide').modal('show');
         }
@@ -380,11 +545,18 @@
         //fillColor: country['color'], // can be used as default color
         fillOpacity: 0
       });
-
       countries.push(currentCountry);
     }
 
   });
+
+  function moveToSafetyDetailPage(id) {
+    window.location.href = "/index/safetyDetail/" + id;
+  }
+
+  function moveToNoticeDetailPage(id) {
+    window.location.href = "/index/noticeDetail/" + id;
+  }
 
 </script>
 

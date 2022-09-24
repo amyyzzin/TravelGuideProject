@@ -1,56 +1,66 @@
 package com.tistory.amyyzzin.trvl.service;
 
-import java.io.IOException;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.stereotype.Service;
-
 import com.tistory.amyyzzin.trvl.domain.StandardCode;
 import com.tistory.amyyzzin.trvl.dto.StandardCodeDto;
 import com.tistory.amyyzzin.trvl.dto.StandardCodeResponseDto;
 import com.tistory.amyyzzin.trvl.repository.StandardCodeRepository;
-import com.tistory.amyyzzin.trvl.util.ApiUtil;
-
+import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
+import java.io.IOException;
+import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class StandardCodeService {
 
-	private final ApiUtil apiUtil;
+    private final GenericApiUtil genericApiUtil;
 
-	private final StandardCodeRepository standardCodeRepository;
+    private final StandardCodeRepository standardCodeRepository;
 
-	@PostConstruct
-	public void init() throws IOException {
-		if (standardCodeRepository.count() > 0) {
-			return;
-		}
+    @Value("${open.api.standardCode}")
+    String standardCodeUrl;
 
-		insert(apiUtil.callStandardCodeApi());
-	}
+    @PostConstruct
+    public void init() throws IOException, InterruptedException {
+        if (standardCodeRepository.count() > 0) {
+            return;
+        }
 
-	public StandardCode findByIsoAlp2(String isoAlp2) {
-		return standardCodeRepository.findByIsoAlp2(isoAlp2).orElse(null);
-	}
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((StandardCodeResponseDto) genericApiUtil.callJsonApi(standardCodeUrl,
+                    StandardCodeResponseDto.class, "500"));
+                break;
+            } catch (Exception e) {
+                log.error("[StandardCodeService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
+    }
 
-	public void insert(StandardCodeResponseDto standardCodeResponseDto) {
-		if (standardCodeResponseDto == null) {
-			return;
-		}
+    public StandardCode findByIsoAlp2(String isoAlp2) {
+        return standardCodeRepository.findByIsoAlp2(isoAlp2).orElse(null);
+    }
 
-		log.info("[standardCodeResponseDto] {}", standardCodeResponseDto);
+    public void insert(StandardCodeResponseDto standardCodeResponseDto) {
+        if (standardCodeResponseDto == null) {
+            return;
+        }
 
-		for (StandardCodeDto standardCodeDto : standardCodeResponseDto.getData()) {
-			try {
-				standardCodeRepository.save(StandardCode.of(standardCodeDto));
-			} catch (Exception e) {
-				log.error("[StandardCodeService.insert] ERROR {}", e.getMessage());
-			}
-		}
+        log.info("[standardCodeResponseDto] {}", standardCodeResponseDto);
 
-	}
+        for (StandardCodeDto standardCodeDto : standardCodeResponseDto.getData()) {
+            try {
+                standardCodeRepository.save(StandardCode.of(standardCodeDto));
+            } catch (Exception e) {
+                log.error("[StandardCodeService.insert] ERROR {}", e.getMessage());
+            }
+        }
+
+    }
 }

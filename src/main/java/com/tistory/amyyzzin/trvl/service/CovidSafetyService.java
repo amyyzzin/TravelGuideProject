@@ -1,17 +1,15 @@
 package com.tistory.amyyzzin.trvl.service;
 
 import com.tistory.amyyzzin.trvl.domain.CovidSafety;
-import com.tistory.amyyzzin.trvl.domain.SafetyList;
 import com.tistory.amyyzzin.trvl.dto.CovidSafetyDto;
 import com.tistory.amyyzzin.trvl.dto.CovidSafetyResponseDto;
-import com.tistory.amyyzzin.trvl.dto.SafetyListDto;
-import com.tistory.amyyzzin.trvl.dto.SafetyListResponseDto;
 import com.tistory.amyyzzin.trvl.repository.CovidSafetyRepository;
-import com.tistory.amyyzzin.trvl.util.ApiUtil;
+import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -19,33 +17,46 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CovidSafetyService {
 
-	private final ApiUtil apiUtil;
+    private final GenericApiUtil genericApiUtil;
 
-	private final CovidSafetyRepository covidSafetyRepository;
+    private final CovidSafetyRepository covidSafetyRepository;
 
-	@PostConstruct
-	public void init() throws IOException {
-		if (covidSafetyRepository.count() > 0) {
-			return;
-		}
+    @Value("${open.api.covidSafety}")
+    String covidSafetyUrl;
 
-		insert(apiUtil.callCovidSafetyApi());
-	}
+    @PostConstruct
+    public void init() throws IOException, InterruptedException {
+        if (covidSafetyRepository.count() > 0) {
+            return;
+        }
 
-	public void insert(CovidSafetyResponseDto covidSafetyResponseDto) {
-		if (covidSafetyResponseDto == null) {
-			return;
-		}
+        for (int i = 0; i < 3; i++) {
+            try {
+                insert((CovidSafetyResponseDto) genericApiUtil.callJsonApi(covidSafetyUrl,
+                    CovidSafetyResponseDto.class, "500"));
+                break;
+            } catch (Exception e) {
+                log.error("[CovidSafetyService init] ERROR {}", e.getMessage());
+                Thread.sleep(2000);
+            }
+        }
+        Thread.sleep(2000);
+    }
 
-		log.info("[CovidSafetyDto] {}", covidSafetyResponseDto);
+    public void insert(CovidSafetyResponseDto covidSafetyResponseDto) {
+        if (covidSafetyResponseDto == null) {
+            return;
+        }
 
-		for (CovidSafetyDto covidSafetyDto : covidSafetyResponseDto.getData()) {
-			try {
-				covidSafetyRepository.save(CovidSafety.of(covidSafetyDto));
-			} catch (Exception e) {
-				log.error("[CovidSafety.insert] ERROR {}", e.getMessage());
-			}
-		}
+        log.info("[CovidSafetyDto] {}", covidSafetyResponseDto);
 
-	}
+        for (CovidSafetyDto covidSafetyDto : covidSafetyResponseDto.getData()) {
+            try {
+                covidSafetyRepository.save(CovidSafety.of(covidSafetyDto));
+            } catch (Exception e) {
+                log.error("[CovidSafety.insert] ERROR {}", e.getMessage());
+            }
+        }
+
+    }
 }

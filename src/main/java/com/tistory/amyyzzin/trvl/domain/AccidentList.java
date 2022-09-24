@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jsoup.Jsoup;
 
 @Data
 @Entity
@@ -42,7 +43,7 @@ public class AccidentList {
             .continent(accidentListDto.getContinent())
             .ename(accidentListDto.getEname())
             .name(accidentListDto.getName())
-            .news(accidentListDto.getNews())
+            .news(Jsoup.parse(accidentListDto.getNews()).text().replace("\uFEFF", ""))
             .build();
     }
 

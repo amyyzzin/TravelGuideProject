@@ -2,6 +2,7 @@ package com.tistory.amyyzzin.trvl.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.tistory.amyyzzin.trvl.dto.BaseResponseDto;
 import com.tistory.amyyzzin.trvl.dto.ContactPointResponseDto;
 import com.tistory.amyyzzin.trvl.dto.CountryFlagResponseDto;
 import com.tistory.amyyzzin.trvl.dto.CountryInfoResponseDto;
@@ -69,9 +70,10 @@ public class GenericApiUtilTest {
     @Test
     public void callRegulationApi() throws IOException {
         RegulationResponseDto responseDto
-            = (RegulationResponseDto) genericApiUtil.callJsonApi(regulationUrl, RegulationResponseDto.class);
+            = (RegulationResponseDto) genericApiUtil.callJsonApi(regulationUrl, RegulationResponseDto.class, "500");
 
         System.out.println(responseDto);
+        assertResponseDto(responseDto);
         assertThat(responseDto.getData() != null
             && !responseDto.getData().isEmpty());
     }
@@ -79,9 +81,10 @@ public class GenericApiUtilTest {
     @Test
     public void callStandardCodeApi() throws IOException {
         StandardCodeResponseDto responseDto
-            = (StandardCodeResponseDto) genericApiUtil.callJsonApi(standardCodeUrl, StandardCodeResponseDto.class);
+            = (StandardCodeResponseDto) genericApiUtil.callJsonApi(standardCodeUrl, StandardCodeResponseDto.class, "500");
 
         System.out.println(responseDto);
+        assertResponseDto(responseDto);
         assertThat(responseDto.getData() != null
             && !responseDto.getData().isEmpty());
     }
@@ -89,9 +92,10 @@ public class GenericApiUtilTest {
     @Test
     public void testCountryFlagApi() throws Exception {
         CountryFlagResponseDto responseDto
-            = (CountryFlagResponseDto) genericApiUtil.callJsonApi(countryFlagUrl, CountryFlagResponseDto.class);
+            = (CountryFlagResponseDto) genericApiUtil.callJsonApi(countryFlagUrl, CountryFlagResponseDto.class, "500");
 
         System.out.println(responseDto);
+        assertResponseDto(responseDto);
         assertThat(responseDto != null
             && !responseDto.getData().isEmpty());
     }
@@ -99,9 +103,10 @@ public class GenericApiUtilTest {
     @Test
     public void testCountryInfoApi() throws Exception {
         CountryInfoResponseDto responseDto
-            = (CountryInfoResponseDto) genericApiUtil.callJsonApi(countryInfoUrl, CountryInfoResponseDto.class);
+            = (CountryInfoResponseDto) genericApiUtil.callJsonApi(countryInfoUrl, CountryInfoResponseDto.class, "500");
 
         System.out.println(responseDto);
+        assertResponseDto(responseDto);
         assertThat(responseDto.getData() != null
             && !responseDto.getData().isEmpty());
     }
@@ -109,9 +114,10 @@ public class GenericApiUtilTest {
     @Test
     public void testNoticeListApi() throws Exception {
         NoticeListResponseDto responseDto
-            = (NoticeListResponseDto) genericApiUtil.callJsonApi(noticeUrl, NoticeListResponseDto.class);
+            = (NoticeListResponseDto) genericApiUtil.callJsonApi(noticeUrl, NoticeListResponseDto.class, "50");
 
         System.out.println(responseDto);
+        assertResponseDto(responseDto);
         assertThat(responseDto != null
             && !responseDto.getData().isEmpty());
     }
@@ -119,9 +125,10 @@ public class GenericApiUtilTest {
     @Test
     public void testSafetyListApi() throws Exception {
         SafetyListResponseDto responseDto
-            = (SafetyListResponseDto) genericApiUtil.callJsonApi(safetyListUrl, SafetyListResponseDto.class);
+            = (SafetyListResponseDto) genericApiUtil.callJsonApi(safetyListUrl, SafetyListResponseDto.class, "100");
 
         System.out.println(responseDto);
+        assertResponseDto(responseDto);
         assertThat(responseDto != null
             && !responseDto.getData().isEmpty());
     }
@@ -129,9 +136,13 @@ public class GenericApiUtilTest {
     @Test
     public void testCovidSafetyApi() throws Exception {
         CovidSafetyResponseDto responseDto
-            = (CovidSafetyResponseDto) genericApiUtil.callJsonApi(covidSafetyUrl, CovidSafetyResponseDto.class);
+            = (CovidSafetyResponseDto) genericApiUtil.callJsonApi(covidSafetyUrl,
+            CovidSafetyResponseDto.class, "500");
 
+        System.out.println(responseDto.getResultCode());
+        System.out.println(responseDto.getResultMsg());
         System.out.println(responseDto);
+        assertResponseDto(responseDto);
         assertThat(responseDto != null
             && !responseDto.getData().isEmpty());
     }
@@ -139,9 +150,10 @@ public class GenericApiUtilTest {
     @Test
     public void testOverseasArrivalApi() throws Exception {
         OverseasArrivalResponseDto responseDto
-            = (OverseasArrivalResponseDto) genericApiUtil.callJsonApi(overSeasArrivalUrl, OverseasArrivalResponseDto.class);
+            = (OverseasArrivalResponseDto) genericApiUtil.callJsonApi(overSeasArrivalUrl, OverseasArrivalResponseDto.class, "500");
 
         System.out.println(responseDto);
+        assertResponseDto(responseDto);
         assertThat(responseDto != null
             && !responseDto.getData().isEmpty());
     }
@@ -149,9 +161,10 @@ public class GenericApiUtilTest {
     @Test
     public void testEmbassyInfoApi() throws Exception {
         EmbassyInfoResponseDto responseDto
-            = (EmbassyInfoResponseDto) genericApiUtil.callJsonApi(embassyInfoUrl, EmbassyInfoResponseDto.class);
+            = (EmbassyInfoResponseDto) genericApiUtil.callJsonApi(embassyInfoUrl, EmbassyInfoResponseDto.class, "500");
 
         System.out.println(responseDto);
+        assertResponseDto(responseDto);
         assertThat(responseDto != null
             && !responseDto.getData().isEmpty());
     }
@@ -159,9 +172,10 @@ public class GenericApiUtilTest {
     @Test
     public void testEmbassyHomepageApi() throws Exception {
         EmbassyHomepageResponseDto responseDto
-            = (EmbassyHomepageResponseDto) genericApiUtil.callJsonApi(embassyHomepageUrl, EmbassyHomepageResponseDto.class);
+            = (EmbassyHomepageResponseDto) genericApiUtil.callJsonApi(embassyHomepageUrl, EmbassyHomepageResponseDto.class, "500");
 
         System.out.println(responseDto);
+        assertResponseDto(responseDto);
         assertThat(responseDto != null
             && !responseDto.getData().isEmpty());
     }
@@ -169,9 +183,10 @@ public class GenericApiUtilTest {
     @Test
     public void testContactPointApi() throws Exception {
         ContactPointResponseDto responseDto
-            = (ContactPointResponseDto) genericApiUtil.callJsonApi(contactPointUrl, ContactPointResponseDto.class);
+            = (ContactPointResponseDto) genericApiUtil.callJsonApi(contactPointUrl, ContactPointResponseDto.class, "500");
 
         System.out.println(responseDto);
+        assertResponseDto(responseDto);
         assertThat(responseDto != null
             && !responseDto.getData().isEmpty());
     }
@@ -179,11 +194,17 @@ public class GenericApiUtilTest {
     @Test
     public void testTravelAlarmApi() throws Exception {
         TravelAlarmResponseDto responseDto
-            = (TravelAlarmResponseDto) genericApiUtil.callJsonApi(travelAlarmUrl, TravelAlarmResponseDto.class);
+            = (TravelAlarmResponseDto) genericApiUtil.callJsonApi(travelAlarmUrl, TravelAlarmResponseDto.class, "500");
 
         System.out.println(responseDto);
+        assertResponseDto(responseDto);
         assertThat(responseDto != null
             && !responseDto.getData().isEmpty());
     }
 
+    private static void assertResponseDto(BaseResponseDto responseDto) {
+        assertThat(responseDto != null
+            && responseDto.getResultCode().equals("0")
+            && responseDto.getResultMsg().equals("정상"));
+    }
 }
