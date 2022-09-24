@@ -34,7 +34,6 @@ public class NoticeListController extends BaseController {
             parameter.getPageIndex(), queryString);
 
         model.addAttribute("allNoticeList", noticeLists);
-
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("pager", pagerHtml);
         model.addAttribute("pageIndex", parameter.getPageIndex() - 1);

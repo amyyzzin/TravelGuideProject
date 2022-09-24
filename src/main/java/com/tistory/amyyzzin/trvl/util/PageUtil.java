@@ -1,4 +1,4 @@
-package com.tistory.amyyzzin.trvl.config;
+package com.tistory.amyyzzin.trvl.util;
 
 public class PageUtil {
 

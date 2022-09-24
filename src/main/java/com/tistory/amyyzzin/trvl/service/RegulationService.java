@@ -3,6 +3,7 @@ package com.tistory.amyyzzin.trvl.service;
 import com.tistory.amyyzzin.trvl.domain.Regulation;
 import com.tistory.amyyzzin.trvl.dto.RegulationDto;
 import com.tistory.amyyzzin.trvl.dto.RegulationResponseDto;
+import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.RegulationRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
@@ -28,17 +29,25 @@ public class RegulationService {
 
     @PostConstruct
     public void init() throws IOException, InterruptedException {
+        boolean openApiError = true;
 
         for (int i = 0; i < 3; i++) {
             try {
-                insert((RegulationResponseDto) genericApiUtil.callJsonApi(regulationUrl,
+                upsert((RegulationResponseDto) genericApiUtil.callJsonApi(regulationUrl,
                     RegulationResponseDto.class, "500"));
+                openApiError = false;
+
                 break;
             } catch (Exception e) {
                 log.error("[RegulationService init] ERROR {}", e.getMessage());
                 Thread.sleep(2000);
             }
         }
+
+        if (openApiError) {
+            throw new OpenApiException();
+        }
+
         Thread.sleep(2000);
     }
 
@@ -46,7 +55,7 @@ public class RegulationService {
         return regulationRepository.findAllByOrderByCountryNm(pageable);
     }
 
-    public void insert(RegulationResponseDto regulationResponseDto) {
+    public void upsert(RegulationResponseDto regulationResponseDto) {
         for (RegulationDto regulationDto : regulationResponseDto.getData()) {
             try {
                 Regulation regulation = regulationRepository.findById(Long.valueOf(

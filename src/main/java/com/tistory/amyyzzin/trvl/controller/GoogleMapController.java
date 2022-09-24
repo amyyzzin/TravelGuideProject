@@ -18,15 +18,11 @@ public class GoogleMapController extends BaseController{
     private final SafetyListService safetyListService;
     private final NoticeListService noticeListService;
 
-
-
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("safetyListMain", safetyListService.getMainSafetyList());
         model.addAttribute("safetyList", safetyListService.getSafetyList());
-
         model.addAttribute("noticeListMain", noticeListService.getNoticeList());
-
 
         return "index/index";
     }

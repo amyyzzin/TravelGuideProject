@@ -35,6 +35,9 @@ public class GenericApiUtil<T> {
     @Value("${open.api.url}")
     String openApiUrl;
 
+    @Value("${open.api.timeout}")
+    Integer timeout;
+
     public <T extends BaseResponseDto> T callJsonApi(String url, Class<T> type, String numOfRows) throws IOException {
         StringBuilder urlBuilder = new StringBuilder(url); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "="
@@ -53,9 +56,9 @@ public class GenericApiUtil<T> {
         /**
          * connection timeout 에러가 자주 발생해 최대 5분으로 늘림
          */
-        builder.connectTimeout(300, TimeUnit.SECONDS);
-        builder.readTimeout(300, TimeUnit.SECONDS);
-        builder.writeTimeout(300, TimeUnit.SECONDS);
+        builder.connectTimeout(timeout, TimeUnit.SECONDS);
+        builder.readTimeout(timeout, TimeUnit.SECONDS);
+        builder.writeTimeout(timeout, TimeUnit.SECONDS);
         OkHttpClient client = builder.build();
 
         Request.Builder requestBuilder = new Request.Builder()

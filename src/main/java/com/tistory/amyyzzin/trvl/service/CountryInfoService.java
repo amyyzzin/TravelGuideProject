@@ -3,6 +3,7 @@ package com.tistory.amyyzzin.trvl.service;
 import com.tistory.amyyzzin.trvl.domain.CountryInfo;
 import com.tistory.amyyzzin.trvl.dto.CountryInfoDto;
 import com.tistory.amyyzzin.trvl.dto.CountryInfoResponseDto;
+import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.CountryInfoRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
@@ -30,16 +31,25 @@ public class CountryInfoService {
             return;
         }
 
+        boolean openApiError = true;
+
         for (int i = 0; i < 3; i++) {
             try {
-                insert((CountryInfoResponseDto) apiUtil.callJsonApi(countryInfoUrl,
+                upsert((CountryInfoResponseDto) apiUtil.callJsonApi(countryInfoUrl,
                     CountryInfoResponseDto.class, "500"));
+                openApiError = false;
+
                 break;
             } catch (Exception e) {
                 log.error("[CountryInfoService init] ERROR {}", e.getMessage());
                 Thread.sleep(2000);
             }
         }
+
+        if (openApiError) {
+            throw new OpenApiException();
+        }
+
         Thread.sleep(2000);
     }
 
@@ -47,7 +57,7 @@ public class CountryInfoService {
         return countryInfoRepository.findFirstByIsoAlp2(isoAlp2).orElse(null);
     }
 
-    public void insert(CountryInfoResponseDto countryInfoResponseDto) {
+    public void upsert(CountryInfoResponseDto countryInfoResponseDto) {
         if (countryInfoResponseDto == null) {
             return;
         }

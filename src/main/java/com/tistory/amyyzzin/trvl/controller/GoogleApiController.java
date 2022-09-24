@@ -56,19 +56,8 @@ public class GoogleApiController {
 				.countryNm(standardCode != null ? standardCode.getCountryNm() : "정보 없음")
 				.countryEngNm(standardCode != null ? standardCode.getCountryEngNm() : "정보 없음")
 				.downloadUrl(standardCode != null && countryFlag != null ? countryFlag.getDownloadUrl() : "")
-//				.climateCn(countryInfo != null ? countryInfo.getClimateCn() : "정보 없음")
-//				.langCn(countryInfo != null ? countryInfo.getLangCn() : "정보 없음")
-//				.langNm(countryInfo != null ? countryInfo.getLangNm() : "정보 없음")
-//				.mainCityCn(countryInfo != null ? countryInfo.getMainCityCn() : "정보 없음")
-//				.mainEthnicCn(countryInfo != null ? countryInfo.getMainEthnicCn() : "정보 없음")
-//				.mscmctnCn(countryInfo != null ? countryInfo.getMscmctnCn() : "정보 없음")
-//				.religionCn(countryInfo != null ? countryInfo.getReligionCn() : "정보 없음")
-//				.countryIc(countryInfo != null ? countryInfo.getCountryIc() : "정보 없음")
-//				.countryCptNm(countryInfo != null ? countryInfo.getCountryCptNm() : "정보 없음")
-//				.countryArea(countryInfo != null ? countryInfo.getCountryArea() : "정보 없음")
-//				.countryAreaSrc(countryInfo != null ? countryInfo.getCountryAreaSrc() : "정보 없음")
-//				.countryAreaComment(countryInfo != null ? countryInfo.getCountryAreaComment() : "정보 없음")
 				.basic(countryBasicInfo != null ? countryBasicInfo.getBasic() : "정보 없음")
+				.iso3code(countryBasicInfo != null ? countryBasicInfo.getIso3Code() : "")
 				.build());
 	}
 }
