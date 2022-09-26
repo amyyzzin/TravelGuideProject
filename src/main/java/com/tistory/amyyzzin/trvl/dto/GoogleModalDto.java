@@ -15,6 +15,6 @@ public class GoogleModalDto {
 
 	private String basic;
 
-	private String iso3code;
+	private String iso2code;
 
 }

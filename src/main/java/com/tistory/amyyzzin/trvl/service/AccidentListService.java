@@ -1,6 +1,8 @@
 package com.tistory.amyyzzin.trvl.service;
 
+import com.tistory.amyyzzin.trvl.constant.IsoConstant;
 import com.tistory.amyyzzin.trvl.domain.AccidentList;
+import com.tistory.amyyzzin.trvl.domain.CountryBasicInfo;
 import com.tistory.amyyzzin.trvl.dto.AccidentListDto;
 import com.tistory.amyyzzin.trvl.dto.AccidentListResponseDto;
 import com.tistory.amyyzzin.trvl.exception.OpenApiException;
@@ -61,11 +63,15 @@ public class AccidentListService {
 
         for (AccidentListDto accidentListDto : responseDto.getData()) {
             try {
+                accidentListDto.setIso2Code(IsoConstant.convertCountryEngNm2Iso2(accidentListDto.getEname()));
                 accidentListRepository.save(AccidentList.of(accidentListDto));
             } catch (Exception e) {
                 log.error("[AccidentList.insert] ERROR {}", e.getMessage());
             }
         }
+    }
 
+    public AccidentList findByIso2Code(String iso2Code) {
+        return accidentListRepository.findByIso2Code(iso2Code).orElse(null);
     }
 }

@@ -1,8 +1,10 @@
 package com.tistory.amyyzzin.trvl.controller;
 
 import com.tistory.amyyzzin.trvl.constant.IsoConstant;
+import com.tistory.amyyzzin.trvl.domain.AccidentList;
 import com.tistory.amyyzzin.trvl.domain.CountryBasicInfo;
 import com.tistory.amyyzzin.trvl.domain.CountryInfo;
+import com.tistory.amyyzzin.trvl.service.AccidentListService;
 import com.tistory.amyyzzin.trvl.service.CountryBasicInfoService;
 import com.tistory.amyyzzin.trvl.service.CountryInfoService;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +36,8 @@ public class GoogleApiController {
 
 	private final CountryBasicInfoService countryBasicInfoService;
 
+	private final AccidentListService accidentListService;
+
 	@ApiOperation(value = "설명", notes = "이것은 노트")
 	@GetMapping("/modal")
 	public ResponseEntity<GoogleModalDto> getModalDetail(@RequestParam  @ApiParam(value = "국가 ISO-CODE", example = "KO") String code) {
@@ -46,18 +50,20 @@ public class GoogleApiController {
 		CountryFlag countryFlag = countryFlagService.findByIsoAlp2(code);
 		CountryInfo countryInfo = countryInfoService.findByIsoAlp2(code);
 		CountryBasicInfo countryBasicInfo
-			= countryBasicInfoService.findByIso3Code(IsoConstant.convertCountryEngNm2Iso3(standardCode.getCountryEngNm()));
+			= countryBasicInfoService.findByIso2Code(IsoConstant.convertCountryEngNm2Iso2(standardCode.getCountryEngNm()));
+
 
 		if (countryBasicInfo == null) {
-			countryBasicInfo = countryBasicInfoService.findByIso3Code(standardCode.getIsoAlp3());
+			countryBasicInfo = countryBasicInfoService.findByIso2Code(standardCode.getIsoAlp2());
 		}
+
 
 		return ResponseEntity.ok(GoogleModalDto.builder()
 				.countryNm(standardCode != null ? standardCode.getCountryNm() : "정보 없음")
 				.countryEngNm(standardCode != null ? standardCode.getCountryEngNm() : "정보 없음")
 				.downloadUrl(standardCode != null && countryFlag != null ? countryFlag.getDownloadUrl() : "")
 				.basic(countryBasicInfo != null ? countryBasicInfo.getBasic() : "정보 없음")
-				.iso3code(countryBasicInfo != null ? countryBasicInfo.getIso3Code() : "")
+				.iso2code(countryBasicInfo != null ? countryBasicInfo.getIso2Code() : "")
 				.build());
 	}
 }

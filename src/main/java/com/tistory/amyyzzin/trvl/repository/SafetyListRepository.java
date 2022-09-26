@@ -21,7 +21,8 @@ public interface SafetyListRepository extends JpaRepository<SafetyList, Long> {
     List<SafetyList> findAllByIsMainNoticeIsTrueOrderByWrtDtDesc();
     List<SafetyList> findTop3ByIsMainNoticeIsFalseOrderByWrtDtDesc();
     Page<SafetyList> findAllByIsMainNoticeIsFalseOrderByWrtDtDesc(PageRequest pageRequest);
-
     Optional<SafetyList> findById(Long id);
+
+    List<SafetyList> findTop3ByIsMainNoticeIsFalseAndCountryIsoAlp2OrderByWrtDtDesc(String countryIsoAlp2);
 
 }

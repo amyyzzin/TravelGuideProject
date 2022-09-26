@@ -13,4 +13,5 @@ import com.tistory.amyyzzin.trvl.domain.StandardCode;
 public interface StandardCodeRepository extends JpaRepository<StandardCode, Long> {
 
 	Optional<StandardCode> findByIsoAlp2(String isoAlp2);
+	Optional<StandardCode> findByCountryEngNm(String countryEngNm);
 }

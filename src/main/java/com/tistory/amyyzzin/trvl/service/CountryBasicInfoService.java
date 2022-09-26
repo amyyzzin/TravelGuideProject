@@ -49,8 +49,8 @@ public class CountryBasicInfoService {
         Thread.sleep(2000);
     }
 
-    public CountryBasicInfo findByIso3Code(String iso3Code) {
-        return countryBasicInfoRepository.findByIso3Code(iso3Code).orElse(null);
+    public CountryBasicInfo findByIso2Code(String iso2Code) {
+        return countryBasicInfoRepository.findByIso2Code(iso2Code).orElse(null);
     }
 
     public void upsert(CountryBasicInfoResponseDto responseDto) {
@@ -63,7 +63,7 @@ public class CountryBasicInfoService {
 
         for (CountryBasicInfoDto countryBasicInfoDto : responseDto.getData()) {
             try {
-                countryBasicInfoDto.setIso3Code(IsoConstant.convertCountryEngNm2Iso3(countryBasicInfoDto.getCountryEngNm()));
+                countryBasicInfoDto.setIso2Code(IsoConstant.convertCountryEngNm2Iso2(countryBasicInfoDto.getCountryEngNm()));
                 countryBasicInfoRepository.save(CountryBasicInfo.of(countryBasicInfoDto));
             } catch (Exception e) {
                 log.error("[CountryBasicInfo.insert] ERROR {}", e.getMessage());

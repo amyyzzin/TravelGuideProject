@@ -92,7 +92,6 @@ public class SafetyListService {
         return safetyListRepository.findAllByIsMainNoticeIsFalseOrderByWrtDtDesc(pageRequest);
     }
 
-
     public SafetyListDto detail(Long id) {
 
         Optional<SafetyList> optionalMember = safetyListRepository.findById(id);
@@ -104,6 +103,10 @@ public class SafetyListService {
         SafetyList safetyList = optionalMember.get();
 
         return SafetyListDto.of(safetyList);
+    }
+
+    public List<SafetyList> getCountrySafetyList(String countryIsoAlp2) {
+        return safetyListRepository.findTop3ByIsMainNoticeIsFalseAndCountryIsoAlp2OrderByWrtDtDesc(countryIsoAlp2);
     }
 }
 

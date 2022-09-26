@@ -1,6 +1,7 @@
 package com.tistory.amyyzzin.trvl.service;
 
 import com.tistory.amyyzzin.trvl.domain.ContactPoint;
+import com.tistory.amyyzzin.trvl.domain.CountryBasicInfo;
 import com.tistory.amyyzzin.trvl.dto.ContactPointDto;
 import com.tistory.amyyzzin.trvl.dto.ContactPointResponseDto;
 import com.tistory.amyyzzin.trvl.exception.OpenApiException;
@@ -68,6 +69,8 @@ public class ContactPointService {
                 log.error("[ContactPoint.insert] ERROR {}", e.getMessage());
             }
         }
-
+    }
+    public ContactPoint findByIso2Code(String countryIsoAlp2) {
+        return contactPointRepository.findByCountryIsoAlp2(countryIsoAlp2).orElse(null);
     }
 }

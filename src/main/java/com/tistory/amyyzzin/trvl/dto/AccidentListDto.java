@@ -22,4 +22,6 @@ public class AccidentListDto {
 
     private String id;
 
+    private String iso2Code;
+
 }

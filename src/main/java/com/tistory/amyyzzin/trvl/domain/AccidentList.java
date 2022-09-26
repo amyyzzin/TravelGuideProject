@@ -37,13 +37,17 @@ public class AccidentList {
     // 국가영문명
     private String wrtDt;
 
+    private String iso2Code;
+
 
     public static AccidentList of(AccidentListDto accidentListDto) {
         return AccidentList.builder()
             .continent(accidentListDto.getContinent())
             .ename(accidentListDto.getEname())
             .name(accidentListDto.getName())
-            .news(Jsoup.parse(accidentListDto.getNews()).text().replace("\uFEFF", ""))
+            .news(accidentListDto.getNews())
+//            .news(Jsoup.parse(accidentListDto.getNews()).text().replace("\uFEFF", ""))
+            .iso2Code(accidentListDto.getIso2Code())
             .build();
     }
 
