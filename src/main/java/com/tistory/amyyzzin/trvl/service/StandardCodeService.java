@@ -3,6 +3,7 @@ package com.tistory.amyyzzin.trvl.service;
 import com.tistory.amyyzzin.trvl.domain.StandardCode;
 import com.tistory.amyyzzin.trvl.dto.StandardCodeDto;
 import com.tistory.amyyzzin.trvl.dto.StandardCodeResponseDto;
+import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.StandardCodeRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
@@ -30,16 +31,25 @@ public class StandardCodeService {
             return;
         }
 
+        boolean openApiError = true;
+
         for (int i = 0; i < 3; i++) {
             try {
-                insert((StandardCodeResponseDto) genericApiUtil.callJsonApi(standardCodeUrl,
+                upsert((StandardCodeResponseDto) genericApiUtil.callJsonApi(standardCodeUrl,
                     StandardCodeResponseDto.class, "500"));
+                openApiError = false;
+
                 break;
             } catch (Exception e) {
                 log.error("[StandardCodeService init] ERROR {}", e.getMessage());
                 Thread.sleep(2000);
             }
         }
+
+        if (openApiError) {
+            throw new OpenApiException();
+        }
+
         Thread.sleep(2000);
     }
 
@@ -47,7 +57,7 @@ public class StandardCodeService {
         return standardCodeRepository.findByIsoAlp2(isoAlp2).orElse(null);
     }
 
-    public void insert(StandardCodeResponseDto standardCodeResponseDto) {
+    public void upsert(StandardCodeResponseDto standardCodeResponseDto) {
         if (standardCodeResponseDto == null) {
             return;
         }

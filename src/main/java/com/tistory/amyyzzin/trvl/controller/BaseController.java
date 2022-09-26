@@ -1,6 +1,6 @@
 package com.tistory.amyyzzin.trvl.controller;
 
-import com.tistory.amyyzzin.trvl.config.PageUtil;
+import com.tistory.amyyzzin.trvl.util.PageUtil;
 
 public class BaseController {
 

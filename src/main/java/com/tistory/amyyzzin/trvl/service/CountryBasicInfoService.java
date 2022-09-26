@@ -4,6 +4,7 @@ import com.tistory.amyyzzin.trvl.constant.IsoConstant;
 import com.tistory.amyyzzin.trvl.domain.CountryBasicInfo;
 import com.tistory.amyyzzin.trvl.dto.CountryBasicInfoDto;
 import com.tistory.amyyzzin.trvl.dto.CountryBasicInfoResponseDto;
+import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.CountryBasicInfoRepository;
 import com.tistory.amyyzzin.trvl.util.XmlApiUtil;
 import java.io.IOException;
@@ -27,15 +28,24 @@ public class CountryBasicInfoService {
             return;
         }
 
+        boolean openApiError = true;
+
         for (int i = 0; i < 3; i++) {
             try {
-                insert(xmlApiUtil.callCountryBasicInfoApi());
+                upsert(xmlApiUtil.callCountryBasicInfoApi());
+                openApiError = false;
+
                 break;
             }catch (Exception e) {
                 log.error("[CountryBasicInfoService init] ERROR {}", e.getMessage());
                 Thread.sleep(2000);
             }
         }
+
+        if (openApiError) {
+            throw new OpenApiException();
+        }
+
         Thread.sleep(2000);
     }
 
@@ -43,7 +53,7 @@ public class CountryBasicInfoService {
         return countryBasicInfoRepository.findByIso3Code(iso3Code).orElse(null);
     }
 
-    public void insert(CountryBasicInfoResponseDto responseDto) {
+    public void upsert(CountryBasicInfoResponseDto responseDto) {
 
         if (responseDto == null) {
             return;

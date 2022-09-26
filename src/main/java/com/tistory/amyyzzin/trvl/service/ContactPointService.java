@@ -3,6 +3,7 @@ package com.tistory.amyyzzin.trvl.service;
 import com.tistory.amyyzzin.trvl.domain.ContactPoint;
 import com.tistory.amyyzzin.trvl.dto.ContactPointDto;
 import com.tistory.amyyzzin.trvl.dto.ContactPointResponseDto;
+import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.ContactPointRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
@@ -30,10 +31,14 @@ public class ContactPointService {
             return;
         }
 
+        boolean openApiError = true;
+
         for (int i = 0; i < 3; i++) {
             try {
-                insert((ContactPointResponseDto) genericApiUtil.callJsonApi(contactPointUrl,
+                upsert((ContactPointResponseDto) genericApiUtil.callJsonApi(contactPointUrl,
                     ContactPointResponseDto.class, "500"));
+                openApiError = false;
+
                 break;
             } catch (Exception e) {
                 log.error("[ContactPointService init] ERROR {}", e.getMessage());
@@ -41,10 +46,15 @@ public class ContactPointService {
                 Thread.sleep(2000);
             }
         }
+
+        if (openApiError) {
+            throw new OpenApiException();
+        }
+
         Thread.sleep(2000);
     }
 
-    public void insert(ContactPointResponseDto contactPointResponseDto) {
+    public void upsert(ContactPointResponseDto contactPointResponseDto) {
         if (contactPointResponseDto == null) {
             return;
         }

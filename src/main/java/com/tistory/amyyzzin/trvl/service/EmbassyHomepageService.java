@@ -3,6 +3,7 @@ package com.tistory.amyyzzin.trvl.service;
 import com.tistory.amyyzzin.trvl.domain.EmbassyHomepage;
 import com.tistory.amyyzzin.trvl.dto.EmbassyHomepageDto;
 import com.tistory.amyyzzin.trvl.dto.EmbassyHomepageResponseDto;
+import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.EmbassyHomepageRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
@@ -29,20 +30,30 @@ public class EmbassyHomepageService {
         if (embassyHomepageRepository.count() > 0) {
             return;
         }
+
+        boolean openApiError = true;
+
         for (int i = 0; i < 3; i++) {
             try {
-                insert((EmbassyHomepageResponseDto) genericApiUtil.callJsonApi(embassyHomepageUrl,
+                upsert((EmbassyHomepageResponseDto) genericApiUtil.callJsonApi(embassyHomepageUrl,
                     EmbassyHomepageResponseDto.class, "500"));
+                openApiError = false;
+
                 break;
             } catch (Exception e) {
                 log.error("[EmbassyHomepageService init] ERROR {}", e.getMessage());
                 Thread.sleep(2000);
             }
         }
+
+        if (openApiError) {
+            throw new OpenApiException();
+        }
+
         Thread.sleep(2000);
     }
 
-    public void insert(EmbassyHomepageResponseDto embassyHomepageResponseDto) {
+    public void upsert(EmbassyHomepageResponseDto embassyHomepageResponseDto) {
         if (embassyHomepageResponseDto == null) {
             return;
         }

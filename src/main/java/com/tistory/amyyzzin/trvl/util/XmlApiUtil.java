@@ -42,7 +42,7 @@ public class XmlApiUtil {
 
     public CountryBasicInfoResponseDto callCountryBasicInfoApi() throws
         IOException {
-        URI requestUrl = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr")
+        URI requestUrl = UriComponentsBuilder.fromHttpUrl(openApiUrl)
             .path(countryBasicInfoPath)
             .queryParams(XmlApiUtil.createQueryParams())
             .build(true)

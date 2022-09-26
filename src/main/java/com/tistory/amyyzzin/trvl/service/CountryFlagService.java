@@ -3,6 +3,7 @@ package com.tistory.amyyzzin.trvl.service;
 import com.tistory.amyyzzin.trvl.domain.CountryFlag;
 import com.tistory.amyyzzin.trvl.dto.CountryFlagDto;
 import com.tistory.amyyzzin.trvl.dto.CountryFlagResponseDto;
+import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.CountryFlagRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
@@ -29,16 +30,26 @@ public class CountryFlagService {
         if (countryFlagRepository.count() > 0) {
             return;
         }
+
+        boolean openApiError = true;
+
         for (int i = 0; i < 3; i++) {
             try {
-                insert((CountryFlagResponseDto) genericApiUtil.callJsonApi(countryFlagUrl,
+                upsert((CountryFlagResponseDto) genericApiUtil.callJsonApi(countryFlagUrl,
                     CountryFlagResponseDto.class, "500"));
+                openApiError = false;
+
                 break;
             } catch (Exception e ) {
                 log.error("[CountryFlagService init] ERROR {}", e.getMessage());
                 Thread.sleep(2000);
             }
         }
+
+        if (openApiError) {
+            throw new OpenApiException();
+        }
+
         Thread.sleep(2000);
     }
 
@@ -46,7 +57,7 @@ public class CountryFlagService {
         return countryFlagRepository.findByIsoAlp2(isoAlp2).orElse(null);
     }
 
-    public void insert(CountryFlagResponseDto countryFlagResponseDto) {
+    public void upsert(CountryFlagResponseDto countryFlagResponseDto) {
         if (countryFlagResponseDto == null) {
             return;
         }

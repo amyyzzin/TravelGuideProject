@@ -3,6 +3,7 @@ package com.tistory.amyyzzin.trvl.service;
 import com.tistory.amyyzzin.trvl.domain.OverseasArrival;
 import com.tistory.amyyzzin.trvl.dto.OverseasArrivalDto;
 import com.tistory.amyyzzin.trvl.dto.OverseasArrivalResponseDto;
+import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.OverseasArrivalRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
@@ -30,20 +31,29 @@ public class OverseasArrivalService {
             return;
         }
 
+        boolean openApiError = true;
+
         for (int i = 0; i < 3; i++) {
             try {
-                insert((OverseasArrivalResponseDto) genericApiUtil.callJsonApi(overSeasArrivalUrl,
+                upsert((OverseasArrivalResponseDto) genericApiUtil.callJsonApi(overSeasArrivalUrl,
                     OverseasArrivalResponseDto.class, "500"));
+                openApiError = false;
+
                 break;
             } catch (Exception e) {
                 log.error("[OverseasArrivalService init] ERROR {}", e.getMessage());
                 Thread.sleep(2000);
             }
         }
+
+        if (openApiError) {
+            throw new OpenApiException();
+        }
+
         Thread.sleep(2000);
     }
 
-    public void insert(OverseasArrivalResponseDto overseasArrivalResponseDto) {
+    public void upsert(OverseasArrivalResponseDto overseasArrivalResponseDto) {
         if (overseasArrivalResponseDto == null) {
             return;
         }

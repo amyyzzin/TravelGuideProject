@@ -3,6 +3,7 @@ package com.tistory.amyyzzin.trvl.service;
 import com.tistory.amyyzzin.trvl.domain.TravelAlarm;
 import com.tistory.amyyzzin.trvl.dto.TravelAlarmDto;
 import com.tistory.amyyzzin.trvl.dto.TravelAlarmResponseDto;
+import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.TravelAlarmRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
@@ -30,20 +31,29 @@ public class TravelAlarmService {
             return;
         }
 
+        boolean openApiError = true;
+
         for (int i = 0; i < 3; i++) {
             try {
-                insert((TravelAlarmResponseDto) genericApiUtil.callJsonApi(travelAlarmUrl,
+                upsert((TravelAlarmResponseDto) genericApiUtil.callJsonApi(travelAlarmUrl,
                     TravelAlarmResponseDto.class, "500"));
+                openApiError = false;
+
                 break;
             } catch (Exception e) {
                 log.error("[TravelAlarmService init] ERROR {}", e.getMessage());
                 Thread.sleep(2000);
             }
         }
+
+        if (openApiError) {
+            throw new OpenApiException();
+        }
+
         Thread.sleep(2000);
     }
 
-    public void insert(TravelAlarmResponseDto travelAlarmResponseDto) {
+    public void upsert(TravelAlarmResponseDto travelAlarmResponseDto) {
         if (travelAlarmResponseDto == null) {
             return;
         }

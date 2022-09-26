@@ -3,6 +3,7 @@ package com.tistory.amyyzzin.trvl.service;
 import com.tistory.amyyzzin.trvl.domain.CovidSafety;
 import com.tistory.amyyzzin.trvl.dto.CovidSafetyDto;
 import com.tistory.amyyzzin.trvl.dto.CovidSafetyResponseDto;
+import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.CovidSafetyRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
@@ -30,20 +31,29 @@ public class CovidSafetyService {
             return;
         }
 
+        boolean openApiError = true;
+
         for (int i = 0; i < 3; i++) {
             try {
-                insert((CovidSafetyResponseDto) genericApiUtil.callJsonApi(covidSafetyUrl,
+                upsert((CovidSafetyResponseDto) genericApiUtil.callJsonApi(covidSafetyUrl,
                     CovidSafetyResponseDto.class, "500"));
+                openApiError = false;
+
                 break;
             } catch (Exception e) {
                 log.error("[CovidSafetyService init] ERROR {}", e.getMessage());
                 Thread.sleep(2000);
             }
         }
+
+        if (openApiError) {
+            throw new OpenApiException();
+        }
+
         Thread.sleep(2000);
     }
 
-    public void insert(CovidSafetyResponseDto covidSafetyResponseDto) {
+    public void upsert(CovidSafetyResponseDto covidSafetyResponseDto) {
         if (covidSafetyResponseDto == null) {
             return;
         }
