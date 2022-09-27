@@ -48,7 +48,7 @@ public class ContactPoint {
 
     public static ContactPoint of(ContactPointDto contactPointDto) {
         return ContactPoint.builder()
-            .contactRemark(contactPointDto.getContactRemark())
+            .contactRemark(contactPointDto.getContactRemark().replace("h3","p"))
 //            .contactRemark(Jsoup.parse(contactPointDto.getContactRemark()).text().replace("\uFEFF", ""))
             .continentCd(contactPointDto.getContinentCd())
             .continentEngNm(contactPointDto.getContinentEngNm())

@@ -106,7 +106,7 @@ public class SafetyListService {
     }
 
     public List<SafetyList> getCountrySafetyList(String countryIsoAlp2) {
-        return safetyListRepository.findTop3ByIsMainNoticeIsFalseAndCountryIsoAlp2OrderByWrtDtDesc(countryIsoAlp2);
+        return safetyListRepository.findTop3ByCountryIsoAlp2OrIsMainNoticeIsFalseAndCountryNmEqualsOrderByWrtDtDesc(countryIsoAlp2, "ALL");
     }
 }
 
