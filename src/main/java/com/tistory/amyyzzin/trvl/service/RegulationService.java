@@ -1,5 +1,6 @@
 package com.tistory.amyyzzin.trvl.service;
 
+import com.tistory.amyyzzin.trvl.domain.ContactPoint;
 import com.tistory.amyyzzin.trvl.domain.Regulation;
 import com.tistory.amyyzzin.trvl.dto.RegulationDto;
 import com.tistory.amyyzzin.trvl.dto.RegulationResponseDto;
@@ -7,6 +8,7 @@ import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.RegulationRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,10 +53,6 @@ public class RegulationService {
         Thread.sleep(2000);
     }
 
-    public Page<Regulation> getRegulations(Pageable pageable) {
-        return regulationRepository.findAllByOrderByCountryNm(pageable);
-    }
-
     public void upsert(RegulationResponseDto regulationResponseDto) {
         for (RegulationDto regulationDto : regulationResponseDto.getData()) {
             try {
@@ -64,7 +62,7 @@ public class RegulationService {
                 if (regulation == null) {
                     regulationRepository.save(Regulation.of(regulationDto));
                 } else {
-                    updateRegulationVO(regulationDto, regulation);
+//                    updateRegulationVO(regulationDto, regulation);
                     regulationRepository.save(regulation);
                 }
             } catch (Exception e) {
@@ -74,18 +72,22 @@ public class RegulationService {
 
     }
 
-    private void updateRegulationVO(RegulationDto regulationDto, Regulation regulation) {
-        regulation.setCountryEngNm(regulationDto.getCountryEngNm());
-        regulation.setCountryNm(regulationDto.getCountryNm());
-        regulation.setCountryIsoAlp2(regulationDto.getCountryIsoAlp2());
-        regulation.setHaveYn(regulationDto.getHaveYn());
-        regulation.setGnrlPsptVisaYn(regulationDto.getGnrlPsptVisaYn());
-        regulation.setGnrlPsptVisaCn(regulationDto.getGnrlPsptVisaCn());
-        regulation.setOfclpsptVisaYn(regulationDto.getOfclpsptVisaYn());
-        regulation.setOfclpsptVisaCn(regulationDto.getOfclpsptVisaCn());
-        regulation.setDplmtPsptVisaYn(regulationDto.getDplmtPsptVisaYn());
-        regulation.setDplmtPsptVisaCn(regulationDto.getDplmtPsptVisaCn());
-        regulation.setNvisaEntryEvdcCn(regulationDto.getNvisaEntryEvdcCn());
-        regulation.setRemark(regulationDto.getRemark());
+//    private void updateRegulationVO(RegulationDto regulationDto, Regulation regulation) {
+//        regulation.setCountryEngNm(regulationDto.getCountryEngNm());
+//        regulation.setCountryNm(regulationDto.getCountryNm());
+//        regulation.setCountryIsoAlp2(regulationDto.getCountryIsoAlp2());
+//        regulation.setHaveYn(regulationDto.getHaveYn());
+//        regulation.setGnrlPsptVisaYn(regulationDto.getGnrlPsptVisaYn());
+//        regulation.setGnrlPsptVisaCn(regulationDto.getGnrlPsptVisaCn());
+//        regulation.setOfclpsptVisaYn(regulationDto.getOfclpsptVisaYn());
+//        regulation.setOfclpsptVisaCn(regulationDto.getOfclpsptVisaCn());
+//        regulation.setDplmtPsptVisaYn(regulationDto.getDplmtPsptVisaYn());
+//        regulation.setDplmtPsptVisaCn(regulationDto.getDplmtPsptVisaCn());
+//        regulation.setNvisaEntryEvdcCn(regulationDto.getNvisaEntryEvdcCn());
+//        regulation.setRemark(regulationDto.getRemark());
+//    }
+
+    public Regulation findByIso2Code(String countryIsoAlp2) {
+        return regulationRepository.findByCountryIsoAlp2(countryIsoAlp2).orElse(null);
     }
 }

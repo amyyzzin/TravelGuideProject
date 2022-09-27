@@ -7,6 +7,7 @@ import com.tistory.amyyzzin.trvl.domain.CountryFlag;
 import com.tistory.amyyzzin.trvl.domain.CountryInfo;
 import com.tistory.amyyzzin.trvl.domain.NoticeList;
 import com.tistory.amyyzzin.trvl.domain.StandardCode;
+import com.tistory.amyyzzin.trvl.domain.TravelAlarm;
 import com.tistory.amyyzzin.trvl.dto.CountryDetailDto;
 import com.tistory.amyyzzin.trvl.dto.GoogleModalDto;
 import com.tistory.amyyzzin.trvl.dto.SafetyListDto;
@@ -16,8 +17,10 @@ import com.tistory.amyyzzin.trvl.service.CountryBasicInfoService;
 import com.tistory.amyyzzin.trvl.service.CountryFlagService;
 import com.tistory.amyyzzin.trvl.service.CountryInfoService;
 import com.tistory.amyyzzin.trvl.service.NoticeListService;
+import com.tistory.amyyzzin.trvl.service.RegulationService;
 import com.tistory.amyyzzin.trvl.service.SafetyListService;
 import com.tistory.amyyzzin.trvl.service.StandardCodeService;
+import com.tistory.amyyzzin.trvl.service.TravelAlarmService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +46,9 @@ public class CountryDetailController {
 	private final SafetyListService safetyListService;
 	private final NoticeListService noticeListService;
 
+	private final TravelAlarmService travelAlarmService;
+	private final RegulationService regulationService;
+
 	@ApiOperation(value = "설명", notes = "이것은 노트")
 	@GetMapping("/index/detail/{id}") // iso3Code
 	public String index(@PathVariable String id, Model model) {
@@ -56,8 +62,8 @@ public class CountryDetailController {
 		model.addAttribute("basicInfo", countryBasicInfoService.findByIso2Code(id));
 		model.addAttribute("accidentList", accidentListService.findByIso2Code(id));
 		model.addAttribute("contactPoint", contactPointService.findByIso2Code(id));
-
-
+		model.addAttribute("travelAlarm", travelAlarmService.findByIso2Code(id));
+		model.addAttribute("regulation", regulationService.findByIso2Code(id));
 
 		return "index/detail";
 	}

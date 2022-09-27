@@ -1,5 +1,6 @@
 package com.tistory.amyyzzin.trvl.service;
 
+import com.tistory.amyyzzin.trvl.domain.ContactPoint;
 import com.tistory.amyyzzin.trvl.domain.TravelAlarm;
 import com.tistory.amyyzzin.trvl.dto.TravelAlarmDto;
 import com.tistory.amyyzzin.trvl.dto.TravelAlarmResponseDto;
@@ -67,6 +68,9 @@ public class TravelAlarmService {
                 log.error("[TravelAlarm.insert] ERROR {}", e.getMessage());
             }
         }
+    }
 
+    public TravelAlarm findByIso2Code(String countryIsoAlp2) {
+        return travelAlarmRepository.findByCountryIsoAlp2(countryIsoAlp2).orElse(null);
     }
 }

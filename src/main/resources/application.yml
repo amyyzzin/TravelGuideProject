@@ -50,4 +50,5 @@ open:
     travelAlarm: "http://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2"
     accidentList: "/1262000/AccidentService/getAccidentList"
     countryBasicInfo: "/1262000/CountryBasicService/getCountryBasicList"
+    travelWarning: "/1262000/TravelWarningService/getTravelWarningList"
     timeout: 300
