@@ -62,7 +62,7 @@ public class RegulationService {
                 if (regulation == null) {
                     regulationRepository.save(Regulation.of(regulationDto));
                 } else {
-//                    updateRegulationVO(regulationDto, regulation);
+                    updateRegulationVO(regulationDto, regulation);
                     regulationRepository.save(regulation);
                 }
             } catch (Exception e) {
@@ -72,20 +72,20 @@ public class RegulationService {
 
     }
 
-//    private void updateRegulationVO(RegulationDto regulationDto, Regulation regulation) {
-//        regulation.setCountryEngNm(regulationDto.getCountryEngNm());
-//        regulation.setCountryNm(regulationDto.getCountryNm());
-//        regulation.setCountryIsoAlp2(regulationDto.getCountryIsoAlp2());
-//        regulation.setHaveYn(regulationDto.getHaveYn());
-//        regulation.setGnrlPsptVisaYn(regulationDto.getGnrlPsptVisaYn());
-//        regulation.setGnrlPsptVisaCn(regulationDto.getGnrlPsptVisaCn());
-//        regulation.setOfclpsptVisaYn(regulationDto.getOfclpsptVisaYn());
-//        regulation.setOfclpsptVisaCn(regulationDto.getOfclpsptVisaCn());
-//        regulation.setDplmtPsptVisaYn(regulationDto.getDplmtPsptVisaYn());
-//        regulation.setDplmtPsptVisaCn(regulationDto.getDplmtPsptVisaCn());
-//        regulation.setNvisaEntryEvdcCn(regulationDto.getNvisaEntryEvdcCn());
-//        regulation.setRemark(regulationDto.getRemark());
-//    }
+    private void updateRegulationVO(RegulationDto regulationDto, Regulation regulation) {
+        regulation.setCountryEngNm(regulationDto.getCountryEngNm());
+        regulation.setCountryNm(regulationDto.getCountryNm());
+        regulation.setCountryIsoAlp2(regulationDto.getCountryIsoAlp2());
+        regulation.setHaveYn(regulationDto.getHaveYn());
+        regulation.setGnrlPsptVisaYn(regulationDto.getGnrlPsptVisaYn());
+        regulation.setGnrlPsptVisaCn(regulationDto.getGnrlPsptVisaCn());
+        regulation.setOfclpsptVisaYn(regulationDto.getOfclpsptVisaYn());
+        regulation.setOfclpsptVisaCn(regulationDto.getOfclpsptVisaCn());
+        regulation.setDplmtPsptVisaYn(regulationDto.getDplmtPsptVisaYn());
+        regulation.setDplmtPsptVisaCn(regulationDto.getDplmtPsptVisaCn());
+        regulation.setNvisaEntryEvdcCn(regulationDto.getNvisaEntryEvdcCn());
+        regulation.setRemark(regulationDto.getRemark());
+    }
 
     public Regulation findByIso2Code(String countryIsoAlp2) {
         return regulationRepository.findByCountryIsoAlp2(countryIsoAlp2).orElse(null);

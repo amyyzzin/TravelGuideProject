@@ -1,12 +1,16 @@
 package com.tistory.amyyzzin.trvl.service;
 
 import com.tistory.amyyzzin.trvl.domain.EmbassyHomepage;
+import com.tistory.amyyzzin.trvl.domain.Regulation;
+import com.tistory.amyyzzin.trvl.domain.SafetyList;
 import com.tistory.amyyzzin.trvl.dto.EmbassyHomepageDto;
 import com.tistory.amyyzzin.trvl.dto.EmbassyHomepageResponseDto;
 import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.EmbassyHomepageRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,6 +71,9 @@ public class EmbassyHomepageService {
                 log.error("[EmbassyHomepage.insert] ERROR {}", e.getMessage());
             }
         }
-
     }
+    public EmbassyHomepage getEmbassyHomepage(String embassyCd) {
+        return embassyHomepageRepository.findByEmbassyCdAndLangCdEquals(embassyCd, "10").orElse(null);
+    }
+
 }

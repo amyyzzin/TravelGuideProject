@@ -13,7 +13,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      border: solid 1px #000;
+      /*border: solid 1px #000;*/
       text-align: center;
     }
 
@@ -26,12 +26,16 @@
 
     tbody {
       font-size: 15px;
-      border: solid 1px #000;
+      /*border: solid 1px #000;*/
       overflow-x: hidden;
     }
 
-    th, td {
-      border: 1px solid black;
+    /*th, td {*/
+    /*  border: 1px solid black;*/
+    /*}*/
+
+    li {
+      font-size: 18px;
     }
 
     #fragments {
@@ -58,119 +62,127 @@
   <h2>💚 상세 정보</h2>
   <table style="align-content: center; text-align: center">
     <tbody>
-    <td>
+    <td style="width: 20%">
       <img th:src="${basicInfo.imgUrl}" alt="CountryFlag">
     </td>
-    <td style="font-weight: bold;">
+    <td style="font-weight: bold; width: auto">
       <p th:text="${countryNm.countryNm +'('+ countryNm.countryEngNm +')'}"
          style="font-size: 25px"></p>
       <p th:text="${basicInfo.continent}" style="font-size: 20px"></p>
     </td>
-    <td>
-      <button type="button" class="btn btn-default"
-              th:onclick="moveToCountryDetailPage()">현지 한국대사관 바로가기
+    <td style="width: 25%">
+      <button type="button" class="btn btn-secondary btn-lg" th:id="${embassyHomepage.homepageUrl}"
+      onclick="moveToEmbassyPage(id)">
+        현지 한국대사관 바로가기
       </button>
     </td>
     </tbody>
   </table>
-  <br>
-
-  <img th:src="${travelAlarm.dangMapDownloadUrl}" alt="CountryDetailMap"
-       style="width:47%; height:25%;">
-
-  <div class="table" style="width: 50%; float: right;">
-    <br>
-    <h5 style="font-weight: bold"> 💙 안전공지
-      <button onclick="location.href='/index/safetyDetailList'" type="button" class="close"
-              aria-label="Close">
-        <span aria-hidden="true">&#43;</span>
-      </button>
-    </h5>
-
-    <hr style="border-top: 4px solid silver; margin:0%;">
-
-    <div class="tbl-content">
-
-      <table style="width: 100%;">
-        <tbody>
-
-        <tr th:each="list : ${safetyListMain}" style="line-height: 100%">
-
-          <td th:id="${list.id}" th:onclick="moveToSafetyDetailPage(this.getAttribute('id'))"
-              th:text="${list.title}" style="text-align: left; font-weight: bold;" colspan="2">
-          </td>
-
-        </tr>
-        <tr th:each="x : ${safetyCountryList}" style="line-height: 100%">
-
-          <td th:id="${x.id}" th:onclick="moveToSafetyDetailPage(this.getAttribute('id'))"
-              th:if="${not #strings.isEmpty(x.ctgyNm)}"
-              th:text="${' [' + x.ctgyNm + '] ' + x.title}"
-              style="text-align: left"></td>
-
-          <td th:id="${x.id}" th:onclick="moveToSafetyDetailPage(this.getAttribute('id'))"
-              th:if="${#strings.isEmpty(x.ctgyNm)}" th:text="${x.title}"
-              style="text-align: left"></td>
-
-          <td th:text="${x.wrtDt}" style="width: 20%; text-align: right"></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="table" style="float: right;">
-      <br>
-      <h5 style="font-weight: bold"> 💜 입국허가요건 </h5>
-
-      <div class="tbl-content">
-
-        <table style="width: 100%;">
-          <tbody>
-
-          <tr>
-            <td style="width: 18%">외교관여권 소지자</td>
-            <td style="width: 16%">관용여권 소지자</td>
-            <td style="width: 16%">일반여권 소지자</td>
-            <td style="width: 25%">무사증입국 근거</td>
-            <td style="width: 25%">비고</td>
-          </tr>
-          <tr>
-            <td th:text="${regulation.dplmtPsptVisaCn}"></td>
-            <td th:text="${regulation.ofclpsptVisaCn}"></td>
-            <td th:text="${regulation.gnrlPsptVisaCn}"></td>
-            <td th:text="${regulation.nvisaEntryEvdcCn}"></td>
-            <td th:text="${regulation.remark}"></td>
-          </tr>
-
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
   <div>
     <br>
-    <ul class="nav nav-tabs" id="myTab" role="tablist" style="width: 75%;">
+    <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <button class="nav-link active" id="basic-tab" data-toggle="tab" data-target="#basic"
-                type="button" role="tab" aria-controls="basic" aria-selected="true">기본정보
+                type="button" role="tab" aria-controls="basic" aria-selected="true"> 기본 정보
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="country-tab" data-toggle="tab" data-target="#country"
+                type="button" role="tab" aria-controls="country" aria-selected="false"> 국가 정보
         </button>
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#accidentList"
-                type="button" role="tab" aria-controls="accidentList" aria-selected="false">사건 /
+                type="button" role="tab" aria-controls="accidentList" aria-selected="false"> 사건 /
           사고
         </button>
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="contact-tab" data-toggle="tab" data-target="#contact"
-                type="button" role="tab" aria-controls="contact" aria-selected="false">현지연락처
+                type="button" role="tab" aria-controls="contact" aria-selected="false"> 현지연락처
         </button>
       </li>
     </ul>
-    <div class="tab-content" id="myTabContent" style="font-size: 14px; margin-left: 5%;">
+    </nav>
+
+    <div class="tab-content" id="myTabContent" style="font-size: 16px;">
+
       <div class="tab-pane fade show active" id="basic" role="tabpanel"
            aria-labelledby="home-tab">
+        <img th:src="${travelAlarm.dangMapDownloadUrl}" alt="CountryDetailMap"
+             style="width:47%; height:25%;">
+        <div class="table" style="width: 50%; float: right;">
+          <br>
+          <h5 style="font-weight: bold"> 💙 안전공지
+            <button onclick="location.href='/index/safetyDetailList'" type="button" class="close"
+                    aria-label="Close">
+              <span aria-hidden="true">&#43;</span>
+            </button>
+          </h5>
+
+          <hr style="border-top: 4px solid silver; margin:0%;">
+
+          <div class="tbl-content">
+
+            <table style="width: 100%;">
+              <tbody>
+
+              <tr th:each="list : ${safetyListMain}" style="line-height: 100%">
+
+                <td th:id="${list.id}" th:onclick="moveToSafetyDetailPage(this.getAttribute('id'))"
+                    th:text="${list.title}" style="text-align: left; font-weight: bold;"
+                    colspan="2">
+                </td>
+
+              </tr>
+              <tr th:each="x : ${safetyCountryList}" style="line-height: 100%">
+
+                <td th:id="${x.id}" th:onclick="moveToSafetyDetailPage(this.getAttribute('id'))"
+                    th:if="${not #strings.isEmpty(x.ctgyNm)}"
+                    th:text="${' [' + x.ctgyNm + '] ' + x.title}"
+                    style="text-align: left"></td>
+
+                <td th:id="${x.id}" th:onclick="moveToSafetyDetailPage(this.getAttribute('id'))"
+                    th:if="${#strings.isEmpty(x.ctgyNm)}" th:text="${x.title}"
+                    style="text-align: left"></td>
+
+                <td th:text="${x.wrtDt}" style="width: 20%; text-align: right"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table" style="float: right;">
+            <br>
+            <h5 style="font-weight: bold"> 💜 입국허가요건 </h5>
+
+            <div class="tbl-content">
+
+              <table style="width: 100%;">
+                <tbody>
+
+                <tr>
+                  <td style="width: 17%">외교관여권<br>소지자</td>
+                  <td style="width: 16%">관용여권<br>소지자</td>
+                  <td style="width: 16%">일반여권<br>소지자</td>
+                  <td style="width: 25%">무사증입국 근거</td>
+                  <td style="width: 25%">비고</td>
+                </tr>
+                <tr>
+                  <td th:text="${regulation.dplmtPsptVisaCn}"></td>
+                  <td th:text="${regulation.ofclpsptVisaCn}"></td>
+                  <td th:text="${regulation.gnrlPsptVisaCn}"></td>
+                  <td th:text="${regulation.nvisaEntryEvdcCn}"></td>
+                  <td th:text="${regulation.remark}"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="country" role="tabpanel" aria-labelledby="country-tab">
         <p th:utext="${basicInfo.basic}"></p>
       </div>
       <div class="tab-pane fade" id="accidentList" role="tabpanel" aria-labelledby="profile-tab">
@@ -200,7 +212,7 @@
   }
 
   function moveToEmbassyPage(id) {
-    window.location.href = "/index/noticeDetail/" + id;
+    window.location.href = id;
   }
 
   function moveToSafetyDetailPage(id) {

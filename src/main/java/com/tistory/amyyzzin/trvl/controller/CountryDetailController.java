@@ -16,6 +16,7 @@ import com.tistory.amyyzzin.trvl.service.ContactPointService;
 import com.tistory.amyyzzin.trvl.service.CountryBasicInfoService;
 import com.tistory.amyyzzin.trvl.service.CountryFlagService;
 import com.tistory.amyyzzin.trvl.service.CountryInfoService;
+import com.tistory.amyyzzin.trvl.service.EmbassyHomepageService;
 import com.tistory.amyyzzin.trvl.service.NoticeListService;
 import com.tistory.amyyzzin.trvl.service.RegulationService;
 import com.tistory.amyyzzin.trvl.service.SafetyListService;
@@ -48,6 +49,7 @@ public class CountryDetailController {
 
 	private final TravelAlarmService travelAlarmService;
 	private final RegulationService regulationService;
+	private final EmbassyHomepageService embassyHomepageService;
 
 	@ApiOperation(value = "설명", notes = "이것은 노트")
 	@GetMapping("/index/detail/{id}") // iso3Code
@@ -64,6 +66,7 @@ public class CountryDetailController {
 		model.addAttribute("contactPoint", contactPointService.findByIso2Code(id));
 		model.addAttribute("travelAlarm", travelAlarmService.findByIso2Code(id));
 		model.addAttribute("regulation", regulationService.findByIso2Code(id));
+		model.addAttribute("embassyHomepage", embassyHomepageService.getEmbassyHomepage(id));
 
 		return "index/detail";
 	}

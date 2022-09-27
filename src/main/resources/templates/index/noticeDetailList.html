@@ -43,6 +43,8 @@
     }
 
   </style>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 </head>
 <body>
 
@@ -53,12 +55,12 @@
 <div style="width: 75%; float: right; margin-right: 5%">
 <h1>💚 외교부 공지</h1>
 
-<div class="table" style="line-height: 200%">
+<div class="table">
   <table>
     <thead>
-    <th style="width: 7%;"> 번호</th>
+    <th style="width: 10%;"> 번호</th>
     <th style="width: auto;"> 제목</th>
-    <th style="width: 7%;"> 첨부파일</th>
+    <th style="width: 10%;"> 첨부파일</th>
     <th style="width: 10%;"> 등록일</th>
     </thead>
 
@@ -69,8 +71,6 @@
       <td th:id="${list.listId}" th:onclick="moveToDetailPage(this.getAttribute('id'))"
           th:text="${list.title}" style="text-align: left;">
       </td>
-
-
       <td th:if="${not #strings.isEmpty(list.fileDownloadUrl)}"
           th:text="${'💾'}"></td>
       <td th:if="${#strings.isEmpty(list.fileDownloadUrl)}" th:text="${''}"></td>

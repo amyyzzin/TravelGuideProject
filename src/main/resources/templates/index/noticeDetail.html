@@ -42,6 +42,8 @@
     }
 
   </style>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 </head>
 <body>
 
@@ -71,6 +73,7 @@
         <th>첨부파일</th>
         <td th:if="${not #strings.isEmpty(notice.fileDownloadUrl)}">
           <button type="button" class="close" aria-label="Close" aria-hidden="true"
+                  style="text-align: center"
                   th:id="${notice.fileDownloadUrl}"
                   th:onclick="moveToDownloadPage(this.getAttribute('id'))"
                   th:text="${'💾'}">
