@@ -32,7 +32,11 @@ public class SafetyListService extends AbstractService {
     @Transactional
     public void upsert() throws IOException {
 
-        safetyListRepository.deleteAllInBatch();
+//        safetyListRepository.deleteAllInBatch();
+
+        if (safetyListRepository.count() > 0) {
+            return;
+        }
 
         SafetyListResponseDto safetyListResponseDto =
             (SafetyListResponseDto) genericApiUtil.callJsonApi(safetyListUrl,

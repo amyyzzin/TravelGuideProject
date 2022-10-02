@@ -5,7 +5,7 @@
   <title>TravelGuide</title>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-  <link rel="stylesheet" type="text/css" href="./style.css" />
+  <link rel="stylesheet" type="text/css" href="./style.css"/>
   <script type="module" src="./index.js"></script>
 
   <style>
@@ -83,32 +83,12 @@
       width: 345px;
     }
 
-    .modal-content modal-fullsize {
-      text-align: left;
-    }
-
     .modal.fade {
       position: fixed;
-      margin-left: 10%;
-    }
-
-    .modal-title {
-      text-align: center;
-      width: 90%;
-      height: 65%;
     }
 
     .modal-dialog {
-      max-width: 90%;
-      max-height: 50%;
-    }
-
-    .modal-dialog-slideout {
-      min-height: 70%;
-      min-width: 70%;
-      margin: 0 0 0 auto;
-      background: #fff;
-      position: absolute;
+      max-height: 65%;
     }
 
     .modal.fade .modal-dialog.modal-dialog-slideout {
@@ -169,10 +149,6 @@
       width: 50%;
     }
 
-    .tbl-header {
-      /*background-color: rgba(255, 255, 255, 0.3);*/
-    }
-
     .tbl-content {
       height: 40%;
       overflow-x: hidden;
@@ -181,8 +157,6 @@
 
     th {
       text-align: center;
-      /*vertical-align: middle;*/
-      /*font-weight: 500;*/
       font-size: 15px;
     }
 
@@ -212,29 +186,35 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 </head>
 
-<body>
+<body style="background-color: whitesmoke">
 <br>
 <div id="map">
-<h1 th onclick="location.href='/'" style="float: left;" >🌍TravelGuide </h1>
-<input id="pac-input" class="controls" type="text" placeholder="어디로 떠나볼까요?" style="float: right;"/>
+  <h1 th onclick="location.href='/'" style="float: left;">🌍TravelGuide </h1>
+  <input id="pac-input" class="controls" type="text" placeholder="어디로 떠나볼까요?"
+         style="float: right;"/>
 </div>
 
 <div id="map-canvas" style="width: 80%; height: 55%; margin-left: auto; margin-right: auto"></div>
 
 <!-- Modal -->
+
 <div class="modal fade" id="ModalSlide" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel2" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-slideout " role="document">
-    <div class="modal-content modal-fullsize">
+  <div class="modal-dialog modal-lg modal-dialog-slideout" role="document">
+    <div class="modal-content" style="background-color: #FFFAFA">
       <div class="modal-header">
+
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="myModalLabel">
-          <span id="country-nm"></span>(<span id="country-eng-nm"></span>)<br>
-          <img id="country-flag" style="width: 150px; height: 100px;"><br>
-        </h4>
-
+        <div class="modal-title" id="myModalLabel">
+          <img id="country-flag"
+               style="width: 150px; height: 100px; float:left; margin-left: 3%; margin-right: 3%">
+          <h3 style="font-weight: bold; text-align: left; line-height: 180%">
+            <div id="country-nm"></div>
+            <div id="country-eng-nm"></div>
+          </h3>
+        </div>
       </div>
 
       <div class="modal-body">
@@ -242,8 +222,9 @@
       </div>
 
       <div class="modal-footer" style="margin-right: 10%">
-        <button type="button" class="btn btn-outline-dark"
-                th:onclick="moveToCountryDetailPage()">상세페이지로 이동</button>
+        <button type="button" class="btn btn-outline-dark btn-lg"
+                th:onclick="moveToCountryDetailPage()">상세페이지로 이동
+        </button>
       </div>
 
     </div>
@@ -277,7 +258,6 @@
         </tbody>
       </table>
 
-      <!--      <hr style="border-top: 3px dashed silver; margin: 2px;">-->
 
       <table style="width: 100%;">
         <tbody>
@@ -316,7 +296,8 @@
         <tbody>
         <tr th:each="notice : ${noticeListMain}">
 
-          <td th:id="${notice.listId}" th:onclick="moveToNoticeDetailPage(this.getAttribute('id'))"
+          <td th:id="${notice.listId}"
+              th:onclick="moveToNoticeDetailPage(this.getAttribute('id'))"
               th:text="${notice.title}" style="text-align: left;">
           </td>
 
@@ -334,7 +315,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 <!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"</script>-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initAutocomplete&libraries=places&v=weekly"
@@ -432,7 +414,7 @@
       var searchBox = new google.maps.places.SearchBox(document.getElementById('pac-input'));
       // map.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById('pac-input'));
 
-      google.maps.event.addListener(searchBox, 'places_changed', function() {
+      google.maps.event.addListener(searchBox, 'places_changed', function () {
         searchBox.set('map', null);
 
         var places = searchBox.getPlaces();
@@ -440,13 +422,13 @@
         var i, place;
 
         for (i = 0; place = places[i]; i++) {
-          (function(place) {
+          (function (place) {
             var marker = new google.maps.Marker({
               position: place.geometry.location
             });
 
             marker.bindTo('map', searchBox, 'map');
-            google.maps.event.addListener(marker, 'map_changed', function() {
+            google.maps.event.addListener(marker, 'map_changed', function () {
               if (!this.getMap()) {
                 this.unbindAll();
               }
