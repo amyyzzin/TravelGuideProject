@@ -45,7 +45,7 @@ public class AccidentList {
             .ename(accidentListDto.getEname())
             .name(accidentListDto.getName())
 //            .news(accidentListDto.getNews())
-            .news(accidentListDto.getNews().replace("h3", "p"))
+            .news(accidentListDto.getNews().replace("h3", "h5"))
             .iso2Code(accidentListDto.getIso2Code())
             .build();
     }

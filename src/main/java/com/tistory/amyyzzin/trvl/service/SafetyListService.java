@@ -3,24 +3,23 @@ package com.tistory.amyyzzin.trvl.service;
 import com.tistory.amyyzzin.trvl.domain.SafetyList;
 import com.tistory.amyyzzin.trvl.dto.SafetyListDto;
 import com.tistory.amyyzzin.trvl.dto.SafetyListResponseDto;
-import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.SafetyListRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SafetyListService {
+public class SafetyListService extends AbstractService {
 
     private final GenericApiUtil genericApiUtil;
 
@@ -29,45 +28,21 @@ public class SafetyListService {
     @Value("${open.api.safetyList}")
     String safetyListUrl;
 
-    @PostConstruct
-    public void init() throws IOException, InterruptedException {
-        if (safetyListRepository.count() > 0) {
-            return;
-        }
+    @Override
+    @Transactional
+    public void upsert() throws IOException {
 
-        boolean openApiError = true;
+        safetyListRepository.deleteAllInBatch();
 
-        for (int i = 0; i < 3; i++) {
-            try {
-                upsert((SafetyListResponseDto) genericApiUtil.callJsonApi(safetyListUrl,
-                    SafetyListResponseDto.class, "100"));
-                openApiError = false;
-
-                break;
-            } catch (Exception e) {
-                log.error("[SafetyListService init] ERROR {}", e.getMessage());
-                Thread.sleep(2000);
-            }
-        }
-
-        if (openApiError) {
-            throw new OpenApiException();
-        }
-
-        Thread.sleep(2000);
-    }
-
-    public void upsert(SafetyListResponseDto safetyListResponseDto) {
-        if (safetyListResponseDto == null) {
-            return;
-        }
-
-        log.info("[SafetyListDto] {}", safetyListResponseDto);
+        SafetyListResponseDto safetyListResponseDto =
+            (SafetyListResponseDto) genericApiUtil.callJsonApi(safetyListUrl,
+                SafetyListResponseDto.class, "200");
 
         for (SafetyListDto safetyListDto : safetyListResponseDto.getData()) {
             try {
+                boolean isMainNotice = safetyListDto.getTitle().startsWith("<font");
                 SafetyList safetyList = SafetyList.of(safetyListDto);
-                safetyList.setMainNotice(safetyListDto.getTitle().startsWith("<font"));
+                safetyList.setMainNotice(isMainNotice);
 
                 safetyListRepository.save(safetyList);
             } catch (Exception e) {
@@ -106,7 +81,8 @@ public class SafetyListService {
     }
 
     public List<SafetyList> getCountrySafetyList(String countryIsoAlp2) {
-        return safetyListRepository.findTop3ByCountryIsoAlp2OrIsMainNoticeIsFalseAndCountryNmEqualsOrderByWrtDtDesc(countryIsoAlp2, "ALL");
+        return safetyListRepository.findTop3ByCountryIsoAlp2OrIsMainNoticeIsFalseAndCountryNmEqualsOrderByWrtDtDesc(
+            countryIsoAlp2, "ALL");
     }
 }
 

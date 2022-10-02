@@ -10,13 +10,14 @@ import java.io.IOException;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.ExtendedBeanInfoFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class EmbassyInfoService {
+public class EmbassyInfoService extends AbstractService {
 
     private final GenericApiUtil genericApiUtil;
 
@@ -25,38 +26,16 @@ public class EmbassyInfoService {
     @Value("${open.api.embassyInfo}")
     String embassyInfoUrl;
 
-    @PostConstruct
-    public void init() throws IOException, InterruptedException {
+    @Override
+    public void upsert() throws IOException {
+
         if (embassyInfoRepository.count() > 0) {
             return;
         }
 
-        boolean openApiError = true;
-
-        for (int i = 0; i < 3; i++) {
-            try {
-                upsert((EmbassyInfoResponseDto) genericApiUtil.callJsonApi(embassyInfoUrl,
-                    EmbassyInfoResponseDto.class, "500"));
-                openApiError = false;
-
-                break;
-            } catch (Exception e) {
-                log.error("[EmbassyInfoService init] ERROR {}", e.getMessage());
-                Thread.sleep(2000);
-            }
-        }
-
-        if (openApiError) {
-            throw new OpenApiException();
-        }
-
-        Thread.sleep(2000);
-    }
-
-    public void upsert(EmbassyInfoResponseDto embassyInfoResponseDto) {
-        if (embassyInfoResponseDto == null) {
-            return;
-        }
+        EmbassyInfoResponseDto embassyInfoResponseDto =
+            (EmbassyInfoResponseDto) genericApiUtil.callJsonApi(embassyInfoUrl,
+                EmbassyInfoResponseDto.class, "500");
 
         log.info("[embassyInfoDto] {}", embassyInfoResponseDto);
 
@@ -67,6 +46,5 @@ public class EmbassyInfoService {
                 log.error("[OverseasArrival.insert] ERROR {}", e.getMessage());
             }
         }
-
     }
 }

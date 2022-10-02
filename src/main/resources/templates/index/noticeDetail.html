@@ -52,8 +52,9 @@
 </div>
 
 <div style="width: 75%; float: right; margin-right: 5%">
+  <br>
   <h1>💚 외교부 공지</h1>
-
+  <br>
   <div class="table" style="line-height: 200%">
     <table>
       <tbody>
@@ -73,7 +74,7 @@
         <th>첨부파일</th>
         <td th:if="${not #strings.isEmpty(notice.fileDownloadUrl)}">
           <button type="button" class="close" aria-label="Close" aria-hidden="true"
-                  style="text-align: center"
+                  style="position:relative; left: -50%"
                   th:id="${notice.fileDownloadUrl}"
                   th:onclick="moveToDownloadPage(this.getAttribute('id'))"
                   th:text="${'💾'}">

@@ -17,9 +17,8 @@
       text-align: center;
     }
 
-    h2 {
+    h1 {
       color: black;
-      font-weight: bold;
       text-align: left;
       margin-bottom: 10px;
     }
@@ -57,18 +56,18 @@
   <div th:replace="/index/fragments/layout.html :: fragment-body-menu"></div>
 </div>
 
-<div style="width: 75%; float: right; margin-right: 5%">
+<div style="width: 75%; float: right; margin-right: 5%; background-color: whitesmoke">
   <br>
-  <h2>💚 상세 정보</h2>
-  <table style="align-content: center; text-align: center">
+  <h1>💚 상세 정보</h1>
+  <table style="align-content: center; text-align: center;">
     <tbody>
-    <td style="width: 20%">
+    <td style="width: 20%;">
       <img th:src="${basicInfo.imgUrl}" alt="CountryFlag">
     </td>
-    <td style="font-weight: bold; width: auto">
-      <p th:text="${countryNm.countryNm +'('+ countryNm.countryEngNm +')'}"
-         style="font-size: 25px"></p>
-      <p th:text="${basicInfo.continent}" style="font-size: 20px"></p>
+    <td style="width: auto; text-align: left">
+      <p th:utext="${countryNm.countryNm +' ('+ countryNm.countryEngNm +')'}"
+         style="font-size: 25px; font-weight: bold; margin-bottom: 0"></p>
+      <p th:text="${basicInfo.continent}" style="font-size: 23px"></p>
     </td>
     <td style="width: 25%">
       <button type="button" class="btn btn-secondary btn-lg" th:id="${embassyHomepage.homepageUrl}"
@@ -78,8 +77,6 @@
     </td>
     </tbody>
   </table>
-  <div>
-    <br>
     <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <button class="nav-link active" id="basic-tab" data-toggle="tab" data-target="#basic"
@@ -120,7 +117,7 @@
             </button>
           </h5>
 
-          <hr style="border-top: 4px solid silver; margin:0%;">
+          <hr style="border-top: 3px solid silver; margin:0%;">
 
           <div class="tbl-content">
 
@@ -154,7 +151,8 @@
 
           <div class="table" style="float: right;">
             <br>
-            <h5 style="font-weight: bold"> 💜 입국허가요건 </h5>
+            <h5 style="font-weight: bold"> 💜 무비자 입국허가요건 </h5>
+            <hr style="border-top: 3px solid silver; margin:0%;">
 
             <div class="tbl-content">
 
@@ -162,18 +160,18 @@
                 <tbody>
 
                 <tr>
-                  <td style="width: 17%">외교관여권<br>소지자</td>
-                  <td style="width: 16%">관용여권<br>소지자</td>
-                  <td style="width: 16%">일반여권<br>소지자</td>
-                  <td style="width: 25%">무사증입국 근거</td>
-                  <td style="width: 25%">비고</td>
+                  <td style="width: 20%">외교관여권<br>소지자</td>
+                  <td style="width: 20%">관용여권<br>소지자</td>
+                  <td style="width: 20%">일반여권<br>소지자</td>
+                  <td style="width: 23%">무사증입국 근거</td>
+                  <td style="width: 17%">비고</td>
                 </tr>
                 <tr>
-                  <td th:text="${regulation.dplmtPsptVisaCn}"></td>
-                  <td th:text="${regulation.ofclpsptVisaCn}"></td>
-                  <td th:text="${regulation.gnrlPsptVisaCn}"></td>
-                  <td th:text="${regulation.nvisaEntryEvdcCn}"></td>
-                  <td th:text="${regulation.remark}"></td>
+                  <td th:text="${regulation?.dplmtPsptVisaCn}"></td>
+                  <td th:text="${regulation?.ofclpsptVisaCn}"></td>
+                  <td th:text="${regulation?.gnrlPsptVisaCn}"></td>
+                  <td th:text="${regulation?.nvisaEntryEvdcCn}"></td>
+                  <td th:text="${regulation?.remark}"></td>
                 </tr>
                 </tbody>
               </table>

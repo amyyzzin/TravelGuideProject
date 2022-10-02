@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RegulationService {
+public class RegulationService extends AbstractService {
 
     private final GenericApiUtil genericApiUtil;
 
@@ -29,31 +29,17 @@ public class RegulationService {
     @Value("${open.api.regulation}")
     String regulationUrl;
 
-    @PostConstruct
-    public void init() throws IOException, InterruptedException {
-        boolean openApiError = true;
+    @Override
+    public void upsert() throws IOException {
 
-        for (int i = 0; i < 3; i++) {
-            try {
-                upsert((RegulationResponseDto) genericApiUtil.callJsonApi(regulationUrl,
-                    RegulationResponseDto.class, "500"));
-                openApiError = false;
-
-                break;
-            } catch (Exception e) {
-                log.error("[RegulationService init] ERROR {}", e.getMessage());
-                Thread.sleep(2000);
-            }
+        if (regulationRepository.count() > 0) {
+            return;
         }
 
-        if (openApiError) {
-            throw new OpenApiException();
-        }
+        RegulationResponseDto regulationResponseDto =
+            (RegulationResponseDto) genericApiUtil.callJsonApi(regulationUrl,
+                    RegulationResponseDto.class, "500");
 
-        Thread.sleep(2000);
-    }
-
-    public void upsert(RegulationResponseDto regulationResponseDto) {
         for (RegulationDto regulationDto : regulationResponseDto.getData()) {
             try {
                 Regulation regulation = regulationRepository.findById(Long.valueOf(
@@ -69,7 +55,6 @@ public class RegulationService {
                 log.error("[RegulationService.insert] ERROR {}", e.getMessage());
             }
         }
-
     }
 
     private void updateRegulationVO(RegulationDto regulationDto, Regulation regulation) {

@@ -45,8 +45,7 @@ public class XmlApiUtil {
     @Value("${open.api.travelWarning}")
     String TravelWarningPath;
 
-    public CountryBasicInfoResponseDto callCountryBasicInfoApi() throws
-        IOException {
+    public CountryBasicInfoResponseDto callCountryBasicInfoApi() throws IOException {
         URI requestUrl = UriComponentsBuilder.fromHttpUrl(openApiUrl)
             .path(countryBasicInfoPath)
             .queryParams(XmlApiUtil.createQueryParams())
@@ -58,7 +57,8 @@ public class XmlApiUtil {
 
         if (!responseEntity.getStatusCode().is2xxSuccessful()
             || responseEntity.getBody() == null) {
-            log.error("Failed to get country basic infos. statusCode:" + responseEntity.getStatusCode());
+            log.error(
+                "Failed to get country basic infos. statusCode:" + responseEntity.getStatusCode());
 
             return new CountryBasicInfoResponseDto();
         }
@@ -92,8 +92,7 @@ public class XmlApiUtil {
             .build();
     }
 
-    public AccidentListResponseDto callAccidentListApi() throws
-        IOException {
+    public AccidentListResponseDto callAccidentListApi() throws IOException {
         URI requestUrl = UriComponentsBuilder.fromHttpUrl(openApiUrl)
             .path(accidentListPath)
             .queryParams(XmlApiUtil.createQueryParams())
@@ -137,8 +136,8 @@ public class XmlApiUtil {
             .data(accidentListDtos)
             .build();
     }
-    public TravelWarningResponseDto callTravelWarningApi() throws
-        IOException {
+
+    public TravelWarningResponseDto callTravelWarningApi() throws IOException {
         URI requestUrl = UriComponentsBuilder.fromHttpUrl(openApiUrl)
             .path(TravelWarningPath)
             .queryParams(XmlApiUtil.createQueryParams())
@@ -196,7 +195,6 @@ public class XmlApiUtil {
         queryParameterMap.set("numOfRows", String.valueOf(size));
         return queryParameterMap;
     }
-
 
 
 }

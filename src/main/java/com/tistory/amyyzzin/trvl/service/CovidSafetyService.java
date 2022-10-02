@@ -3,11 +3,9 @@ package com.tistory.amyyzzin.trvl.service;
 import com.tistory.amyyzzin.trvl.domain.CovidSafety;
 import com.tistory.amyyzzin.trvl.dto.CovidSafetyDto;
 import com.tistory.amyyzzin.trvl.dto.CovidSafetyResponseDto;
-import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.CovidSafetyRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CovidSafetyService {
+public class CovidSafetyService extends AbstractService {
 
     private final GenericApiUtil genericApiUtil;
 
@@ -25,38 +23,15 @@ public class CovidSafetyService {
     @Value("${open.api.covidSafety}")
     String covidSafetyUrl;
 
-    @PostConstruct
-    public void init() throws IOException, InterruptedException {
+    @Override
+    public void upsert() throws IOException {
+
         if (covidSafetyRepository.count() > 0) {
             return;
         }
-
-        boolean openApiError = true;
-
-        for (int i = 0; i < 3; i++) {
-            try {
-                upsert((CovidSafetyResponseDto) genericApiUtil.callJsonApi(covidSafetyUrl,
-                    CovidSafetyResponseDto.class, "500"));
-                openApiError = false;
-
-                break;
-            } catch (Exception e) {
-                log.error("[CovidSafetyService init] ERROR {}", e.getMessage());
-                Thread.sleep(2000);
-            }
-        }
-
-        if (openApiError) {
-            throw new OpenApiException();
-        }
-
-        Thread.sleep(2000);
-    }
-
-    public void upsert(CovidSafetyResponseDto covidSafetyResponseDto) {
-        if (covidSafetyResponseDto == null) {
-            return;
-        }
+        CovidSafetyResponseDto covidSafetyResponseDto =
+            (CovidSafetyResponseDto) genericApiUtil.callJsonApi(covidSafetyUrl,
+                CovidSafetyResponseDto.class, "200");
 
         log.info("[CovidSafetyDto] {}", covidSafetyResponseDto);
 
@@ -67,6 +42,5 @@ public class CovidSafetyService {
                 log.error("[CovidSafety.insert] ERROR {}", e.getMessage());
             }
         }
-
     }
 }

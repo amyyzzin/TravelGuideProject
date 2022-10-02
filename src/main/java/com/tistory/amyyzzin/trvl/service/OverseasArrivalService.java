@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OverseasArrivalService {
+public class OverseasArrivalService extends AbstractService {
 
     private final GenericApiUtil genericApiUtil;
 
@@ -25,38 +25,16 @@ public class OverseasArrivalService {
     @Value("${open.api.overSeasArrival}")
     String overSeasArrivalUrl;
 
-    @PostConstruct
-    public void init() throws IOException, InterruptedException {
+    @Override
+    public void upsert() throws IOException {
+
         if (overseasArrivalRepository.count() > 0) {
             return;
         }
 
-        boolean openApiError = true;
-
-        for (int i = 0; i < 3; i++) {
-            try {
-                upsert((OverseasArrivalResponseDto) genericApiUtil.callJsonApi(overSeasArrivalUrl,
-                    OverseasArrivalResponseDto.class, "500"));
-                openApiError = false;
-
-                break;
-            } catch (Exception e) {
-                log.error("[OverseasArrivalService init] ERROR {}", e.getMessage());
-                Thread.sleep(2000);
-            }
-        }
-
-        if (openApiError) {
-            throw new OpenApiException();
-        }
-
-        Thread.sleep(2000);
-    }
-
-    public void upsert(OverseasArrivalResponseDto overseasArrivalResponseDto) {
-        if (overseasArrivalResponseDto == null) {
-            return;
-        }
+        OverseasArrivalResponseDto overseasArrivalResponseDto =
+            (OverseasArrivalResponseDto) genericApiUtil.callJsonApi(overSeasArrivalUrl,
+                OverseasArrivalResponseDto.class, "500");
 
         log.info("[overseasArrivalDto] {}", overseasArrivalResponseDto);
 
@@ -67,6 +45,5 @@ public class OverseasArrivalService {
                 log.error("[OverseasArrival.insert] ERROR {}", e.getMessage());
             }
         }
-
     }
 }

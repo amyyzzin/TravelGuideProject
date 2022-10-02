@@ -2,14 +2,11 @@ package com.tistory.amyyzzin.trvl.service;
 
 import com.tistory.amyyzzin.trvl.constant.IsoConstant;
 import com.tistory.amyyzzin.trvl.domain.AccidentList;
-import com.tistory.amyyzzin.trvl.domain.CountryBasicInfo;
 import com.tistory.amyyzzin.trvl.dto.AccidentListDto;
 import com.tistory.amyyzzin.trvl.dto.AccidentListResponseDto;
-import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.AccidentListRepository;
 import com.tistory.amyyzzin.trvl.util.XmlApiUtil;
 import java.io.IOException;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,53 +14,26 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AccidentListService {
+public class AccidentListService extends AbstractService {
 
     private final XmlApiUtil xmlApiUtil;
 
     private final AccidentListRepository accidentListRepository;
 
-    @PostConstruct
-    public void init() throws IOException, InterruptedException {
+    @Override
+    public void upsert() throws IOException {
+
         if (accidentListRepository.count() > 0) {
             return;
         }
 
-        boolean openApiError = true;
+        AccidentListResponseDto accidentListResponseDto =
+            (AccidentListResponseDto) xmlApiUtil.callAccidentListApi();
 
-        /**
-         * 세번 시도
-         */
-        for (int i = 0; i < 3; i++) {
+        for (AccidentListDto accidentListDto : accidentListResponseDto.getData()) {
             try {
-                upsert(xmlApiUtil.callAccidentListApi());
-                openApiError = false;
-
-                break;
-            } catch (Exception e) {
-                log.error("[AccidentListService init] ERROR {}", e.getMessage());
-                Thread.sleep(2000);
-            }
-        }
-
-        if (openApiError) {
-            throw new OpenApiException();
-        }
-
-        Thread.sleep(2000);
-    }
-
-    public void upsert(AccidentListResponseDto responseDto) {
-
-        if (responseDto == null) {
-            return;
-        }
-
-        log.info("[AccidentListDto] {}", responseDto);
-
-        for (AccidentListDto accidentListDto : responseDto.getData()) {
-            try {
-                accidentListDto.setIso2Code(IsoConstant.convertCountryEngNm2Iso2(accidentListDto.getEname()));
+                accidentListDto.setIso2Code(
+                    IsoConstant.convertCountryEngNm2Iso2(accidentListDto.getEname()));
                 accidentListRepository.save(AccidentList.of(accidentListDto));
             } catch (Exception e) {
                 log.error("[AccidentList.insert] ERROR {}", e.getMessage());
