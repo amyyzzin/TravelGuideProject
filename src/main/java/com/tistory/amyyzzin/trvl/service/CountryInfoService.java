@@ -1,11 +1,13 @@
 package com.tistory.amyyzzin.trvl.service;
 
 import com.tistory.amyyzzin.trvl.domain.CountryInfo;
+import com.tistory.amyyzzin.trvl.domain.SafetyList;
 import com.tistory.amyyzzin.trvl.dto.CountryInfoDto;
 import com.tistory.amyyzzin.trvl.dto.CountryInfoResponseDto;
 import com.tistory.amyyzzin.trvl.repository.CountryInfoRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,5 +49,9 @@ public class CountryInfoService extends AbstractService {
 
     public CountryInfo findByIsoAlp2(String isoAlp2) {
         return countryInfoRepository.findFirstByIsoAlp2(isoAlp2).orElse(null);
+    }
+
+    public List<CountryInfo> getCountryInfo() {
+        return countryInfoRepository.findAll();
     }
 }

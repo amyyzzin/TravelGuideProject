@@ -1,6 +1,7 @@
 package com.tistory.amyyzzin.trvl.controller;
 
 import com.tistory.amyyzzin.trvl.service.CountryFlagService;
+import com.tistory.amyyzzin.trvl.service.CountryInfoService;
 import com.tistory.amyyzzin.trvl.service.NoticeListService;
 import com.tistory.amyyzzin.trvl.service.SafetyListService;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,14 @@ public class GoogleMapController extends BaseController{
     private final CountryFlagService countryFlagService;
     private final SafetyListService safetyListService;
     private final NoticeListService noticeListService;
+    private final CountryInfoService countryInfoService;
 
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("safetyListMain", safetyListService.getMainSafetyList());
         model.addAttribute("safetyList", safetyListService.getSafetyList());
         model.addAttribute("noticeListMain", noticeListService.getNoticeList());
+        model.addAttribute("countryInfo", countryInfoService.getCountryInfo());
 
         return "index/index";
     }
