@@ -1,5 +1,6 @@
 package com.tistory.amyyzzin.trvl.service;
 
+import com.tistory.amyyzzin.trvl.domain.ContactPoint;
 import com.tistory.amyyzzin.trvl.domain.TravelAlarm;
 import com.tistory.amyyzzin.trvl.dto.TravelAlarmDto;
 import com.tistory.amyyzzin.trvl.dto.TravelAlarmResponseDto;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TravelAlarmService {
+public class TravelAlarmService extends AbstractService {
 
     private final GenericApiUtil genericApiUtil;
 
@@ -25,38 +26,15 @@ public class TravelAlarmService {
     @Value("${open.api.travelAlarm}")
     String travelAlarmUrl;
 
-    @PostConstruct
-    public void init() throws IOException, InterruptedException {
+    public void upsert() throws IOException {
+
         if (travelAlarmRepository.count() > 0) {
             return;
         }
 
-        boolean openApiError = true;
-
-        for (int i = 0; i < 3; i++) {
-            try {
-                upsert((TravelAlarmResponseDto) genericApiUtil.callJsonApi(travelAlarmUrl,
-                    TravelAlarmResponseDto.class, "500"));
-                openApiError = false;
-
-                break;
-            } catch (Exception e) {
-                log.error("[TravelAlarmService init] ERROR {}", e.getMessage());
-                Thread.sleep(2000);
-            }
-        }
-
-        if (openApiError) {
-            throw new OpenApiException();
-        }
-
-        Thread.sleep(2000);
-    }
-
-    public void upsert(TravelAlarmResponseDto travelAlarmResponseDto) {
-        if (travelAlarmResponseDto == null) {
-            return;
-        }
+        TravelAlarmResponseDto travelAlarmResponseDto =
+            (TravelAlarmResponseDto) genericApiUtil.callJsonApi(travelAlarmUrl,
+                TravelAlarmResponseDto.class, "500");
 
         log.info("[travelAlarmResponseDto] {}", travelAlarmResponseDto);
 
@@ -67,6 +45,9 @@ public class TravelAlarmService {
                 log.error("[TravelAlarm.insert] ERROR {}", e.getMessage());
             }
         }
+    }
 
+    public TravelAlarm findByIso2Code(String countryIsoAlp2) {
+        return travelAlarmRepository.findByCountryIsoAlp2(countryIsoAlp2).orElse(null);
     }
 }

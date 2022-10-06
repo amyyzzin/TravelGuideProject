@@ -4,6 +4,8 @@ import com.tistory.amyyzzin.trvl.dto.AccidentListDto;
 import com.tistory.amyyzzin.trvl.dto.AccidentListResponseDto;
 import com.tistory.amyyzzin.trvl.dto.CountryBasicInfoDto;
 import com.tistory.amyyzzin.trvl.dto.CountryBasicInfoResponseDto;
+import com.tistory.amyyzzin.trvl.dto.TravelWarningDto;
+import com.tistory.amyyzzin.trvl.dto.TravelWarningResponseDto;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -40,8 +42,10 @@ public class XmlApiUtil {
     @Value("${open.api.countryBasicInfo}")
     String countryBasicInfoPath;
 
-    public CountryBasicInfoResponseDto callCountryBasicInfoApi() throws
-        IOException {
+    @Value("${open.api.travelWarning}")
+    String TravelWarningPath;
+
+    public CountryBasicInfoResponseDto callCountryBasicInfoApi() throws IOException {
         URI requestUrl = UriComponentsBuilder.fromHttpUrl(openApiUrl)
             .path(countryBasicInfoPath)
             .queryParams(XmlApiUtil.createQueryParams())
@@ -53,7 +57,8 @@ public class XmlApiUtil {
 
         if (!responseEntity.getStatusCode().is2xxSuccessful()
             || responseEntity.getBody() == null) {
-            log.error("Failed to get country basic infos. statusCode:" + responseEntity.getStatusCode());
+            log.error(
+                "Failed to get country basic infos. statusCode:" + responseEntity.getStatusCode());
 
             return new CountryBasicInfoResponseDto();
         }
@@ -87,8 +92,7 @@ public class XmlApiUtil {
             .build();
     }
 
-    public AccidentListResponseDto callAccidentListApi() throws
-        IOException {
+    public AccidentListResponseDto callAccidentListApi() throws IOException {
         URI requestUrl = UriComponentsBuilder.fromHttpUrl(openApiUrl)
             .path(accidentListPath)
             .queryParams(XmlApiUtil.createQueryParams())
@@ -133,6 +137,53 @@ public class XmlApiUtil {
             .build();
     }
 
+    public TravelWarningResponseDto callTravelWarningApi() throws IOException {
+        URI requestUrl = UriComponentsBuilder.fromHttpUrl(openApiUrl)
+            .path(TravelWarningPath)
+            .queryParams(XmlApiUtil.createQueryParams())
+            .build(true)
+            .toUri();
+        ResponseEntity<Map> responseEntity = restTemplate.exchange(
+            new RequestEntity(HttpMethod.GET, requestUrl), Map.class
+        );
+
+        if (!responseEntity.getStatusCode()
+            .is2xxSuccessful() || responseEntity.getBody() == null) {
+            log.error("Failed to get accident list. statusCode:" + responseEntity.getStatusCode());
+
+            return new TravelWarningResponseDto();
+        }
+
+        Map resultMap = responseEntity.getBody();
+        Map<String, Object> responseMap = (Map<String, Object>) resultMap.get("response");
+        Map<String, Object> headerMap = (Map<String, Object>) responseMap.get("header");
+        Map<String, Object> bodyMap = (Map<String, Object>) responseMap.get("body");
+        Map<String, Object> itemsMap = (Map<String, Object>) bodyMap.get("items");
+        List<Map<String, Object>> itemList = (List<Map<String, Object>>) itemsMap.get("item");
+        List<TravelWarningDto> travelWarningDtos = new ArrayList<>();
+
+        for (Map<String, Object> item : itemList) {
+            TravelWarningDto travelWarningDto = TravelWarningDto.builder()
+                .id(String.valueOf(item.get("id")))
+                .continent((String) item.get("continent"))
+                .control((String) item.get("control"))
+                .controlNote((String) item.get("controlNote"))
+                .countryEnName((String) item.get("countryEnName"))
+                .countryName((String) item.get("countryName"))
+                .imgUrl2((String) item.get("imgUrl2"))
+                .build();
+
+            travelWarningDtos.add(travelWarningDto);
+        }
+
+        return TravelWarningResponseDto.builder()
+            .resultCode((String) headerMap.get("resultCode"))
+            .resultMsg((String) headerMap.get("resultMsg"))
+            .totalCount(String.valueOf(bodyMap.get("totalCount")))
+            .data(travelWarningDtos)
+            .build();
+    }
+
     static MultiValueMap<String, String> createQueryParams() {
         return createQueryParams(1, 1000);
     }
@@ -144,7 +195,6 @@ public class XmlApiUtil {
         queryParameterMap.set("numOfRows", String.valueOf(size));
         return queryParameterMap;
     }
-
 
 
 }

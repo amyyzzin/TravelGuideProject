@@ -43,6 +43,9 @@ public class TravelAlarm {
     // 한글 국가명
     private String countryNm;
 
+    // 위험지도경로
+    private String dangMapDownloadUrl;
+
     // 지역유형
     private String regionTy;
 
@@ -51,7 +54,6 @@ public class TravelAlarm {
 
     // 작성일
     private String writtenDt;
-
 
     public static TravelAlarm of(TravelAlarmDto travelAlarmDto) {
         return TravelAlarm.builder()
@@ -62,6 +64,7 @@ public class TravelAlarm {
             .countryEngNm(travelAlarmDto.getCountryEngNm())
             .countryIsoAlp2(travelAlarmDto.getCountryIsoAlp2())
             .countryNm(travelAlarmDto.getCountryNm())
+            .dangMapDownloadUrl(travelAlarmDto.getDangMapDownloadUrl())
             .regionTy(travelAlarmDto.getRegionTy())
             .remark(travelAlarmDto.getRemark())
             .writtenDt(travelAlarmDto.getWrittenDt())

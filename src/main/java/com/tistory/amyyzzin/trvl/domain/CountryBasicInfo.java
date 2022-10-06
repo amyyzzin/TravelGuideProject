@@ -38,7 +38,7 @@ public class CountryBasicInfo {
     @Lob
     private String basic;
 
-    private String iso3Code;
+    private String iso2Code;
 
 
     public static CountryBasicInfo of(CountryBasicInfoDto countryBasicInfoDto) {
@@ -49,7 +49,7 @@ public class CountryBasicInfo {
             .continent(countryBasicInfoDto.getContinent())
             .basic(countryBasicInfoDto.getBasic())
 //            .basic(Jsoup.parse(countryBasicInfoDto.getBasic()).text().replace("\uFEFF", ""))
-            .iso3Code(countryBasicInfoDto.getIso3Code())
+            .iso2Code(countryBasicInfoDto.getIso2Code())
             .build();
     }
 

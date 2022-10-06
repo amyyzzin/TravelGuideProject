@@ -1,36 +1,252 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <title>Modal</title>
+  <meta charset="UTF-8">
+  <title>CountryDetail</title>
+  <style>
 
-    <style>
-        .modal {
-            position: absolute;
-            top: 0;
-            left: 0;
+    html, body {
+      width: 98%;
+      height: 98%;
+    }
 
-            width: 100%;
-            height: 100%;
+    table {
+      width: 100%;
+      text-align: center;
+      background-color: whitesmoke;
 
-            display: none;
+    }
 
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-    </style>
+    h1 {
+      color: black;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+
+    tbody {
+      font-size: 15px;
+    }
+
+    li {
+      font-size: 18px;
+    }
+
+    #fragments {
+      margin-top: 2%;
+      margin-left: 2%;
+      text-align: left;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .tab-pane {
+      margin-left: 3%;
+      margin-right: 3%;
+      margin-top: 1%;
+    }
+
+    /* for custom scrollbar for webkit browser*/
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+
+  </style>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 </head>
-<body>
-<div class="modal">
-    <div class="modal_body">Modal</div>
-</div>
-<button class="btn-open-popup">Modal 띄우기</button>
-<script>
-    const modal = document.querySelector('.modal');
-    const btnOpenPopup = document.querySelector('.btn-open-popup');
 
-    btnOpenPopup.addEventListener('click', () => {
-        modal.style.display = 'block';
-    });
+<body style="background-color: whitesmoke">
+
+<div id="fragments" style=" float: left; width: 15%;">
+  <div th:replace="/index/fragments/layout.html :: fragment-body-menu"></div>
+</div>
+
+<div style="width: 75%; float: right; margin-right: 5%;">
+
+  <div><br>
+    <h1>💚 상세 정보</h1>
+    <br></div>
+  <div style="border-style: solid; border-width: 2px; border-color: silver">
+    <div><br></div>
+    <table style="align-content: center; text-align: center;">
+      <tbody>
+      <td style="width: 20%;">
+        <img th:src="${basicInfo.imgUrl}" alt="CountryFlag" style="width: 120px; height: 100px;">
+      </td>
+      <td style="width: auto; text-align: left">
+        <p th:utext="${countryNm.countryNm +' ('+ countryNm.countryEngNm +')'}"
+           style="font-size: 25px; font-weight: bold; margin-bottom: 0"></p>
+        <p th:text="${basicInfo.continent}" style="font-size: 23px"></p>
+      </td>
+      <td style="width: 30%;">
+        <button type="button" class="btn btn-outline-secondary btn-lg"
+                th:id="${embassyHomepage.homepageUrl}"
+                onclick="moveToEmbassyPage(id)">
+          현지 한국대사관 바로가기
+        </button>
+      </td>
+      </tbody>
+    </table>
+    <div><br></div>
+  </div>
+  <div><br></div>
+  <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link active" id="basic-tab" data-toggle="tab" data-target="#basic"
+         type="button" role="tab" aria-controls="basic" aria-selected="true"> 기본 정보
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="country-tab" data-toggle="tab" data-target="#country"
+         type="button" role="tab" aria-controls="country" aria-selected="false"> 국가 정보
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="profile-tab" data-toggle="tab" data-target="#accidentList"
+         type="button" role="tab" aria-controls="accidentList" aria-selected="false"> 사건 /
+        사고
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="contact-tab" data-toggle="tab" data-target="#contact"
+         type="button" role="tab" aria-controls="contact" aria-selected="false"> 현지연락처
+      </a>
+    </li>
+  </ul>
+  </nav>
+
+  <div style="height: 500px; overflow-y: scroll;">
+
+    <div class="tab-content" id="myTabContent"
+         style="font-size: 16px;">
+
+      <div class="tab-pane fade show active" id="basic" role="tabpanel"
+           aria-labelledby="home-tab">
+        <img th:src="${travelAlarm.dangMapDownloadUrl}" alt="CountryDetailMap"
+             style="width:47%; height:25%;">
+        <div class="table" style="width: 50%; float: right;">
+          <br>
+          <h5 style="font-weight: bold"> 💙 안전공지
+            <button onclick="location.href='/index/safetyDetailList'" type="button" class="close"
+                    aria-label="Close">
+              <span aria-hidden="true">&#43;</span>
+            </button>
+          </h5>
+
+          <hr style="border-top: 3px solid silver; margin:0%;">
+
+          <div>
+
+            <table style="width: 100%;">
+              <tbody>
+
+              <tr th:each="list : ${safetyListMain}" style="line-height: 100%">
+
+                <td th:id="${list.id}" th:onclick="moveToSafetyDetailPage(this.getAttribute('id'))"
+                    th:text="${list.title}" style="text-align: left; font-weight: bold;"
+                    colspan="2">
+                </td>
+
+              </tr>
+              <tr th:each="x : ${safetyCountryList}" style="line-height: 100%">
+
+                <td th:id="${x.id}" th:onclick="moveToSafetyDetailPage(this.getAttribute('id'))"
+                    th:if="${not #strings.isEmpty(x.ctgyNm)}"
+                    th:text="${' [' + x.ctgyNm + '] ' + x.title}"
+                    style="text-align: left"></td>
+
+                <td th:id="${x.id}" th:onclick="moveToSafetyDetailPage(this.getAttribute('id'))"
+                    th:if="${#strings.isEmpty(x.ctgyNm)}" th:text="${x.title}"
+                    style="text-align: left"></td>
+
+                <td th:text="${x.wrtDt}" style="width: 20%; text-align: right"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table" style="float: right;">
+            <br>
+            <h5 style="font-weight: bold"> 💜 무비자 입국허가요건 </h5>
+            <hr style="border-top: 3px solid silver; margin:0;">
+
+            <div>
+
+              <table style="width: 100%;">
+                <tbody>
+
+                <tr>
+                  <td style="width: 20%">외교관여권<br>소지자</td>
+                  <td style="width: 20%">관용여권<br>소지자</td>
+                  <td style="width: 20%">일반여권<br>소지자</td>
+                  <td style="width: 23%">무사증입국 근거</td>
+                  <td style="width: 17%">비고</td>
+                </tr>
+                <tr>
+                  <td th:text="${regulation?.dplmtPsptVisaCn}"></td>
+                  <td th:text="${regulation?.ofclpsptVisaCn}"></td>
+                  <td th:text="${regulation?.gnrlPsptVisaCn}"></td>
+                  <td th:text="${regulation?.nvisaEntryEvdcCn}"></td>
+                  <td th:text="${regulation?.remark}"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="country" role="tabpanel" aria-labelledby="country-tab">
+        <p th:utext="${basicInfo.basic}"></p>
+      </div>
+      <div class="tab-pane fade" id="accidentList" role="tabpanel" aria-labelledby="profile-tab">
+        <p th:utext="${accidentList.news}"></p>
+      </div>
+      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+        <p th:utext="${contactPoint.contactRemark}"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  function moveToDownloadPage(url) {
+    const elt = document.createElement('a');
+    elt.setAttribute('href', url);
+    elt.setAttribute('download', 'file.png');
+    elt.style.display = 'none';
+    document.body.appendChild(elt);
+    elt.click();
+    document.body.removeChild(elt);
+    // window.location.href = url;
+  }
+
+  function moveToEmbassyPage(id) {
+    window.location.href = id;
+  }
+
+  function moveToSafetyDetailPage(id) {
+    window.location.href = "/index/safetyDetail/" + id;
+  }
+
+  function moveToNoticeDetailPage(id) {
+    window.location.href = "/index/noticeDetail/" + id;
+  }
+
 </script>
 </body>
 </html>

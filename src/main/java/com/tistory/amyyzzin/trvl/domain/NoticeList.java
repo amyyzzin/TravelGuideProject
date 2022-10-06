@@ -38,7 +38,7 @@ public class NoticeList {
     public static NoticeList of(NoticeListDto noticeListDto) {
         return NoticeList.builder()
             .listId(noticeListDto.getListId())
-            .fileDownloadUrl(noticeListDto.getFileDownloadUrl())
+            .fileDownloadUrl(noticeListDto.getFileDownloadUrl().replace("sn=1", "sn=0"))
             .title(noticeListDto.getTitle())
 //            .txtOriginCn(noticeListDto.getTxtOriginCn())
             .txtOriginCn(Jsoup.parse(noticeListDto.getTxtOriginCn()).text()

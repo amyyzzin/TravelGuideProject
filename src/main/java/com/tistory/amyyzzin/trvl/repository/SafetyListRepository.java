@@ -16,12 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface SafetyListRepository extends JpaRepository<SafetyList, Long> {
 
-    Optional<SafetyList> findByCountryIsoAlp2(String countryIsoAlp2);
+    Optional<SafetyList> findByTitle(String title);
 
     List<SafetyList> findAllByIsMainNoticeIsTrueOrderByWrtDtDesc();
     List<SafetyList> findTop3ByIsMainNoticeIsFalseOrderByWrtDtDesc();
     Page<SafetyList> findAllByIsMainNoticeIsFalseOrderByWrtDtDesc(PageRequest pageRequest);
-
     Optional<SafetyList> findById(Long id);
+
+    List<SafetyList> findTop3ByCountryIsoAlp2OrIsMainNoticeIsFalseAndCountryNmEqualsOrderByWrtDtDesc(String countryIsoAlp2,String ALL);
 
 }

@@ -11,37 +11,41 @@
 </head>
 <body>
 <div th:fragment="fragment-body-menu">
-  <h2 th onclick="location.href='/'" style=" margin-left: 5%; align-content: center">
-    🌍TravelGuide
-  </h2>
-  <hr style="border: 3px solid #BBBBBB;">
+  <div>
+    <br>
+    <h2 th onclick="location.href='/'" style=" margin-left: 5%; align-content: center">
+      🌍TravelGuide
+    </h2>
+    <br>
+  </div>
+  <hr>
   <tr>
     <br>
     <div th onclick="location.href='/'"
-        th:text="${'🏳‍🌈 국가 / 지역 별 정보'}" style="text-align: left;">
+         th:text="${'🏳‍🌈 국가 / 지역 별 정보'}">
       국가 / 지역 별 정보
     </div>
     <br>
   </tr>
-  <hr style="border: 1px solid #BBBBBB;">
+  <hr>
   <tr>
     <br>
     <div th onclick="location.href='/index/safetyDetailList'"
-        th:text="${'💙 안전공지'}" style="text-align: left;">
+         th:text="${'💙 안전 공지'}">
       안전공지
     </div>
     <br>
   </tr>
-  <hr style="border: 1px solid #BBBBBB;">
+  <hr>
   <tr>
     <br>
     <div th onclick="location.href='/index/noticeDetailList'"
-        th:text="${'💚 외교부 공지'}" style="text-align: left;">
+         th:text="${'💚 외교부 공지'}">
       외교부 공지
     </div>
     <br>
   </tr>
-  <hr style="border: 1px solid #BBBBBB;">
+  <hr>
 </div>
 
 </body>

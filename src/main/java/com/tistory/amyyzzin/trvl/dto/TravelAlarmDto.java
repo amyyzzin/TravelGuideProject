@@ -27,6 +27,9 @@ public class TravelAlarmDto {
     @SerializedName("country_nm")
     private String countryNm;
 
+    @SerializedName("dang_map_download_url")
+    private String dangMapDownloadUrl;
+
     @SerializedName("region_ty")
     private String regionTy;
 

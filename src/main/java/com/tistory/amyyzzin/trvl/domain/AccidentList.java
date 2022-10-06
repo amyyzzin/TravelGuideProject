@@ -1,7 +1,6 @@
 package com.tistory.amyyzzin.trvl.domain;
 
 import com.tistory.amyyzzin.trvl.dto.AccidentListDto;
-import com.tistory.amyyzzin.trvl.dto.ContactPointDto;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -37,13 +36,18 @@ public class AccidentList {
     // 국가영문명
     private String wrtDt;
 
+    private String iso2Code;
+
 
     public static AccidentList of(AccidentListDto accidentListDto) {
         return AccidentList.builder()
             .continent(accidentListDto.getContinent())
             .ename(accidentListDto.getEname())
             .name(accidentListDto.getName())
-            .news(Jsoup.parse(accidentListDto.getNews()).text().replace("\uFEFF", ""))
+//            .news(accidentListDto.getNews())
+            .news(accidentListDto.getNews()
+                .replace("h3", "p style=\"font-weight: bold;\""))
+            .iso2Code(accidentListDto.getIso2Code())
             .build();
     }
 

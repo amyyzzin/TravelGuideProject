@@ -11,6 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface CountryBasicInfoRepository extends JpaRepository<CountryBasicInfo, String> {
 
-    Optional<CountryBasicInfo> findByIso3Code(String iso3Code);
+    Optional<CountryBasicInfo> findByIso2Code(String iso2Code);
 
 }

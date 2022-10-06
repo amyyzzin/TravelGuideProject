@@ -1,17 +1,15 @@
 package com.tistory.amyyzzin.trvl.repository;
 
+import com.tistory.amyyzzin.trvl.domain.TravelWarning;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tistory.amyyzzin.trvl.domain.StandardCode;
-
 @Repository
 @Transactional(readOnly = true)
-public interface StandardCodeRepository extends JpaRepository<StandardCode, Long> {
+public interface TravelWarningRepository extends JpaRepository<TravelWarning, Long> {
 
-	Optional<StandardCode> findByIsoAlp2(String isoAlp2);
-	Optional<StandardCode> findByCountryEngNm(String countryEngNm);
+    Optional<TravelWarning> findByIso2Code(String iso2Code);
+
 }

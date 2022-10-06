@@ -11,6 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface AccidentListRepository extends JpaRepository<AccidentList, String> {
 
-    Optional<AccidentList> findByEname(String ename);
+    Optional<AccidentList> findByIso2Code(String iso2Code);
 
 }

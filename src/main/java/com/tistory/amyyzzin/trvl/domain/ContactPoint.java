@@ -1,7 +1,6 @@
 package com.tistory.amyyzzin.trvl.domain;
 
 import com.tistory.amyyzzin.trvl.dto.ContactPointDto;
-import com.tistory.amyyzzin.trvl.dto.EmbassyInfoDto;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jsoup.Jsoup;
 
 @Data
 @Entity
@@ -48,7 +46,9 @@ public class ContactPoint {
 
     public static ContactPoint of(ContactPointDto contactPointDto) {
         return ContactPoint.builder()
-            .contactRemark(Jsoup.parse(contactPointDto.getContactRemark()).text().replace("\uFEFF", ""))
+            .contactRemark(contactPointDto.getContactRemark()
+                .replace("h3", "p style=\"font-weight: bold;\""))
+//            .contactRemark(Jsoup.parse(contactPointDto.getContactRemark()).text().replace("\uFEFF", ""))
             .continentCd(contactPointDto.getContinentCd())
             .continentEngNm(contactPointDto.getContinentEngNm())
             .continentNm(contactPointDto.getContinentNm())

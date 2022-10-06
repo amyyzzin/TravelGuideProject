@@ -1,5 +1,6 @@
 package com.tistory.amyyzzin.trvl.service;
 
+import com.tistory.amyyzzin.trvl.domain.ContactPoint;
 import com.tistory.amyyzzin.trvl.domain.Regulation;
 import com.tistory.amyyzzin.trvl.dto.RegulationDto;
 import com.tistory.amyyzzin.trvl.dto.RegulationResponseDto;
@@ -7,6 +8,7 @@ import com.tistory.amyyzzin.trvl.exception.OpenApiException;
 import com.tistory.amyyzzin.trvl.repository.RegulationRepository;
 import com.tistory.amyyzzin.trvl.util.GenericApiUtil;
 import java.io.IOException;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RegulationService {
+public class RegulationService extends AbstractService {
 
     private final GenericApiUtil genericApiUtil;
 
@@ -27,35 +29,17 @@ public class RegulationService {
     @Value("${open.api.regulation}")
     String regulationUrl;
 
-    @PostConstruct
-    public void init() throws IOException, InterruptedException {
-        boolean openApiError = true;
+    @Override
+    public void upsert() throws IOException {
 
-        for (int i = 0; i < 3; i++) {
-            try {
-                upsert((RegulationResponseDto) genericApiUtil.callJsonApi(regulationUrl,
-                    RegulationResponseDto.class, "500"));
-                openApiError = false;
-
-                break;
-            } catch (Exception e) {
-                log.error("[RegulationService init] ERROR {}", e.getMessage());
-                Thread.sleep(2000);
-            }
+        if (regulationRepository.count() > 0) {
+            return;
         }
 
-        if (openApiError) {
-            throw new OpenApiException();
-        }
+        RegulationResponseDto regulationResponseDto =
+            (RegulationResponseDto) genericApiUtil.callJsonApi(regulationUrl,
+                    RegulationResponseDto.class, "500");
 
-        Thread.sleep(2000);
-    }
-
-    public Page<Regulation> getRegulations(Pageable pageable) {
-        return regulationRepository.findAllByOrderByCountryNm(pageable);
-    }
-
-    public void upsert(RegulationResponseDto regulationResponseDto) {
         for (RegulationDto regulationDto : regulationResponseDto.getData()) {
             try {
                 Regulation regulation = regulationRepository.findById(Long.valueOf(
@@ -71,7 +55,6 @@ public class RegulationService {
                 log.error("[RegulationService.insert] ERROR {}", e.getMessage());
             }
         }
-
     }
 
     private void updateRegulationVO(RegulationDto regulationDto, Regulation regulation) {
@@ -87,5 +70,9 @@ public class RegulationService {
         regulation.setDplmtPsptVisaCn(regulationDto.getDplmtPsptVisaCn());
         regulation.setNvisaEntryEvdcCn(regulationDto.getNvisaEntryEvdcCn());
         regulation.setRemark(regulationDto.getRemark());
+    }
+
+    public Regulation findByIso2Code(String countryIsoAlp2) {
+        return regulationRepository.findByCountryIsoAlp2(countryIsoAlp2).orElse(null);
     }
 }

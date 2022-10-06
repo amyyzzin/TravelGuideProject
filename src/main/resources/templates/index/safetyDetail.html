@@ -12,8 +12,6 @@
 
     table {
       width: 100%;
-      border-collapse: collapse;
-      border: solid 1px #000;
       text-align: center;
     }
 
@@ -25,12 +23,7 @@
 
     tbody {
       font-size: 15px;
-      border: solid 1px #000;
       overflow-x: hidden;
-    }
-
-    th, td {
-      border: 1px solid black;
     }
 
     #fragments {
@@ -42,6 +35,8 @@
     }
 
   </style>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 </head>
 <body>
 
@@ -50,7 +45,9 @@
 </div>
 
 <div style="width: 75%; float: right; margin-right: 5%">
+  <br>
   <h1>💙 안전 공지</h1>
+  <br>
   <div class="table" style="line-height: 200%">
     <table>
       <tbody>
@@ -78,6 +75,7 @@
         <th>첨부파일</th>
         <td th:if="${not #strings.isEmpty(safety.fileDownloadUrl)}">
           <button type="button" class="close" aria-label="Close" aria-hidden="true"
+                  style="position:relative; left: -50%"
                   th:id="${safety.fileDownloadUrl}"
                   th:onclick="moveToDownloadPage(this.getAttribute('id'))"
                   th:text="${'💾'}">
@@ -87,8 +85,8 @@
       </tr>
       <td colspan="2">
         <p style="padding: 0 10% 3% 10%; word-break: keep-all; text-align: left"
-          th:utext="${safety.txtOriginCn}"></p>
-        </td>
+           th:utext="${safety.txtOriginCn}"></p>
+      </td>
       </tr>
       </tbody>
     </table>
