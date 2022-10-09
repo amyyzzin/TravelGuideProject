@@ -41,7 +41,9 @@ public class CountryDetailController {
 
 	private final StandardCodeService standardCodeService;
 
+	private final CountryFlagService countryFlagService;
 	private final CountryBasicInfoService countryBasicInfoService;
+	private final CountryInfoService countryInfoService;
 	private final AccidentListService accidentListService;
 	private final ContactPointService contactPointService;
 	private final SafetyListService safetyListService;
@@ -51,14 +53,18 @@ public class CountryDetailController {
 	private final RegulationService regulationService;
 	private final EmbassyHomepageService embassyHomepageService;
 
+
 	@ApiOperation(value = "설명", notes = "이것은 노트")
-	@GetMapping("/index/detail/{id}") // iso3Code
+	@GetMapping("/index/detail/{id}") // iso2Code
 	public String index(@PathVariable String id, Model model) {
 
 		model.addAttribute("countryNm", standardCodeService.findByIsoAlp2(id));
 
+		model.addAttribute("countryFlag", countryFlagService.findByIsoAlp2(id));
+
 		model.addAttribute("safetyListMain", safetyListService.getMainSafetyList());
 		model.addAttribute("safetyCountryList", safetyListService.getCountrySafetyList(id));
+		model.addAttribute("noticeListMain", noticeListService.getNoticeList());
 		model.addAttribute("noticeListMain", noticeListService.getNoticeList());
 
 		model.addAttribute("basicInfo", countryBasicInfoService.findByIso2Code(id));
@@ -67,6 +73,7 @@ public class CountryDetailController {
 		model.addAttribute("travelAlarm", travelAlarmService.findByIso2Code(id));
 		model.addAttribute("regulation", regulationService.findByIso2Code(id));
 		model.addAttribute("embassyHomepage", embassyHomepageService.getEmbassyHomepage(id));
+
 
 		return "index/detail";
 	}

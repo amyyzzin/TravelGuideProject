@@ -13,19 +13,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class GoogleMapController extends BaseController{
-
-    private final CountryFlagService countryFlagService;
+public class GoogleMapController extends BaseController {
     private final SafetyListService safetyListService;
     private final NoticeListService noticeListService;
     private final CountryInfoService countryInfoService;
+    private final CountryFlagService countryFlagService;
 
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("safetyListMain", safetyListService.getMainSafetyList());
         model.addAttribute("safetyList", safetyListService.getSafetyList());
         model.addAttribute("noticeListMain", noticeListService.getNoticeList());
+
         model.addAttribute("countryInfo", countryInfoService.getCountryInfo());
+        model.addAttribute("countryFlagService", countryFlagService.getCountryFlag());
 
         return "index/index";
     }

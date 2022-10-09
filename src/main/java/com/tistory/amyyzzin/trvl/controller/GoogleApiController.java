@@ -3,10 +3,12 @@ package com.tistory.amyyzzin.trvl.controller;
 import com.tistory.amyyzzin.trvl.constant.IsoConstant;
 import com.tistory.amyyzzin.trvl.domain.CountryBasicInfo;
 import com.tistory.amyyzzin.trvl.domain.CountryFlag;
+import com.tistory.amyyzzin.trvl.domain.CountryInfo;
 import com.tistory.amyyzzin.trvl.domain.StandardCode;
 import com.tistory.amyyzzin.trvl.dto.GoogleModalDto;
 import com.tistory.amyyzzin.trvl.service.CountryBasicInfoService;
 import com.tistory.amyyzzin.trvl.service.CountryFlagService;
+import com.tistory.amyyzzin.trvl.service.CountryInfoService;
 import com.tistory.amyyzzin.trvl.service.StandardCodeService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -27,6 +29,7 @@ public class GoogleApiController {
     private final CountryFlagService countryFlagService;
 
     private final CountryBasicInfoService countryBasicInfoService;
+    private final CountryInfoService countryInfoService;
 
 
     @ApiOperation(value = "설명", notes = "이것은 노트")
@@ -40,21 +43,34 @@ public class GoogleApiController {
         }
 
         CountryFlag countryFlag = countryFlagService.findByIsoAlp2(code);
-        CountryBasicInfo countryBasicInfo
-            = countryBasicInfoService.findByIso2Code(
+
+        CountryInfo countryInfo
+            = countryInfoService.findByIsoAlp2(
             IsoConstant.convertCountryEngNm2Iso2(standardCode.getCountryEngNm()));
 
-        if (countryBasicInfo == null) {
-            countryBasicInfo = countryBasicInfoService.findByIso2Code(standardCode.getIsoAlp2());
+        if (countryInfo == null) {
+            countryInfo = countryInfoService.findByIsoAlp2(standardCode.getIsoAlp2());
         }
-
         return ResponseEntity.ok(GoogleModalDto.builder()
             .countryNm(standardCode != null ? standardCode.getCountryNm() : "정보 없음")
             .countryEngNm(standardCode != null ? standardCode.getCountryEngNm() : "정보 없음")
+
             .downloadUrl(
                 standardCode != null && countryFlag != null ? countryFlag.getDownloadUrl() : "")
-            .basic(countryBasicInfo != null ? countryBasicInfo.getBasic() : "정보 없음")
-            .iso2code(countryBasicInfo != null ? countryBasicInfo.getIso2Code() : "")
+            .climateCn(countryInfo != null ? countryInfo.getClimateCn() : "")
+            .countryEngNm(countryInfo != null ? countryInfo.getCountryEngNm() : "")
+            .langCn(countryInfo != null ? countryInfo.getLangCn() : "")
+            .langNm(countryInfo != null ? countryInfo.getLangNm() : "")
+            .mainCityCn(countryInfo != null ? countryInfo.getMainCityCn() : "")
+            .mainEthnicCn(countryInfo != null ? countryInfo.getMainEthnicCn() : "")
+            .mscmctnCn(countryInfo != null ? countryInfo.getMscmctnCn() : "")
+            .religionCn(countryInfo != null ? countryInfo.getReligionCn() : "")
+            .countryIc(countryInfo != null ? countryInfo.getCountryIc() : "")
+            .countryCptNm(countryInfo != null ? countryInfo.getCountryCptNm() : "")
+            .countryArea(countryInfo != null ? countryInfo.getCountryArea() : "")
+            .countryAreaComment(countryInfo != null ? countryInfo.getCountryAreaComment() : "")
+
+            .iso2code(standardCode != null ? standardCode.getIsoAlp2() : "")
             .build());
     }
 }
