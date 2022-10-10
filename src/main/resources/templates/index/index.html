@@ -479,27 +479,96 @@
         dataType: 'json', // added data type
 
         success: function (res) {
-          $('#country-nm').html(res.countryNm);
-          $('#country-eng-nm').html(res.countryEngNm);
-          $('#country-flag').attr('src', res.downloadUrl);
+          if (res.countryNm != '') {
+            $('#country-nm').show();
+            $('#country-nm').html(res.countryNm);
+          } else {
+            $('#country-nm').hide();
+          }
 
-          // $('#basic').html(res.basic);
+          if (res.countryEngNm != '') {
+            $('#country-eng-nm').show();
+            $('#country-eng-nm').html(res.countryEngNm);
+          } else {
+            $('#country-eng-nm').hide();
+          }
 
-          $('#countryIc').html(res.countryIc);
-          // if($('#countryIc').isEmpty()) {
-          //   $('#countryIc').html(res.countryIc);
-          // }
-          $('#countryIc-non').html(res.countryIc);
-          $('#countryCptNm').html(res.countryCptNm);
-          $('#mainCityCn').html(res.mainCityCn);
-          $('#langCn').html(res.langCn);
-          $('#langNm').html(res.langNm);
-          $('#climateCn').html(res.climateCn);
-          $('#mainEthnicCn').html(res.mainEthnicCn);
-          $('#mscmctnCn').html(res.mscmctnCn);
-          $('#religionCn').html(res.religionCn);
+          if (res.downloadUrl != '') {
+            $('#country-flag').show();
+            $('#country-flag').attr('src', res.downloadUrl);
+          } else {
+            $('#country-flag').hide();
+          }
 
-          $('#countryAreaComment').html(res.countryAreaComment);
+          if(res.countryIc != '') {
+            $('#countryIc').show();
+            $('#countryIc').html(res.countryIc);
+          } else {
+            $('#countryIc').hide();
+          }
+
+          if(res.countryCptNm != '') {
+            $('#countryCptNm').show();
+            $('#countryCptNm').html(res.countryCptNm);
+          } else {
+            $('#countryCptNm').hide();
+          }
+
+          if(res.mainCityCn != '') {
+            $('#mainCityCn').show();
+            $('#mainCityCn').html(res.mainCityCn);
+          } else {
+            $('#mainCityCn').hide();
+          }
+
+          if(res.langCn != '') {
+            $('#langCn').show();
+            $('#langCn').html(res.langCn);
+          } else {
+            $('#langCn').hide();
+          }
+
+          if(res.langNm != '' ) {
+            $('#langNm').show();
+            $('#langNm').html(res.langNm);
+          } else {
+            $('#langNm').hide();
+          }
+
+          if(res.climateCn != '') {
+            $('#climateCn').show();
+            $('#climateCn').html(res.climateCn);
+          } else {
+            $('#climateCn').hide();
+          }
+
+          if(res.mainEthnicCn != '') {
+            $('#mainEthnicCn').show();
+            $('#mainEthnicCn').html(res.mainEthnicCn);
+          } else {
+            $('#mainEthnicCn').hide();
+          }
+
+          if(res.mscmctnCn != '') {
+            $('#mscmctnCn').show();
+            $('#mscmctnCn').html(res.mscmctnCn);
+          } else {
+            $('#mscmctnCn').hide();
+          }
+
+          if(res.religionCn != '') {
+            $('#religionCn').show();
+            $('#religionCn').html(res.religionCn);
+          } else {
+            $('#religionCn').hide();
+          }
+
+          if(res.countryAreaComment != '') {
+            $('#countryAreaComment').show();
+            $('#countryAreaComment').html(res.countryAreaComment);
+          } else {
+            $('#countryAreaComment').hide();
+          }
 
           $('#country-code').val(res.iso2code);
           $('#ModalSlide').modal('show');

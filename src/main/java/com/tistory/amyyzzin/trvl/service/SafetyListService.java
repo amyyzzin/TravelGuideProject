@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,7 @@ public class SafetyListService extends AbstractService {
 
     @Override
     @Transactional
+    @Scheduled(cron = "${scheduler.scrap.getAPI}")
     public void upsert() throws IOException {
 
 //        safetyListRepository.deleteAllInBatch();

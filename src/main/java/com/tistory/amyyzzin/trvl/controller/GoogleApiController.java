@@ -1,7 +1,6 @@
 package com.tistory.amyyzzin.trvl.controller;
 
 import com.tistory.amyyzzin.trvl.constant.IsoConstant;
-import com.tistory.amyyzzin.trvl.domain.CountryBasicInfo;
 import com.tistory.amyyzzin.trvl.domain.CountryFlag;
 import com.tistory.amyyzzin.trvl.domain.CountryInfo;
 import com.tistory.amyyzzin.trvl.domain.StandardCode;
@@ -12,6 +11,7 @@ import com.tistory.amyyzzin.trvl.service.CountryInfoService;
 import com.tistory.amyyzzin.trvl.service.StandardCodeService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -52,25 +52,38 @@ public class GoogleApiController {
             countryInfo = countryInfoService.findByIsoAlp2(standardCode.getIsoAlp2());
         }
         return ResponseEntity.ok(GoogleModalDto.builder()
-            .countryNm(standardCode != null ? standardCode.getCountryNm() : "정보 없음")
-            .countryEngNm(standardCode != null ? standardCode.getCountryEngNm() : "정보 없음")
-
+            .countryNm(standardCode != null && standardCode.getCountryNm() != null ? standardCode.getCountryNm() : "정보 없음")
+            .countryEngNm(standardCode != null && standardCode.getCountryEngNm() != null ? standardCode.getCountryEngNm() : "정보 없음")
             .downloadUrl(
                 standardCode != null && countryFlag != null ? countryFlag.getDownloadUrl() : "")
-            .climateCn(countryInfo != null ? countryInfo.getClimateCn() : "")
-            .countryEngNm(countryInfo != null ? countryInfo.getCountryEngNm() : "")
-            .langCn(countryInfo != null ? countryInfo.getLangCn() : "")
-            .langNm(countryInfo != null ? countryInfo.getLangNm() : "")
-            .mainCityCn(countryInfo != null ? countryInfo.getMainCityCn() : "")
-            .mainEthnicCn(countryInfo != null ? countryInfo.getMainEthnicCn() : "")
-            .mscmctnCn(countryInfo != null ? countryInfo.getMscmctnCn() : "")
-            .religionCn(countryInfo != null ? countryInfo.getReligionCn() : "")
-            .countryIc(countryInfo != null ? countryInfo.getCountryIc() : "")
-            .countryCptNm(countryInfo != null ? countryInfo.getCountryCptNm() : "")
-            .countryArea(countryInfo != null ? countryInfo.getCountryArea() : "")
-            .countryAreaComment(countryInfo != null ? countryInfo.getCountryAreaComment() : "")
+            .countryEngNm(countryInfo != null && countryInfo.getCountryEngNm() != null && !Objects.equals(
+                countryInfo.getCountryEngNm(), "") ? countryInfo.getCountryEngNm() : "")
+            .climateCn(countryInfo != null && countryInfo.getClimateCn() != null && !Objects.equals(
+                countryInfo.getClimateCn(), "") ? "기온 : " + countryInfo.getClimateCn() : "")
+            .langCn(countryInfo != null && countryInfo.getLangCn() != null && !Objects.equals(
+                countryInfo.getLangCn(), "") ? "언어 설명: " + countryInfo.getLangCn() : "")
+            .langNm(countryInfo != null && countryInfo.getLangNm() != null && !Objects.equals(
+                countryInfo.getLangNm(), "") ? "언어 : " + countryInfo.getLangNm() : "")
+            .mainCityCn(countryInfo != null && countryInfo.getMainCityCn() != null && !Objects.equals(
+                countryInfo.getMainCityCn(), "") ? "주요 도시 안내 : " + countryInfo.getMainCityCn() : "")
+            .mainEthnicCn(countryInfo != null && countryInfo.getMainEthnicCn() != null && !Objects.equals(
+                countryInfo.getMainEthnicCn(), "") ? "주요 민족 안내 : " + countryInfo.getMainEthnicCn() : "")
+            .mscmctnCn(countryInfo != null && countryInfo.getMscmctnCn() != null && !Objects.equals(
+                countryInfo.getMscmctnCn(), "") ? "주요 언론 안내 : " + countryInfo.getMscmctnCn() : "")
+            .religionCn(countryInfo != null && countryInfo.getReligionCn() != null  && !Objects.equals(
+                countryInfo.getReligionCn(), "") ? "종교 : " + countryInfo.getReligionCn() : "")
+            .countryIc(countryInfo != null && countryInfo.getCountryIc() != null && !Objects.equals(
+                countryInfo.getCountryIc(), "") ? "국가 위치 : " + countryInfo.getCountryIc() : "")
+            .countryCptNm(countryInfo != null && countryInfo.getCountryCptNm() != null && !Objects.equals(
+                countryInfo.getCountryCptNm(), "") ? "국가 수도 : " + countryInfo.getCountryCptNm() : "")
+            .countryArea(countryInfo != null && countryInfo.getCountryArea() != null && !Objects.equals(
+                countryInfo.getCountryArea(), "") ? "국가 면적 : " + countryInfo.getCountryArea() : "")
+            .countryAreaComment(countryInfo != null && countryInfo.getCountryAreaComment() != null && !Objects.equals(
+                countryInfo.getCountryAreaComment(), "") ? "국가 면적 안내 : " + countryInfo.getCountryAreaComment() : "")
 
-            .iso2code(standardCode != null ? standardCode.getIsoAlp2() : "")
+            .iso2code(standardCode != null && standardCode.getIsoAlp2() != null ? standardCode.getIsoAlp2() : "")
             .build());
     }
+
+
 }

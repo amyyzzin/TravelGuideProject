@@ -40,15 +40,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class CountryDetailController {
 
 	private final StandardCodeService standardCodeService;
-
 	private final CountryFlagService countryFlagService;
 	private final CountryBasicInfoService countryBasicInfoService;
-	private final CountryInfoService countryInfoService;
 	private final AccidentListService accidentListService;
 	private final ContactPointService contactPointService;
 	private final SafetyListService safetyListService;
 	private final NoticeListService noticeListService;
-
 	private final TravelAlarmService travelAlarmService;
 	private final RegulationService regulationService;
 	private final EmbassyHomepageService embassyHomepageService;
@@ -59,12 +56,10 @@ public class CountryDetailController {
 	public String index(@PathVariable String id, Model model) {
 
 		model.addAttribute("countryNm", standardCodeService.findByIsoAlp2(id));
-
 		model.addAttribute("countryFlag", countryFlagService.findByIsoAlp2(id));
 
 		model.addAttribute("safetyListMain", safetyListService.getMainSafetyList());
 		model.addAttribute("safetyCountryList", safetyListService.getCountrySafetyList(id));
-		model.addAttribute("noticeListMain", noticeListService.getNoticeList());
 		model.addAttribute("noticeListMain", noticeListService.getNoticeList());
 
 		model.addAttribute("basicInfo", countryBasicInfoService.findByIso2Code(id));
@@ -73,7 +68,6 @@ public class CountryDetailController {
 		model.addAttribute("travelAlarm", travelAlarmService.findByIso2Code(id));
 		model.addAttribute("regulation", regulationService.findByIso2Code(id));
 		model.addAttribute("embassyHomepage", embassyHomepageService.getEmbassyHomepage(id));
-
 
 		return "index/detail";
 	}

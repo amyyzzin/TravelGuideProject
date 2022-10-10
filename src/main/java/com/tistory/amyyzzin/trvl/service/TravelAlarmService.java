@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -26,6 +27,8 @@ public class TravelAlarmService extends AbstractService {
     @Value("${open.api.travelAlarm}")
     String travelAlarmUrl;
 
+    @Override
+    @Scheduled(cron = "${scheduler.scrap.getAPI}")
     public void upsert() throws IOException {
 
         if (travelAlarmRepository.count() > 0) {

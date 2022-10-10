@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -29,6 +30,7 @@ public class NoticeListService extends AbstractService {
     String noticeUrl;
 
     @Override
+    @Scheduled(cron = "${scheduler.scrap.getAPI}")
     public void upsert() throws IOException {
 
         if (noticeListRepository.count() > 0) {
