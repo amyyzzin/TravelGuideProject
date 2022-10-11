@@ -40,22 +40,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class CountryDetailController {
 
 	private final StandardCodeService standardCodeService;
-
+	private final CountryFlagService countryFlagService;
 	private final CountryBasicInfoService countryBasicInfoService;
 	private final AccidentListService accidentListService;
 	private final ContactPointService contactPointService;
 	private final SafetyListService safetyListService;
 	private final NoticeListService noticeListService;
-
 	private final TravelAlarmService travelAlarmService;
 	private final RegulationService regulationService;
 	private final EmbassyHomepageService embassyHomepageService;
 
+
 	@ApiOperation(value = "설명", notes = "이것은 노트")
-	@GetMapping("/index/detail/{id}") // iso3Code
+	@GetMapping("/index/detail/{id}") // iso2Code
 	public String index(@PathVariable String id, Model model) {
 
 		model.addAttribute("countryNm", standardCodeService.findByIsoAlp2(id));
+		model.addAttribute("countryFlag", countryFlagService.findByIsoAlp2(id));
 
 		model.addAttribute("safetyListMain", safetyListService.getMainSafetyList());
 		model.addAttribute("safetyCountryList", safetyListService.getCountrySafetyList(id));

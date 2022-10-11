@@ -9,6 +9,7 @@ import com.tistory.amyyzzin.trvl.util.XmlApiUtil;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -21,6 +22,7 @@ public class TravelWarningService extends AbstractService {
     private final TravelWarningRepository travelWarningRepository;
 
     @Override
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (travelWarningRepository.count() > 0) {
