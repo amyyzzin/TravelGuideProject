@@ -90,13 +90,18 @@
            style="font-size: 25px; font-weight: bold; margin-bottom: 0"></p>
         <p th:text="${basicInfo?.continent}" style="font-size: 23px"></p>
       </td>
-      <td style="width: 30%;">
+
+      <td style="width: 30%;" th:if="${embassyHomepage.homepageUrl != '-'}">
         <button type="button" class="btn btn-outline-secondary btn-lg"
                 th:id="${embassyHomepage.homepageUrl}"
-                onclick="moveToEmbassyPage(id)">
-          현지 한국대사관 바로가기
+                onclick="moveToEmbassyPage(id)"> 현지 한국대사관 바로가기
         </button>
       </td>
+
+      <td style="width: 30%;" th:if="${embassyHomepage.homepageUrl == '-'}">
+        <button type="button" style="display: none"></button>
+      </td>
+
       </tbody>
     </table>
     <div><br></div>

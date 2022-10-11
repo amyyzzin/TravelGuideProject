@@ -27,7 +27,7 @@ public class CountryFlagService extends AbstractService {
     String countryFlagUrl;
 
     @Override
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (countryFlagRepository.count() > 0) {

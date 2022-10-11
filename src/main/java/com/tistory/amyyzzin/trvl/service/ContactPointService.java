@@ -25,7 +25,7 @@ public class ContactPointService extends AbstractService {
     String contactPointUrl;
 
     @Override
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (contactPointRepository.count() > 0) {

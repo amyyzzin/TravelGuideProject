@@ -25,7 +25,7 @@ public class CovidSafetyService extends AbstractService {
     String covidSafetyUrl;
 
     @Override
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (covidSafetyRepository.count() > 0) {

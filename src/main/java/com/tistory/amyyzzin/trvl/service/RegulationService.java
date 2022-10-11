@@ -31,7 +31,7 @@ public class RegulationService extends AbstractService {
     String regulationUrl;
 
     @Override
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (regulationRepository.count() > 0) {

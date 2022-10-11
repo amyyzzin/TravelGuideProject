@@ -22,7 +22,7 @@ public class AccidentListService extends AbstractService {
     private final AccidentListRepository accidentListRepository;
 
     @Override
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (accidentListRepository.count() > 0) {

@@ -27,7 +27,7 @@ public class OverseasArrivalService extends AbstractService {
     String overSeasArrivalUrl;
 
     @Override
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (overseasArrivalRepository.count() > 0) {

@@ -28,7 +28,7 @@ public class TravelAlarmService extends AbstractService {
     String travelAlarmUrl;
 
     @Override
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (travelAlarmRepository.count() > 0) {

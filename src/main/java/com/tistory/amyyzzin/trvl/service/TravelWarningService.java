@@ -22,7 +22,7 @@ public class TravelWarningService extends AbstractService {
     private final TravelWarningRepository travelWarningRepository;
 
     @Override
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (travelWarningRepository.count() > 0) {

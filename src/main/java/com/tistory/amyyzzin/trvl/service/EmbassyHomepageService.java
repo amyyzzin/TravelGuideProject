@@ -25,7 +25,7 @@ public class EmbassyHomepageService extends AbstractService {
     String embassyHomepageUrl;
 
     @Override
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (embassyHomepageRepository.count() > 0) {

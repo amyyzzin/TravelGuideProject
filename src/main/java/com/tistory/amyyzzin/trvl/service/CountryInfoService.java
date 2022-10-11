@@ -27,7 +27,7 @@ public class CountryInfoService extends AbstractService {
     String countryInfoUrl;
 
     @Override
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (countryInfoRepository.count() > 0) {

@@ -22,7 +22,7 @@ public class CountryBasicInfoService extends AbstractService {
     private final CountryBasicInfoRepository countryBasicInfoRepository;
 
     @Override
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (countryBasicInfoRepository.count() > 0) {

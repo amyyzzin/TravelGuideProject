@@ -30,7 +30,7 @@ public class NoticeListService extends AbstractService {
     String noticeUrl;
 
     @Override
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
         if (noticeListRepository.count() > 0) {

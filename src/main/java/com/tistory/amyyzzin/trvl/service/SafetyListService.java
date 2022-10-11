@@ -31,7 +31,7 @@ public class SafetyListService extends AbstractService {
 
     @Override
     @Transactional
-    @Scheduled(cron = "${scheduler.scrap.getAPI}")
+    @Scheduled(cron = "${scheduler.get.API}")
     public void upsert() throws IOException {
 
 //        safetyListRepository.deleteAllInBatch();
