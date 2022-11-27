@@ -12,10 +12,16 @@
     <img src="https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=coffeeScript&logoColor=white">
     <img src="https://img.shields.io/badge/Spring%20Boot-FF6600?style=flat-square&logo=springBoot&logoColor=white">
     <img src="https://img.shields.io/badge/Spring%20Data%20Jpa-6DB33F?style=flat-sqaure&logo=aqua&logoColor=white">
+    <img src="https://img.shields.io/badge/MySql-4479A1?style=flat-sqaure&logo=mysql&logoColor=white">
+    <img src="https://img.shields.io/badge/Google Maps-red?style=flat-sqaure&logo=Google Maps&logoColor=white">
+</div>
+<div>
     <img src="https://img.shields.io/badge/HTML5-E34F26?&style=flat-square&logo=html5&logoColor=white">
     <img src="https://img.shields.io/badge/CSS-1572B6?&style=flat-square&logo=css3&logoColor=white">
     <img src="https://img.shields.io/badge/Java%20Script-F7DF1E?&style=flat-square&logo=javascript&logoColor=white">
-    <img src="https://img.shields.io/badge/MySql-4479A1?style=flat-sqaure&logo=mysql&logoColor=white">
+    <img src="https://img.shields.io/badge/jQuery-navy?&style=flat-square&logo=jQuery&logoColor=white">
+    <img src="https://img.shields.io/badge/Thymeleaf-deepgreen?&style=flat-square&logo=Thymeleaf&logoColor=white">
+    <img src="https://img.shields.io/badge/Bootstrap-purple?&style=flat-square&logo=Bootstrap&logoColor=white">
 </div>
 </section>
 
