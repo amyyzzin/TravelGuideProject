@@ -2,11 +2,11 @@
 ### 외교부의 정보를 간편하게 조회 할 수 있는 웹 서비스입니다.
 <div>
    <a href="https://www.notion.so/amyyzzin/TravelGuide-e9138440adae4d158b4f97f4cbdab459">
-        <text>▶ NOTION for project</text>
+        <text>▶NOTION </text>
     </a>
 </div>
 
-## **👩‍🔧 Things We Code With**
+## **👩‍🔧 기술 스택**
 <section>
 <div>
     <img src="https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=coffeeScript&logoColor=white">
